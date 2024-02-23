@@ -23,8 +23,11 @@ app.use(bodyParser.json())
 app.listen(6552, async function() {
   console.log('web-server start')
 })
+
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 app.get('/ping', async function(req, res) {
-    console.log(res.locals.auth)
     res.status(200).send({
         "code":200,
         "data":"alive"
@@ -38,10 +41,7 @@ app.get('/ping', async function(req, res) {
 
 
 app.get('/',function(req,res){
-  app.set('views', root+'/');
-  app.set('view engine', 'jade');
-  
-  res.sendFile((root+'/'));
+  res.render('index', { title: 'ejs' });
 });
 
 app.get('/invoice',function(req,res){
