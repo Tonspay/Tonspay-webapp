@@ -15,8 +15,6 @@ var express = require('express');
 const fs = require("fs");
 var app = express();
 var bodyParser = require('body-parser');
-const modules = require("../../modules/index")
-const redis = require("../../utils/redis")
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -39,8 +37,11 @@ app.get('/ping', async function(req, res) {
  */
 
 
-app.get('/wallet',function(req,res){
-  res.sendFile((root+'/index.html'));
+app.get('/',function(req,res){
+  app.set('views', root+'/');
+  app.set('view engine', 'jade');
+  
+  res.sendFile((root+'/'));
 });
 
 app.get('/invoice',function(req,res){
