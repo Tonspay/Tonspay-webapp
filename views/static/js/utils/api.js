@@ -1,34 +1,62 @@
 const request_baseurl = "https://wallet.tonspay.top/api/"
 const request_router = {
-    ping: request_baseurl + "ping"
+    ping: request_baseurl + "ping",
+    debug: request_baseurl + "debug",
 }
 
 async function requester(url, requestOptions) {
     return (await fetch(url, requestOptions)).json()
 }
 
-async function request_method(method, headers) {
+function request_method_get(headers) {
     var requestOptions = {
-        method: method,
+        method: "GET",
         headers: headers,
         redirect: 'follow'
     };
     return requestOptions
 }
 
-async function auth_header() {
+function request_method_post(bodys, headers) {
+    var requestOptions = {
+        method: "POST",
+        headers: headers,
+        body: bodys,
+        redirect: 'follow'
+    };
+    return requestOptions
+}
+
+function auth_header() {
     var myHeaders = new Headers();
     myHeaders.append("token", "");
 }
 
-async function request_get_unauth() {
-    return request_method("GET", {});
+function request_get_unauth() {
+    return request_method_get({});
 }
 
-async function request_get_auth() {
-    return request_method("GET", auth_header());
+function request_get_auth() {
+    return request_method_get(auth_header());
+}
+
+function request_post_unauth(data) {
+    var h = new Headers();
+    h.append("Content-Type", "application/json");
+
+    return request_method_post(
+        JSON.stringify(data), h
+    );
 }
 
 async function api_ping() {
     return await requester(request_router.ping, request_get_unauth())
+}
+
+async function api_debug(data) {
+    console.log(request_post_unauth(data))
+    return await requester(
+        request_router.debug,
+        request_post_unauth(data)
+    )
 }

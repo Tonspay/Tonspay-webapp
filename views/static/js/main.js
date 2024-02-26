@@ -35,8 +35,14 @@
 
 
 async function init() {
-    var ret = await api_ping();
-    console.log("🔥 await :: ", ret)
+    Telegram.WebApp.ready();
+    // var ret = await api_ping();
+    // var ret = storage_get_authkey()
+    // console.log("🔥 await :: ", ret)
+
+    // console.log(window.Telegram.WebApp.initDataUnsafe)
+    // window.alert(window.Telegram.WebApp.initDataUnsafe)
+    await api_debug({ initData: (await miniapp_init()).initData });
 }
 
 init()
