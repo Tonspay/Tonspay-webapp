@@ -2,6 +2,7 @@ const request_baseurl = "https://wallet.tonspay.top/api/"
 const request_router = {
     ping: request_baseurl + "ping",
     debug: request_baseurl + "debug",
+    auth: request_baseurl + "auth",
 }
 
 async function requester(url, requestOptions) {
@@ -57,6 +58,14 @@ async function api_debug(data) {
     console.log(request_post_unauth(data))
     return await requester(
         request_router.debug,
+        request_post_unauth(data)
+    )
+}
+
+async function api_auth(data) {
+    console.log(request_post_unauth(data))
+    return await requester(
+        request_router.auth,
         request_post_unauth(data)
     )
 }

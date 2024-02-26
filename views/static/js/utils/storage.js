@@ -26,3 +26,15 @@ function storage_get_uid() {
 function storage_set_uid(uid) {
     localStorage.setItem(router_storage.uid, uid);
 }
+
+function storage_get_user_tg_data() {
+    var key = localStorage.getItem(router_storage.uid);
+    if (key) {
+        return key
+    }
+    return false;
+}
+
+function storage_set_user_tg_data(uid) {
+    localStorage.setItem(router_storage.uid, uid);
+}

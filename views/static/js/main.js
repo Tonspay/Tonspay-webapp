@@ -35,14 +35,21 @@
 
 
 async function init() {
-    Telegram.WebApp.ready();
-    // var ret = await api_ping();
-    // var ret = storage_get_authkey()
-    // console.log("🔥 await :: ", ret)
+    //set the auth token into global
+    await authToken()
 
-    // console.log(window.Telegram.WebApp.initDataUnsafe)
-    // window.alert(window.Telegram.WebApp.initDataUnsafe)
-    await api_debug({ initData: (await miniapp_init()).initData });
+}
+
+async function authToken() {
+    Telegram.WebApp.ready();
+    const doauth = await api_auth({ initData: (await miniapp_init()).initData });
+    const token = doauth.token
+    storage_set_authkey(token)
+    storage_set_uid(
+        doauth.data.id
+    )
+    storage_set_user_tg_data(JSON.stringify(doauth.data))
+    window.alert(doauth.data.id)
 }
 
 init()
