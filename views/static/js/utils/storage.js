@@ -1,3 +1,9 @@
+/**
+ * Storage util
+ * 
+ * Control cookies * local storage
+ */
+
 const router_storage = {
     authkey: "user_authkey",
     uid: "user_uid",

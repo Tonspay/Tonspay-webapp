@@ -1,3 +1,8 @@
+/**
+ * This util are working for the actions open inside telegram . 
+ * And telegram login auth .
+ */
+
 async function miniapp_init() {
     await Telegram.WebApp.ready();
     if (window.Telegram.WebApp.initData) {

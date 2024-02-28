@@ -34,10 +34,21 @@
  */
 
 
-async function init() {
+async function init(r) {
     // console.log("🔥 Check cache")
     //set the auth token into global
     await authToken()
+
+    switch (r) {
+        case 0: // /index
+            await index_page_init();
+            break;
+        default:
+            break;
+    }
+}
+
+async function router() {
 
 }
 
@@ -45,6 +56,7 @@ async function authToken() {
     const initData = (await miniapp_init())
     if (initData) {
         //Open in telegram , new auth
+        console.log("🚀 Login from telegram")
         const doauth = await api_auth({ initData: initData.initData });
         const token = doauth.token
         storage_set_authkey(token)
@@ -58,11 +70,13 @@ async function authToken() {
         const token = storage_get_authkey();
         if (token) {
             //Local exsit auth key
+            console.log("Auth token exsit :: ", token)
         } else {
             //Redirect to telegram login
+            console.log("Require to login")
         }
     }
 
 }
 
-init()
+// init()

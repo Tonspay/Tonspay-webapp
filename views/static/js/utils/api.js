@@ -1,8 +1,25 @@
+/**
+ * Network request util
+ * 
+ * Using fetch async/await . 
+ * 
+ * Making fetch request router . 
+ */
+
 const request_baseurl = "https://wallet.tonspay.top/api/"
 const request_router = {
     ping: request_baseurl + "ping",
     debug: request_baseurl + "debug",
     auth: request_baseurl + "auth",
+    preconnect: {
+        phantom: request_baseurl + "preconnect/phantom",
+    },
+    connect: {
+        phantom: "connect/phantom"
+    },
+    info: {
+        connection: request_baseurl + "info/connection"
+    }
 }
 
 async function requester(url, requestOptions) {
@@ -30,7 +47,8 @@ function request_method_post(bodys, headers) {
 
 function auth_header() {
     var myHeaders = new Headers();
-    myHeaders.append("token", "");
+    myHeaders.append("token", storage_get_authkey());
+    return myHeaders;
 }
 
 function request_get_unauth() {
@@ -55,17 +73,43 @@ async function api_ping() {
 }
 
 async function api_debug(data) {
-    // console.log(request_post_unauth(data))
     return await requester(
         request_router.debug,
         request_post_unauth(data)
     )
 }
 
+//Get auth token
 async function api_auth(data) {
-    // console.log(request_post_unauth(data))
     return await requester(
         request_router.auth,
         request_post_unauth(data)
+    )
+}
+
+/**
+ * Information fetch interface
+ *  - connection informations
+ *  - actives informations
+ */
+
+async function api_info_connection() {
+    return await requester(
+        request_router.info.connection,
+        request_get_auth()
+    )
+}
+
+/**
+ * Connect wallet interface 
+ *  - Phantom
+ *      - connect
+ *      - preconnect
+ */
+
+async function api_preconnect_phantom() {
+    return await requester(
+        request_router.preconnect.phantom,
+        request_get_auth()
     )
 }
