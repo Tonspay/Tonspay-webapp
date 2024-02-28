@@ -1,6 +1,9 @@
 async function miniapp_init() {
     await Telegram.WebApp.ready();
-    return window.Telegram.WebApp
+    if (window.Telegram.WebApp.initData) {
+        return window.Telegram.WebApp
+    }
+    return false
 }
 
 

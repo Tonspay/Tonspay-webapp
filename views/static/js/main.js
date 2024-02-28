@@ -35,21 +35,34 @@
 
 
 async function init() {
+    // console.log("🔥 Check cache")
     //set the auth token into global
     await authToken()
 
 }
 
 async function authToken() {
-    Telegram.WebApp.ready();
-    const doauth = await api_auth({ initData: (await miniapp_init()).initData });
-    const token = doauth.token
-    storage_set_authkey(token)
-    storage_set_uid(
-        doauth.data.id
-    )
-    storage_set_user_tg_data(JSON.stringify(doauth.data))
-    window.alert(doauth.data.id)
+    const initData = (await miniapp_init())
+    if (initData) {
+        //Open in telegram , new auth
+        const doauth = await api_auth({ initData: initData.initData });
+        const token = doauth.token
+        storage_set_authkey(token)
+        storage_set_uid(
+            doauth.data.id
+        )
+        storage_set_user_tg_data(JSON.stringify(doauth.data))
+
+        window.alert(doauth.data.id)
+    } else {
+        const token = storage_get_authkey();
+        if (token) {
+            //Local exsit auth key
+        } else {
+            //Redirect to telegram login
+        }
+    }
+
 }
 
 init()

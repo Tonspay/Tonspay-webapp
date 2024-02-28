@@ -55,7 +55,7 @@ async function api_ping() {
 }
 
 async function api_debug(data) {
-    console.log(request_post_unauth(data))
+    // console.log(request_post_unauth(data))
     return await requester(
         request_router.debug,
         request_post_unauth(data)
@@ -63,7 +63,7 @@ async function api_debug(data) {
 }
 
 async function api_auth(data) {
-    console.log(request_post_unauth(data))
+    // console.log(request_post_unauth(data))
     return await requester(
         request_router.auth,
         request_post_unauth(data)
