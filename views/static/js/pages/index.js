@@ -23,7 +23,7 @@ async function wallets_display() {
                 case 0: //TON
                     break;
                 case 1:
-                    wallet_card_connected("ton", ele.address)
+                    wallet_card_connected("phantom", ele.address)
                 default:
                     break;
             }
@@ -72,7 +72,7 @@ async function wallet_card_connect_balance(id) {
 
 function debug() {
     console.log("🔥 Debug")
-    wallet_card_connect_button("phantom")
+    wallet_card_connect_button("ton")
 }
 
 // debug()
