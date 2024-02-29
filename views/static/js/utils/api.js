@@ -21,8 +21,9 @@ const request_router = {
         phantom: "disconnect/phantom"
     },
     info: {
-        connection: request_baseurl + "info/connection"
-    }
+        connection: request_baseurl + "info/connection",
+        invoice: request_baseurl + "info/invoices",
+    },
 }
 
 async function requester(url, requestOptions) {
@@ -103,6 +104,12 @@ async function api_info_connection() {
     )
 }
 
+async function api_info_invoice() {
+    return await requester(
+        request_router.info.invoice,
+        request_get_auth()
+    )
+}
 /**
  * Connect wallet interface 
  *  - Phantom

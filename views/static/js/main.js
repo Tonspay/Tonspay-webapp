@@ -49,6 +49,9 @@ async function router(r) {
         case 1: // /wallet
             await wallet_page_init();
             break;
+        case 2: // /invoice
+            await invoice_page_init();
+            break;
         default:
             break;
     }
