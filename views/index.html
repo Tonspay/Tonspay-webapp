@@ -53,7 +53,9 @@
                             <!-- TON CARD -->
                             <div class="splide__slide">
                                 <div class="card card-style m-0 bg-5 shadow-card shadow-card-m" style="height:200px">
-
+                                    <div class="ton-top p-3" id="metamask_card_connect_status_connected_disconnect" style="display: none;">
+                                        <a onclick="ton_disconnect_wallet()" class="icon icon-xxs bg-white color-black float-end">❎</a>
+                                    </div>
                                     <div class="card-center">
 
                                         <div id="ton_card_connect_status_unconnected">
@@ -90,8 +92,8 @@
                             <!-- PHANTOM CARD -->
                             <div class="splide__slide">
                                 <div class="card card-style m-0 bg-9 shadow-card shadow-card-m" style="height:200px">
-                                    <div class="card-top p-3">
-                                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-card-more" class="icon icon-xxs bg-white color-black float-end"><i class="bi bi-three-dots font-18"></i></a>
+                                    <div class="card-top p-3" id="phantom_card_connect_status_connected_disconnect" style="display: none;">
+                                        <a onclick="phantom_disconnect_wallet()" class="icon icon-xxs bg-white color-black float-end">❎</a>
                                     </div>
 
                                     <div class="card-center">
@@ -130,8 +132,8 @@
                             <!-- METAMASK CARD -->
                             <div class="splide__slide">
                                 <div class="card card-style m-0 bg-10 shadow-card shadow-card-m" style="height:200px">
-                                    <div class="card-top p-3">
-                                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-card-more" class="icon icon-xxs bg-white color-black float-end"><i class="bi bi-three-dots font-18"></i></a>
+                                    <div class="card-top p-3" id="metamask_card_connect_status_connected_disconnect" style="display: none;">
+                                        <a onclick="metamask_disconnect_wallet()" class="icon icon-xxs bg-white color-black float-end">❎</a>
                                     </div>
                                     <div class="card-center">
                                         <div id="metamask_card_connect_status_unconnected">

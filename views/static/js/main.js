@@ -65,12 +65,14 @@ async function authToken() {
         )
         storage_set_user_tg_data(JSON.stringify(doauth.data))
 
-        window.alert(doauth.data.id)
+        // window.alert(doauth.data.id)
+        // window.alert(storage_get_uid())
     } else {
         const token = storage_get_authkey();
         if (token) {
             //Local exsit auth key
             console.log("Auth token exsit :: ", token)
+                // window.alert(storage_get_uid())
         } else {
             //Redirect to telegram login
             console.log("Require to login")

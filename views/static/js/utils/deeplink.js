@@ -3,7 +3,8 @@ async function phantom_connect_wallet() {
     const pk = await api_preconnect_phantom();
     if (pk.data) {
         console.log("phantom connect wallet")
-        location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/api/connect/phantom/${storage_get_uid()}`;
+            // console.log(`https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/api/connect/phantom/${(storage_get_uid())}`)
+        location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/api/connect/phantom/${(storage_get_uid())}`;
     } else {
         console.error("phantom connect failed")
     }
