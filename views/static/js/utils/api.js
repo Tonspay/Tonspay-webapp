@@ -27,7 +27,12 @@ const request_router = {
 }
 
 async function requester(url, requestOptions) {
-    return (await fetch(url, requestOptions)).json()
+    try {
+        return (await fetch(url, requestOptions)).json()
+    } catch (e) {
+        console.log("🐞 req error", e)
+    }
+    return false;
 }
 
 function request_method_get(headers) {
@@ -107,6 +112,13 @@ async function api_info_connection() {
 async function api_info_invoice() {
     return await requester(
         request_router.info.invoice,
+        request_get_auth()
+    )
+}
+
+async function api_info_invoice(id) {
+    return await requester(
+        request_router.info.invoice + `/${id}`,
         request_get_auth()
     )
 }
