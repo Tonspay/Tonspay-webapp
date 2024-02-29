@@ -13,6 +13,18 @@ async function invoice_page_init() {
         //Invoices not exsit , show all history invoies
         const invoies = await api_info_invoice()
         console.log('no invoicesid : ', invoies)
+
+        const f = document.getElementById("invoice_disply_frame");
+        var pending = document.getElementById("pending_invoice_template");
+
+        console.log(f, pending)
+        for (var i = 0; i < 5; i++) {
+
+            const c = pending.cloneNode(true)
+            c.style.display = "inline"
+            f.appendChild(c)
+        }
+
     }
 }
 
