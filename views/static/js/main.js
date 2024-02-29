@@ -76,6 +76,7 @@ async function authToken() {
         } else {
             //Redirect to telegram login
             console.log("Require to login")
+            location.href = `https://wallet.tonspay.top/page-require-login.html`
         }
     }
 

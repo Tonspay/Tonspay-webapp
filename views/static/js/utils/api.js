@@ -17,6 +17,9 @@ const request_router = {
     connect: {
         phantom: "connect/phantom"
     },
+    disconnect: {
+        phantom: "disconnect/phantom"
+    },
     info: {
         connection: request_baseurl + "info/connection"
     }
@@ -110,6 +113,19 @@ async function api_info_connection() {
 async function api_preconnect_phantom() {
     return await requester(
         request_router.preconnect.phantom,
+        request_get_auth()
+    )
+}
+
+/**
+ * Disconnect wallet interface
+ *  - Phantom
+ *      - disconnect
+ */
+
+async function api_disconnect_phantom() {
+    return await requester(
+        request_router.disconnect.phantom,
         request_get_auth()
     )
 }

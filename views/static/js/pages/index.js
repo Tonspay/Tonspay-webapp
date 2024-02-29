@@ -7,6 +7,7 @@
  *  - Action functions
  */
 
+//Init the page with data fetch
 async function index_page_init() {
     await wallets_display()
 }
@@ -29,9 +30,9 @@ async function wallets_display() {
             }
         });
     }
-    // debug()
 }
 
+//Change the card status & type
 function wallet_card_connect_button(id) {
 
     const mount_connected = document.getElementById(id + '_card_connect_status_connected')
@@ -58,7 +59,7 @@ function wallet_card_connect_button(id) {
 
     return 0;
 }
-
+//New connected card draws
 function wallet_card_connected(id, address) {
     // console.log("🐞 wallet_card_connected", id)
     const mount_connected_address = document.getElementById(id + '_card_address')
@@ -66,16 +67,32 @@ function wallet_card_connected(id, address) {
     wallet_card_connect_button(id)
     return 0;
 }
+//Get the connected card balance
 async function wallet_card_connect_balance(id) {
     const mount_connected = document.getElementById(id + '_card_balance')
     const balance = 0;
     mount_connected.innerHTML = `${balance} ${id.toUpperCase()}`
     return 0;
 }
+//Disconnect the card
+async function phantom_disconnect_wallet(id) {
+    await api_disconnect_phantom()
+    wallet_card_connect_button('phantom')
+    return 0;
+}
+async function ton_disconnect_wallet(id) {
+    await api_disconnect_phantom()
+    wallet_card_connect_button('phantom')
+    return 0;
+}
+async function metamask_disconnect_wallet(id) {
+    await api_disconnect_phantom()
+    wallet_card_connect_button('phantom')
+    return 0;
+}
+
 
 function debug() {
     console.log("🔥 Debug")
     wallet_card_connect_button("ton")
 }
-
-// debug()
