@@ -38,18 +38,20 @@ async function init(r) {
     // console.log("🔥 Check cache")
     //set the auth token into global
     await authToken()
+    await router(r)
+}
 
+async function router(r) {
     switch (r) {
         case 0: // /index
             await index_page_init();
             break;
+        case 1: // /wallet
+            await wallet_page_init();
+            break;
         default:
             break;
     }
-}
-
-async function router() {
-
 }
 
 async function authToken() {
@@ -64,20 +66,21 @@ async function authToken() {
             doauth.data.id
         )
         storage_set_user_tg_data(JSON.stringify(doauth.data))
-
-        // window.alert(doauth.data.id)
-        // window.alert(storage_get_uid())
     } else {
         const token = storage_get_authkey();
         if (token) {
-            //Local exsit auth key
-            console.log("Auth token exsit :: ", token)
-                // window.alert(storage_get_uid())
-        } else {
-            //Redirect to telegram login
-            console.log("Require to login")
-            location.href = `https://wallet.tonspay.top/page-require-login.html`
+            //Verfiy if token works 
+            const ping = await api_ping()
+                // console.log("ping", ping)
+            if (ping.code == 200) {
+                //Local exsit auth key
+                console.log("Auth token exsit :: ", token)
+                return token;
+            }
         }
+        //Redirect to telegram login
+        console.log("Require to login")
+        location.href = `https://wallet.tonspay.top/page-require-login.html`
     }
 
 }

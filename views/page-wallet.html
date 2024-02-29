@@ -15,7 +15,7 @@
 
     <meta id="theme-check" name="theme-color" content="#FFFFFF">
 
-    <body class="theme-light">
+    <body class="theme-dark">
         <div id="preloader">
             <div class="spinner-border color-highlight" role="status"></div>
         </div>
@@ -24,7 +24,7 @@
 
             <!-- FOOTER HERE  -->
             <div id="footer-bar" class="footer-bar-1 footer-bar-detached">
-                <a href="page-wallet.html"><i class="bi bi-wallet2"></i><span>Cards</span></a>
+                <a href="page-wallet.html"><i class="bi bi-wallet2"></i><span>Wallets</span></a>
                 <a href="index.html" class="circle-nav-2"><i class="bi bi-house-fill"></i><span>Home</span></a>
                 <a href="page-payments.html"><i class="bi bi-receipt"></i><span>Payments</span></a>
             </div>
@@ -35,8 +35,8 @@
                 <div class="pt-3">
                     <div class="page-title d-flex">
                         <div class="align-self-center me-auto">
-                            <p class="color-highlight">Hello Enabled</p>
-                            <h1 class="color-theme">Cards</h1>
+                            <p class="color-highlight">Tonspay</p>
+                            <h1 class="color-theme">Wallets</h1>
                         </div>
                         <div class="align-self-center ms-auto">
                             <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-add-card" class="icon gradient-green color-white shadow-bg shadow-bg-xs rounded-m">
@@ -71,74 +71,122 @@
                     </div>
                 </div>
 
+
+                <!-- card list -->
                 <div class="card-stack" data-stack-height="180">
 
                     <div class="card-stack-click"></div>
 
+                    <!-- card 1 -->
                     <div class="card card-style bg-5">
-                        <div class="card-top p-3">
-                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-card-more" class="icon icon-xxs bg-white color-black float-end"><i class="bi bi-three-dots font-18"></i></a>
+                        <div class="ton-top p-3" id="metamask_card_connect_status_connected_disconnect" style="display: none;">
+                            <a onclick="ton_disconnect_wallet()" class="icon icon-xxs bg-white color-black float-end">❎</a>
                         </div>
                         <div class="card-center">
-                            <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
-                                <h1 class="font-13 my-n1">
-                                    <a class="color-theme" data-bs-toggle="collapse" href="#balance3" aria-controls="balance2">Click for Balance</a>
-                                </h1>
-                                <div class="collapse" id="balance3">
-                                    <h2 class="color-theme font-26">$26,315</h2>
+
+                            <div id="ton_card_connect_status_unconnected">
+                                <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
+                                    <h1 class="font-13 my-n1">
+                                        <a class="color-theme" data-bs-toggle="collapse" onclick="ton_connect_wallet()">Connect TON</a>
+                                    </h1>
                                 </div>
                             </div>
+
+
+                            <div id="ton_card_connect_status_connected" style="display: none;">
+                                <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
+                                    <h1 class="font-13 my-n1">
+                                        <a class="color-theme" data-bs-toggle="collapse" href="#balance_ton" aria-controls="balance_ton">Click for Balance</a>
+                                    </h1>
+                                    <div class="collapse" id="balance_ton">
+                                        <h2 class="color-theme font-26" id="ton_card_balance">0 TON</h2>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                        <strong class="card-top no-click font-12 p-3 color-white font-monospace">Main Account</strong>
-                        <strong class="card-bottom no-click p-3 text-start color-white font-monospace">1234 5678 1234 5661</strong>
-                        <strong class="card-bottom no-click p-3 text-end color-white font-monospace">08 / 2025</strong>
+                        <strong class="card-top no-click font-12 p-3 color-white font-monospace">TON</strong>
+
+                        <div id='ton_card_connect_status_connected_address' style="display: none;">
+                            <strong class="card-bottom no-click p-3 text-start color-white font-monospace" id="ton_card_address"> </strong>
+                        </div>
+
                         <div class="card-overlay bg-black opacity-50"></div>
                     </div>
-
+                    <!-- card 2 -->
                     <div class="card card-style bg-7">
-                        <div class="card-top p-3">
-                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-card-more" class="icon icon-xxs bg-white color-black float-end"><i class="bi bi-three-dots font-18"></i></a>
+                        <div class="card-top p-3" id="phantom_card_connect_status_connected_disconnect" style="display: none;">
+                            <a onclick="phantom_disconnect_wallet()" class="icon icon-xxs bg-white color-black float-end">❎</a>
                         </div>
+
                         <div class="card-center">
-                            <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
-                                <h1 class="font-13 my-n1">
-                                    <a class="color-theme" data-bs-toggle="collapse" href="#balance1" aria-controls="balance1">Click for Balance</a>
-                                </h1>
-                                <div class="collapse" id="balance1">
-                                    <h2 class="color-theme font-26">$65,500</h2>
+
+                            <div id="phantom_card_connect_status_unconnected">
+                                <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
+                                    <h1 class="font-13 my-n1">
+                                        <a class="color-theme" data-bs-toggle="collapse" onclick="phantom_connect_wallet()">Connect Phantom</a>
+                                    </h1>
                                 </div>
                             </div>
+
+                            <div id="phantom_card_connect_status_connected" style="display: none;">
+                                <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
+                                    <h1 class="font-13 my-n1">
+                                        <a class="color-theme" data-bs-toggle="collapse" href="#balance_phantom" aria-controls="balance_phantom">Click for Balance</a>
+                                    </h1>
+                                    <div class="collapse" id="balance_phantom">
+                                        <h2 class="color-theme font-26" id="phantom_card_balance">0 SOL</h2>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                        <strong class="card-top no-click font-12 p-3 color-white font-monospace">Company Account</strong>
-                        <strong class="card-bottom no-click p-3 text-start color-white font-monospace">1234 5678 1234 5661</strong>
-                        <strong class="card-bottom no-click p-3 text-end color-white font-monospace">08 / 2025</strong>
+
+                        <strong class="card-top no-click font-12 p-3 color-white font-monospace">Solana</strong>
+
+                        <div id='phantom_card_connect_status_connected_address' style="display: none;">
+                            <strong class="card-bottom no-click p-3 text-start color-white font-monospace" id="phantom_card_address"> </strong>
+                        </div>
+
                         <div class="card-overlay bg-black opacity-50"></div>
                     </div>
-
+                    <!-- card 3 -->
                     <div class="card card-style bg-1">
-                        <div class="card-top p-3">
-                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-card-more" class="icon icon-xxs bg-white color-black float-end"><i class="bi bi-three-dots font-18"></i></a>
+                        <div class="card-top p-3" id="metamask_card_connect_status_connected_disconnect" style="display: none;">
+                            <a onclick="metamask_disconnect_wallet()" class="icon icon-xxs bg-white color-black float-end">❎</a>
                         </div>
                         <div class="card-center">
-                            <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
-                                <h1 class="font-13 my-n1">
-                                    <a class="color-theme" data-bs-toggle="collapse" href="#balance2" aria-controls="balance2">Click for Balance</a>
-                                </h1>
-                                <div class="collapse" id="balance2">
-                                    <h2 class="color-theme font-26">$15,100</h2>
+                            <div id="metamask_card_connect_status_unconnected">
+                                <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
+                                    <h1 class="font-13 my-n1">
+                                        <a class="color-theme" data-bs-toggle="collapse" onclick="metamask_connect_wallet()">Connect Metamask</a>
+                                    </h1>
+                                </div>
+                            </div>
+
+
+                            <div id="metamask_card_connect_status_connected" style="display: none;">
+                                <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
+                                    <h1 class="font-13 my-n1">
+                                        <a class="color-theme" data-bs-toggle="collapse" href="#balance_metamask" aria-controls="balance_metamask">Click for Balance</a>
+                                    </h1>
+                                    <div class="collapse" id="balance_metamask">
+                                        <h2 class="color-theme font-26" id="metamask_card_balance">0 ETH</h2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <strong class="card-top no-click font-12 p-3 color-white font-monospace">Savings Account</strong>
-                        <strong class="card-bottom no-click p-3 text-start color-white font-monospace">1234 5678 1234 5661</strong>
-                        <strong class="card-bottom no-click p-3 text-end color-white font-monospace">08 / 2025</strong>
+                        <strong class="card-top no-click font-12 p-3 color-white font-monospace">Arbitrum</strong>
+                        <div id='metamask_card_connect_status_connected_address' style="display: none;">
+                            <strong class="card-bottom no-click p-3 text-start color-white font-monospace" id="metamask_card_address"> </strong>
+                        </div>
                         <div class="card-overlay bg-black opacity-50"></div>
                     </div>
                 </div>
 
-                <h6 class="btn-stack-info color-theme opacity-80 text-center mt-n2 mb-3">Tap the Cards to Expand your Wallet</h6>
+                <h6 class="btn-stack-info color-theme opacity-80 text-center mt-n2 mb-3">Tap to Expand</h6>
 
-                <a href="#" class="disabled btn-stack-click btn mx-3 mb-4 btn-full gradient-highlight shadow-bg shadow-bg-xs">Close my Wallet</a>
+                <a href="#" class="disabled btn-stack-click btn mx-3 mb-4 btn-full gradient-highlight shadow-bg shadow-bg-xs">Close Expand</a>
 
                 <div class="card card-style">
                     <div class="content mb-0">
@@ -344,6 +392,23 @@ $530<br>
 
         <script src="static/js/bootstrap.min.js"></script>
         <script src="static/js/custom.js"></script>
+
+        <!-- Telegram -->
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
+        <!-- main js  -->
+        <script src="static/js/utils/api.js"></script>
+        <script src="static/js/utils/storage.js"></script>
+        <script src="static/js/utils/tg.js"></script>
+        <script src="static/js/utils/deeplink.js"></script>
+        <script src="static/js/pages/index.js"></script>
+        <script src="static/js/pages/wallet.js"></script>
+        <script src="static/js/main.js"></script>
+
+        <!-- Init Trigger -->
+        <script>
+            init(1)
+        </script>
     </body>
 </head>
 

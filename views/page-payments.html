@@ -15,7 +15,7 @@
 
     <meta id="theme-check" name="theme-color" content="#FFFFFF">
 
-    <body class="theme-light">
+    <body class="theme-dark">
         <div id="preloader">
             <div class="spinner-border color-highlight" role="status"></div>
         </div>
@@ -24,7 +24,7 @@
 
             <!-- FOOTER HERE  -->
             <div id="footer-bar" class="footer-bar-1 footer-bar-detached">
-                <a href="page-wallet.html"><i class="bi bi-wallet2"></i><span>Cards</span></a>
+                <a href="page-wallet.html"><i class="bi bi-wallet2"></i><span>Wallets</span></a>
                 <a href="index.html" class="circle-nav-2"><i class="bi bi-house-fill"></i><span>Home</span></a>
                 <a href="page-payments.html"><i class="bi bi-receipt"></i><span>Payments</span></a>
             </div>
@@ -35,7 +35,7 @@
                 <div class="pt-3">
                     <div class="page-title d-flex">
                         <div class="align-self-center me-auto">
-                            <p class="color-highlight">Hello Enabled</p>
+                            <p class="color-highlight">Tonspay</p>
                             <h1 class="color-theme">Payments</h1>
                         </div>
                         <div class="align-self-center ms-auto">
@@ -47,47 +47,47 @@
                     </div>
                 </div>
                 <div class="row text-center">
-                    <div class="col-6 mb-n2">
-                        <a href="page-payment-exchange.html" class="card card-style me-0" style="height:180px">
-                            <div class="card-center">
-                                <span class="icon icon-xl rounded-m gradient-green shadow-bg shadow-bg-xs"><i class="bi bi-arrow-clockwise font-24 color-white"></i></span>
-                                <h1 class="font-22 pt-3">Exchange</h1>
-                            </div>
-                            <div class="card-bottom">
-                                <p class="font-11 mb-0 opacity-70">Convert Currency</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-6 mb-n2">
+                    <!-- <div class="col-6 mb-n2">
                         <a href="page-payment-bill.html" class="card card-style ms-0" style="height:180px">
                             <div class="card-center">
                                 <span class="icon icon-xl rounded-m gradient-orange shadow-bg shadow-bg-xs"><i class="bi bi-receipt font-24 color-white"></i></span>
-                                <h1 class="font-22 pt-3">Pay a Bill</h1>
+                                <h1 class="font-22 pt-3">Pay Invoice</h1>
                             </div>
                             <div class="card-bottom">
-                                <p class="font-11 mb-0 opacity-70">Bills and Invoices</p>
+                                <p class="font-11 mb-0 opacity-70">Pay an invoice</p>
                             </div>
                         </a>
-                    </div>
+                    </div> -->
                     <div class="col-6 mb-n2">
                         <a href="page-payment-request.html" class="card card-style me-0" style="height:180px">
                             <div class="card-center">
                                 <span class="icon icon-xl rounded-m gradient-yellow shadow-bg shadow-bg-xs"><i class="bi bi-arrow-down-circle font-24 color-white"></i></span>
-                                <h1 class="font-22 pt-3">Request</h1>
+                                <h1 class="font-22 pt-3">New Invoice</h1>
                             </div>
                             <div class="card-bottom">
-                                <p class="font-11 mb-0 opacity-70">Request or Deposit</p>
+                                <p class="font-11 mb-0 opacity-70">Generate an invoice </p>
                             </div>
                         </a>
                     </div>
+                    <!-- <div class="col-6 mb-n2">
+                        <a href="page-payment-exchange.html" class="card card-style me-0" style="height:180px">
+                            <div class="card-center">
+                                <span class="icon icon-xl rounded-m gradient-green shadow-bg shadow-bg-xs"><i class="bi bi-arrow-clockwise font-24 color-white"></i></span>
+                                <h1 class="font-22 pt-3">Pay Methods</h1>
+                            </div>
+                            <div class="card-bottom">
+                                <p class="font-11 mb-0 opacity-70">Manage payment methods</p>
+                            </div>
+                        </a>
+                    </div> -->
                     <div class="col-6 mb-n2">
                         <a href="page-payment-transfer.html" class="card card-style ms-0" style="height:180px">
                             <div class="card-center">
                                 <span class="icon icon-xl rounded-m gradient-blue shadow-bg shadow-bg-xs"><i class="bi bi-arrow-up-circle font-24 color-white"></i></span>
-                                <h1 class="font-22 pt-3">Transfer</h1>
+                                <h1 class="font-22 pt-3">Cash Gift</h1>
                             </div>
                             <div class="card-bottom">
-                                <p class="font-11 mb-0 opacity-70">Move and Send</p>
+                                <p class="font-11 mb-0 opacity-70">Send out a cash gift</p>
                             </div>
                         </a>
                     </div>
@@ -124,6 +124,23 @@
 
         <script src="static/js/bootstrap.min.js"></script>
         <script src="static/js/custom.js"></script>
+
+        <!-- Telegram -->
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
+        <!-- main js  -->
+        <script src="static/js/utils/api.js"></script>
+        <script src="static/js/utils/storage.js"></script>
+        <script src="static/js/utils/tg.js"></script>
+        <script src="static/js/utils/deeplink.js"></script>
+        <script src="static/js/pages/index.js"></script>
+        <script src="static/js/pages/wallet.js"></script>
+        <script src="static/js/main.js"></script>
+
+        <!-- Init Trigger -->
+        <script>
+            init(2)
+        </script>
     </body>
 </head>
 

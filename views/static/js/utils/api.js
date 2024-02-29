@@ -72,7 +72,7 @@ function request_post_unauth(data) {
 }
 
 async function api_ping() {
-    return await requester(request_router.ping, request_get_unauth())
+    return await requester(request_router.ping, request_get_auth())
 }
 
 async function api_debug(data) {
