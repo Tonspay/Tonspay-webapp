@@ -22,7 +22,8 @@ const request_router = {
     },
     info: {
         connection: request_baseurl + "info/connection",
-        invoice: request_baseurl + "info/invoices",
+        invoices: request_baseurl + "info/invoices",
+        invoice: request_baseurl + "info/invoice",
     },
 }
 
@@ -109,9 +110,9 @@ async function api_info_connection() {
     )
 }
 
-async function api_info_invoice() {
+async function api_info_invoices() {
     return await requester(
-        request_router.info.invoice,
+        request_router.info.invoices,
         request_get_auth()
     )
 }

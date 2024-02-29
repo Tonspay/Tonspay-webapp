@@ -21,7 +21,7 @@ async function invoice_page_init() {
 }
 
 async function invoice_list_draw() {
-    const invoies = await api_info_invoice()
+    const invoies = await api_info_invoices()
     console.log('no invoicesid : ', invoies)
     if (invoies) {
         const own_invoices = invoies.data.own;
