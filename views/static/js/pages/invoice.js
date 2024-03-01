@@ -43,6 +43,11 @@ async function invoice_list_draw() {
             });
         }
 
+        if (!own_invoices && !paied_invoices) {
+            f.appendChild(
+                no_invoice_pending_draw()
+            )
+        }
 
     }
 }
@@ -63,14 +68,53 @@ function invoice_pending_draw(name, time, amount, id) {
     return c
 }
 
+function no_invoice_pending_draw() {
+    const c = document.getElementById("pending_invoice_template").cloneNode(true);
+    c.id = "invoice_none";
+    c.style.display = "inline"
+    const invoice_name = c.childNodes[1].childNodes[1].childNodes[1];
+    const invoice_time = c.childNodes[1].childNodes[1].childNodes[3];
+    const invoice_amount = c.childNodes[1].childNodes[3].childNodes[1];
+    const invoice_status = c.childNodes[1].childNodes[3].childNodes[3];
+    invoice_name.innerText = `No invoices ...`
+    invoice_time.innerText = ``
+    invoice_amount.innerText = ``
+    invoice_status.innerText = ``
+    return c
+}
+
 async function invoice_payment_draw(id, invoiceData) {
     if (id) {
+        //Display major & button
         const f = document.getElementById("invoice_disply_frame");
         f.appendChild(invoice_pending_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type, invoiceData.amount), id))
         const btn = document.getElementById('invoice_to_pay_buttom');
         btn.style.display = "inline"
+            //Display panel
+        const invoice_to_pay_panel_comment = document.getElementById("invoice_to_pay_panel_comment");
+        const invoice_to_pay_panel_time = document.getElementById("invoice_to_pay_panel_time");
+        const invoice_to_pay_panel_id = document.getElementById("invoice_to_pay_panel_id");
+        const invoice_to_pay_amount = document.getElementById("invoice_to_pay_amount");
 
+        invoice_to_pay_panel_comment.innerText = invoiceData.comment
+        invoice_to_pay_panel_time.innerText = ((new Date(invoiceData.createTime)).toUTCString())
+        invoice_to_pay_panel_id.innerText = id
+        invoice_to_pay_amount.innerText = amount_to_display(invoiceData.type, invoiceData.amount)
+
+        const invoice_to_pay_confirm = document.getElementById("invoice_to_pay_confirm");
+        const invoice_to_pay_cancle = document.getElementById("invoice_to_pay_cancle");
+
+        //Redirect the payment confirm button into deeplink 
+        invoice_to_pay_confirm.href = "https://google.com"
+        invoice_to_pay_cancle.addEventListener('click', await invoice_to_pay_cancle_button(id));
     } else {
 
     }
+}
+
+async function invoice_to_pay_confirm_button(id) {
+    console.log("invoice_to_pay_confirm_button", id)
+}
+async function invoice_to_pay_cancle_button(id) {
+    console.log("invoice_to_pay_cancle_button", id)
 }

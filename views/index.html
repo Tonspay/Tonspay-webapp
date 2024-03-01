@@ -15,7 +15,7 @@
 
     <meta id="theme-check" name="theme-color" content="#FFFFFF">
 
-    <body class="theme-dark">
+    <body class="theme-dark" onload="init(0)">
         <div id="preloader">
             <div class="spinner-border color-highlight" role="status"></div>
         </div>
@@ -215,7 +215,7 @@
                             <h6 class="font-13 opacity-80 font-500 mb-0 pt-2">Cash gift</h6>
                         </div>
                         <div class="ms-auto">
-                            <a href="https://wallet.tonspay.top/page-invoices.html" class="icon icon-xxl rounded-m bg-theme shadow-m"><i class="font-28 color-brown-dark bi bi-filter-circle"></i></a>
+                            <a href="./page-invoices.html" class="icon icon-xxl rounded-m bg-theme shadow-m"><i class="font-28 color-brown-dark bi bi-filter-circle"></i></a>
                             <h6 class="font-13 opacity-80 font-500 mb-0 pt-2">Invoices</h6>
                         </div>
                     </div>
@@ -236,7 +236,22 @@
 
                 <div class="card card-style">
                     <div class="content">
-                        <a href="page-activity.html" class="d-flex py-1">
+                        <div id="invoice_disply_frame">
+                            <div style="display: none;" id="pending_invoice_template">
+                                <a class="d-flex py-1 mb-2">
+                                    <div class="align-self-center">
+                                        <h5 class="pt-1 mb-n1"></h5>
+                                        <p class="mb-0 font-11 opacity-70"></p>
+                                    </div>
+                                    <div class="align-self-center ms-auto text-end">
+                                        <h4 class="pt-1 mb-n1"></h4>
+                                        <p class="mb-0 font-11 color-yellow-dark">Pending</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <a href="page-activity.html" class="d-flex py-1">
                             <div class="align-self-center">
                                 <span class="icon rounded-s me-2 gradient-orange shadow-bg shadow-bg-s"><i class="bi bi-google color-white"></i></span>
                             </div>
@@ -276,14 +291,15 @@
                                 <h4 class="pt-1 mb-n1 color-green-dark">20 SOL</h4>
                                 <p class="mb-0 font-11">Cash gift</p>
                             </div>
-                        </a>
-                    </div>
+                        </a> -->
+
                 </div>
-                <!-- Recently Invoices END-->
+            </div>
+            <!-- Recently Invoices END-->
 
-                <!-- Recently Active Card -->
+            <!-- Recently Active Card -->
 
-                <!-- <div class="content my-0 mt-n2 px-1">
+            <!-- <div class="content my-0 mt-n2 px-1">
                     <div class="d-flex">
                         <div class="align-self-center">
                             <h3 class="font-16 mb-2">Account Activity</h3>
@@ -312,69 +328,69 @@
                     </div>
                 </div> -->
 
-                <!-- Recently Active Card END-->
+            <!-- Recently Active Card END-->
 
-                <!-- Send cash -->
-                <div class="content mb-0">
-                    <div class="d-flex">
-                        <div class="align-self-center">
-                            <h3 class="font-16 mb-2">Send</h3>
-                        </div>
-                        <!-- <div class="align-self-center ms-auto">
+            <!-- Send cash -->
+            <div class="content mb-0">
+                <div class="d-flex">
+                    <div class="align-self-center">
+                        <h3 class="font-16 mb-2">Send</h3>
+                    </div>
+                    <!-- <div class="align-self-center ms-auto">
                             <a href="page-payment-transfer.html" class="font-12 pt-1">View All</a>
                         </div> -->
-                    </div>
                 </div>
+            </div>
 
-                <div class="splide quad-slider slider-no-dots slider-no-arrows slider-visible text-center" id="double-slider-2">
-                    <div class="splide__track">
-                        <div class="splide__list">
-                            <div class="splide__slide">
-                                <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-friends-transfer" data-card-height="60" class="card border-0  bg-ton shadow-card shadow-card-m rounded-m"></a>
-                                <h6 class="pt-2 font-600">TON</h6>
-                            </div>
-                            <div class="splide__slide">
-                                <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-friends-transfer" data-card-height="60" class="card border-0  bg-solana shadow-card shadow-card-m rounded-m"></a>
-                                <h6 class="pt-2 font-600">Solana</h6>
-                            </div>
-                            <div class="splide__slide">
-                                <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-friends-transfer" data-card-height="60" class="card border-0 bg-arb shadow-card shadow-card-m rounded-m"></a>
-                                <h6 class="pt-2 font-600">Arbiturm</h6>
-                            </div>
-                            <div class="splide__slide">
-                                <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-friends-transfer" data-card-height="60" class="card border-0 bg-bitcoin shadow-card shadow-card-m rounded-m"></a>
-                                <h6 class="pt-2 font-600">Lighting</h6>
-                            </div>
+            <div class="splide quad-slider slider-no-dots slider-no-arrows slider-visible text-center" id="double-slider-2">
+                <div class="splide__track">
+                    <div class="splide__list">
+                        <div class="splide__slide">
+                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-friends-transfer" data-card-height="60" class="card border-0  bg-ton shadow-card shadow-card-m rounded-m"></a>
+                            <h6 class="pt-2 font-600">TON</h6>
+                        </div>
+                        <div class="splide__slide">
+                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-friends-transfer" data-card-height="60" class="card border-0  bg-solana shadow-card shadow-card-m rounded-m"></a>
+                            <h6 class="pt-2 font-600">Solana</h6>
+                        </div>
+                        <div class="splide__slide">
+                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-friends-transfer" data-card-height="60" class="card border-0 bg-arb shadow-card shadow-card-m rounded-m"></a>
+                            <h6 class="pt-2 font-600">Arbiturm</h6>
+                        </div>
+                        <div class="splide__slide">
+                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-friends-transfer" data-card-height="60" class="card border-0 bg-bitcoin shadow-card shadow-card-m rounded-m"></a>
+                            <h6 class="pt-2 font-600">Lighting</h6>
                         </div>
                     </div>
                 </div>
-
-                <!-- Send cash end-->
             </div>
 
+            <!-- Send cash end-->
+        </div>
 
 
 
-            <div id="menu-sidebar" data-menu-active="nav-welcome" data-menu-load="menu-sidebar.html" class="offcanvas offcanvas-start offcanvas-detached rounded-m">
-            </div>
 
-            <div id="menu-highlights" data-menu-load="menu-highlights.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
-            </div>
+        <div id="menu-sidebar" data-menu-active="nav-welcome" data-menu-load="menu-sidebar.html" class="offcanvas offcanvas-start offcanvas-detached rounded-m">
+        </div>
 
-            <div id="menu-notifications" data-menu-load="menu-notifications.html" class="offcanvas offcanvas-top offcanvas-detached rounded-m">
-            </div>
+        <div id="menu-highlights" data-menu-load="menu-highlights.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
+        </div>
 
-            <div id="menu-card-more" data-menu-load="menu-card-settings.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
-            </div>
+        <div id="menu-notifications" data-menu-load="menu-notifications.html" class="offcanvas offcanvas-top offcanvas-detached rounded-m">
+        </div>
 
-            <div id="menu-transfer" data-menu-load="menu-transfer.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
-            </div>
+        <div id="menu-card-more" data-menu-load="menu-card-settings.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
+        </div>
 
-            <div id="menu-friends-transfer" data-menu-load="menu-friends-transfer.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
-            </div>
+        <div id="menu-transfer" data-menu-load="menu-transfer.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
+        </div>
 
-            <div id="menu-request" data-menu-load="menu-request.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
-            </div>
+        <div id="menu-friends-transfer" data-menu-load="menu-friends-transfer.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
+        </div>
+
+        <div id="menu-request" data-menu-load="menu-request.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
+        </div>
 
         </div>
 
@@ -385,17 +401,17 @@
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
         <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
         <!-- main js  -->
+        <script src="static/js/utils/toolbox.js"></script>
         <script src="static/js/utils/api.js"></script>
         <script src="static/js/utils/storage.js"></script>
         <script src="static/js/utils/tg.js"></script>
         <script src="static/js/utils/deeplink.js"></script>
         <script src="static/js/pages/index.js"></script>
+        <script src="static/js/pages/wallet.js"></script>
+        <script src="static/js/pages/invoice.js"></script>
         <script src="static/js/main.js"></script>
 
         <!-- Init Trigger -->
-        <script>
-            init(0)
-        </script>
     </body>
 </head>
 

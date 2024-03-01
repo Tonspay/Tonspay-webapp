@@ -14,8 +14,8 @@ async function index_page_init() {
 
 async function wallets_display() {
     const wallets = await api_info_connection()
-    console.log("🔥 Fetch wallet information :: ")
-    console.log(wallets)
+        // console.log("🔥 Fetch wallet information :: ")
+        // console.log(wallets)
 
     if (wallets.data && wallets.data.length > 0) {
         wallets.data.forEach(ele => {
@@ -30,6 +30,8 @@ async function wallets_display() {
             }
         });
     }
+
+    await invoice_list_draw()
 }
 
 //Change the card status & type

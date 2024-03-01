@@ -15,7 +15,7 @@
 
     <meta id="theme-check" name="theme-color" content="#FFFFFF">
 
-    <body class="theme-dark">
+    <body class="theme-dark" onload="init(2)">
         <div id="preloader">
             <div class="spinner-border color-highlight" role="status"></div>
         </div>
@@ -111,15 +111,14 @@
                                 <div class="form-custom form-label form-icon">
                                     <i class="bi bi-bank font-13"></i>
                                     <select class="form-select rounded-xs" id="c6">
-<option value="0" disabled="" selected="">Select Account</option>
-<option value="0">Main Account</option>
-<option value="1">Savings Account</option>
-<option value="2">Company Account</option>
+<option value="0" disabled="" selected="">TON</option>
+<option value="1">SOL</option>
+<option value="2">ARB</option>
 </select>
-                                    <label for="c6" class="color-highlight">Select Paying Account</label>
+                                    <label for="c6" class="color-highlight">Select Payments</label>
                                 </div>
                                 <div class="pb-2"></div>
-                                <div class="form-custom form-label form-icon">
+                                <!-- <div class="form-custom form-label form-icon">
                                     <i class="bi bi-building font-13"></i>
                                     <select class="form-select rounded-xs" id="c61">
 <option value="0" disabled="" selected="">Select Provider</option>
@@ -129,15 +128,15 @@
 <option value="3">Custom - IBAN</option>
 </select>
                                     <label for="c61" class="color-highlight form-label-always-">Select Provider</label>
-                                </div>
+                                </div> -->
                                 <div class="pb-2"></div>
                                 <div class="form-custom form-label form-icon">
                                     <i class="bi bi-code font-14"></i>
-                                    <input type="text" class="form-control rounded-xs" id="c31" placeholder="Bill Serial Number">
-                                    <label for="c31" class="color-highlight form-label-always-">Bill Serial Number</label>
+                                    <input type="text" class="form-control rounded-xs" id="c31" placeholder="Amounts in USD">
+                                    <label for="c31" class="color-highlight form-label-always-">Amount</label>
                                     <span>(required)</span>
                                 </div>
-                                <div class="pb-2"></div>
+                                <!-- <div class="pb-2"></div>
                                 <div class="form-custom form-label form-icon">
                                     <i class="bi bi-currency-dollar font-14"></i>
                                     <input type="number" class="form-control rounded-xs" id="c32" placeholder="Bill Amount">
@@ -151,8 +150,8 @@
                                     <label for="c2" class="color-highlight form-label-always-">Email Invoice To</label>
                                     <span>(required)</span>
                                 </div>
-                                <div class="pb-3"></div>
-                                <a href="#" class="btn btn-full gradient-green rounded-s shadow-bg shadow-bg-s mb-4">Pay Bill Now</a>
+                                <div class="pb-3"></div> -->
+                                <a href="#" class="btn btn-full gradient-green rounded-s shadow-bg shadow-bg-s mb-4">Generate Invoice</a>
                             </div>
                         </div>
                     </div>
@@ -180,9 +179,9 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card card-style gradient-red rounded-s shadow-bg shadow-bg-xs">
+                    <div class="card card-style gradient-red rounded-s shadow-bg shadow-bg-xs" id="invoice_to_pay_cancle">
                         <div class="content my-2">
-                            <a href="#" class="d-flex">
+                            <a class="d-flex">
                                 <div class="align-self-center">
                                     <h1 class="mb-0 font-14"><i class="bi bi-wallet color-white pe-3"></i></h1>
                                 </div>
@@ -215,12 +214,13 @@
             <div id="menu-notifications" data-menu-load="menu-notifications.html" class="offcanvas offcanvas-top offcanvas-detached rounded-m">
             </div>
 
-            <div id="menu-bill" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
+            <!-- Unpaid invoice display panel -->
+            <div id="menu-bill" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m" id="invoice_to_pay_panel">
 
                 <div class="menu-size" style="height:350px;">
                     <div class="d-flex mx-3 mt-3 py-1">
                         <div class="align-self-center">
-                            <h1 class="mb-0">Pay a Bill</h1>
+                            <h1 class="mb-0">Pay Invoice</h1>
                         </div>
                         <div class="align-self-center ms-auto">
                             <a href="#" class="ps-4 shadow-0 me-n2" data-bs-dismiss="offcanvas">
@@ -231,35 +231,36 @@
                     <div class="divider divider-margins mt-3 mb-2"></div>
                     <div class="content mt-0">
                         <div class="d-flex">
-                            <h5 class="mb-0 font-600 font-14">From</h5>
-                            <h5 class="mb-0 ms-auto font-600 font-14">Cool-Co LTD</h5>
+                            <h5 class="mb-0 font-600 font-14">Comments</h5>
+                            <h5 class="mb-0 ms-auto font-600 font-14" id="invoice_to_pay_panel_comment"></h5>
                         </div>
                         <div class="divider my-2"></div>
                         <div class="d-flex">
-                            <h5 class="mb-0 font-600 font-14">Period</h5>
-                            <h5 class="mb-0 ms-auto font-600 font-14">1st to 30th June</h5>
+                            <h5 class="mb-0 font-600 font-14">Create Time</h5>
+                            <h5 class="mb-0 ms-auto font-600 font-14" id="invoice_to_pay_panel_time"></h5>
                         </div>
                         <div class="divider my-2"></div>
                         <div class="d-flex">
-                            <h5 class="mb-0 font-600 font-14">Invoice</h5>
-                            <h5 class="mb-0 ms-auto font-600 font-14">ID-315613</h5>
+                            <h5 class="mb-0 font-600 font-14">Invoice ID</h5>
+                            <h5 class="mb-0 ms-auto font-600 font-14" id="invoice_to_pay_panel_id"></h5>
                         </div>
                         <div class="divider my-2"></div>
                         <div class="d-flex">
                             <h5 class="mb-0 font-600 font-14">Amount</h5>
-                            <h5 class="mb-0 ms-auto font-700 font-14 color-blue-dark">$145 USD</h5>
+                            <h5 class="mb-0 ms-auto font-700 font-14 color-blue-dark" id="invoice_to_pay_amount"></h5>
                         </div>
                         <div class="divider my-2"></div>
                         <div class="d-flex">
-                            <h5 class="mb-0 font-600 font-14">Bill Status</h5>
-                            <h5 class="mb-0 ms-auto font-700 font-14 color-red-dark">Overdue</h5>
+                            <h5 class="mb-0 font-600 font-14">Invoice Status</h5>
+                            <h5 class="mb-0 ms-auto font-700 font-14 color-yellow-dark">Pending</h5>
                         </div>
                         <div class="divider my-2"></div>
                     </div>
-                    <a href="#" data-bs-dismiss="offcanvas" class="mx-3 btn btn-full gradient-blue shadow-bg shadow-bg-s">Tap to Pay - 145 USD</a>
+                    <a id="invoice_to_pay_confirm" class="mx-3 btn btn-full gradient-blue shadow-bg shadow-bg-s">Pay</a>
                 </div>
             </div>
 
+            <!-- Paided invoice display panel -->
             <div id="menu-bill-paid" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
 
                 <div class="menu-size" style="height:350px;">
@@ -324,9 +325,9 @@
         <script src="static/js/main.js"></script>
 
         <!-- Init Trigger -->
-        <script>
+        <!-- <script>
             init(2)
-        </script>
+        </script> -->
     </body>
 </head>
 
