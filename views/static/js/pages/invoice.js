@@ -10,8 +10,9 @@ async function invoice_page_init() {
 
         //Verfy if invoice exsit
         const invoiceData = await api_info_invoice(invoiceId);
+        console.log(invoiceData)
         if (invoiceData && invoiceData.code == 200) {
-            invoice_payment_draw(invoiceId)
+            return invoice_payment_draw(invoiceId, invoiceData.data)
         }
         return await invoice_list_draw()
     } else {
@@ -33,7 +34,7 @@ async function invoice_list_draw() {
                 const newnode = invoice_pending_draw(
                     ele.comment,
                     ele.createTime,
-                    ele.amount,
+                    amount_to_display(ele.type, ele.amount),
                     ele.id
                 )
                 f.appendChild(
@@ -54,6 +55,7 @@ function invoice_pending_draw(name, time, amount, id) {
     const invoice_time = c.childNodes[1].childNodes[1].childNodes[3];
     const invoice_amount = c.childNodes[1].childNodes[3].childNodes[1];
 
+    console.log(c.childNodes[1].href = "https://wallet.tonspay.top/page-invoices.html?id=" + id)
     invoice_name.innerText = name
     invoice_time.innerText = ((new Date(time)).toUTCString())
     invoice_amount.innerText = amount
@@ -61,10 +63,13 @@ function invoice_pending_draw(name, time, amount, id) {
     return c
 }
 
-async function invoice_payment_draw(id) {
+async function invoice_payment_draw(id, invoiceData) {
     if (id) {
+        const f = document.getElementById("invoice_disply_frame");
+        f.appendChild(invoice_pending_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type, invoiceData.amount), id))
         const btn = document.getElementById('invoice_to_pay_buttom');
         btn.style.display = "inline"
+
     } else {
 
     }
