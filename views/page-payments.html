@@ -59,7 +59,7 @@
                         </a>
                     </div> -->
                     <div class="col-6 mb-n2">
-                        <a href="https://wallet.tonspay.top/page-invoices.html#tab-5" class="card card-style me-0" style="height:180px">
+                        <a onclick="router_to_invoice()" class="card card-style me-0" style="height:180px">
                             <div class="card-center">
                                 <span class="icon icon-xl rounded-m gradient-yellow shadow-bg shadow-bg-xs"><i class="bi bi-arrow-down-circle font-24 color-white"></i></span>
                                 <h1 class="font-22 pt-3">New Invoice</h1>
@@ -81,7 +81,7 @@
                         </a>
                     </div> -->
                     <div class="col-6 mb-n2">
-                        <a href="page-payment-transfer.html" class="card card-style ms-0" style="height:180px">
+                        <a onclick="router_to_dev()" class="card card-style ms-0" style="height:180px">
                             <div class="card-center">
                                 <span class="icon icon-xl rounded-m gradient-blue shadow-bg shadow-bg-xs"><i class="bi bi-arrow-up-circle font-24 color-white"></i></span>
                                 <h1 class="font-22 pt-3">Cash Gift</h1>
@@ -92,7 +92,7 @@
                         </a>
                     </div>
                     <div class="col-12 mb-n2 text-start">
-                        <a href="page-reports.html" class="default-link card card-style" style="height:90px">
+                        <a onclick="router_to_dev()" class="default-link card card-style" style="height:90px">
                             <div class="card-center px-4">
                                 <div class="d-flex">
                                     <div class="align-self-center">
@@ -112,14 +112,14 @@
 
 
 
-            <div id="menu-sidebar" data-menu-active="nav-pages" data-menu-load="menu-sidebar.html" class="offcanvas offcanvas-start offcanvas-detached rounded-m">
+            <!-- <div id="menu-sidebar" data-menu-active="nav-pages" data-menu-load="menu-sidebar.html" class="offcanvas offcanvas-start offcanvas-detached rounded-m">
             </div>
 
             <div id="menu-highlights" data-menu-load="menu-highlights.html" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
             </div>
 
             <div id="menu-notifications" data-menu-load="menu-notifications.html" class="offcanvas offcanvas-top offcanvas-detached rounded-m">
-            </div>
+            </div> -->
         </div>
 
         <script src="static/js/bootstrap.min.js"></script>
@@ -129,6 +129,7 @@
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
         <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
         <!-- main js  -->
+        <script src="static/js/utils/router.js"></script>
         <script src="static/js/utils/api.js"></script>
         <script src="static/js/utils/storage.js"></script>
         <script src="static/js/utils/tg.js"></script>
