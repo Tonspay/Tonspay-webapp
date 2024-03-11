@@ -79,12 +79,28 @@ async function authToken() {
             if (ping.code == 200) {
                 //Local exsit auth key
                 console.log("Auth token exsit :: ", token)
+                storage_set_uid(ping.data)
                 return token;
             }
         }
+        //Check the link
+        const token_url = new URLSearchParams(location.search).get("t");
+        if (token_url) {
+            //Verfiy if token works 
+            storage_set_authkey(token_url)
+            const ping = await api_ping()
+                // console.log("ping", ping)
+            if (ping.code == 200) {
+                //Local exsit auth key
+                console.log("Auth token exsit :: ", token_url)
+                storage_set_uid(ping.data)
+                return token_url;
+            }
+        }
+
         //Redirect to telegram login
         console.log("Require to login")
-        location.href = `https://wallet.tonspay.top/page-require-login.html`
+            // location.href = `https://wallet.tonspay.top/page-require-login.html`
     }
 
 }
