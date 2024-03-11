@@ -69,7 +69,7 @@ async function authToken() {
             doauth.data.id
         )
         storage_set_user_tg_data(JSON.stringify(doauth.data))
-        window.alert("qwq")
+            // window.alert("qwq")
     } else {
         const token = storage_get_authkey();
         if (token) {

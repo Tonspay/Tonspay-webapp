@@ -13,12 +13,15 @@ const request_router = {
     auth: request_baseurl + "auth",
     preconnect: {
         phantom: request_baseurl + "preconnect/phantom",
+        metamask: request_baseurl + "preconnect/metamask",
     },
     connect: {
-        phantom: "connect/phantom"
+        phantom: request_baseurl + "connect/phantom",
+        metamask: request_baseurl + "connect/metamask"
     },
     disconnect: {
-        phantom: "disconnect/phantom"
+        phantom: request_baseurl + "disconnect/phantom",
+        metamask: request_baseurl + "disconnect/metamask"
     },
     info: {
         connection: request_baseurl + "info/connection",
@@ -77,6 +80,16 @@ function request_post_unauth(data) {
         JSON.stringify(data), h
     );
 }
+
+function request_post_auth(data) {
+    var h = auth_header();
+    h.append("Content-Type", "application/json");
+
+    return request_method_post(
+        JSON.stringify(data), h
+    );
+}
+
 
 async function api_ping() {
     return await requester(request_router.ping, request_get_auth())
@@ -137,6 +150,13 @@ async function api_preconnect_phantom() {
     )
 }
 
+async function api_preconnect_metamask() {
+    return await requester(
+        request_router.preconnect.metamask,
+        request_get_auth()
+    )
+}
+
 /**
  * Disconnect wallet interface
  *  - Phantom
@@ -147,5 +167,25 @@ async function api_disconnect_phantom() {
     return await requester(
         request_router.disconnect.phantom,
         request_get_auth()
+    )
+}
+
+async function api_disconnect_phantom() {
+    return await requester(
+        request_router.disconnect.metamask,
+        request_get_auth()
+    )
+}
+
+/**
+ * New connect wallet interface 
+ *  - Metamask
+ *      -connect
+ */
+
+async function api_connection_metamask(data) {
+    return await requester(
+        request_router.connect.metamask,
+        request_post_auth(data)
     )
 }
