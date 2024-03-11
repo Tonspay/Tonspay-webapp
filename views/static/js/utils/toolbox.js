@@ -17,6 +17,9 @@
          case 0:
              return Number((amount / Math.pow(10, 8)).toFixed(4)) + " TON"
              break;
+         case 2:
+             return Number((amount / Math.pow(10, 18)).toFixed(6)) + " ETH"
+             break;
          default:
              return false;
              break;

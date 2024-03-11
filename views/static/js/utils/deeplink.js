@@ -77,6 +77,6 @@ async function metamask_pay_invoice_confirm() {
                 value: 0,
             }, ],
         })
-        .then((txHash) => console.log(txHash))
+        .then((txHash) => router_to_index())
         .catch((error) => console.error(error));
 }
