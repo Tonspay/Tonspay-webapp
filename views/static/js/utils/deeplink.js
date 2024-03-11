@@ -33,6 +33,6 @@ async function metamask_connect_wallet_sign() {
         params: [pre.data, account],
     });
     console.log(pre.data, sign)
-    const req = await api_connection_metamask({ data: sign })
+    const req = await api_connection_metamask({ sign: sign })
     console.log("req", req)
 }

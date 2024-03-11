@@ -14,8 +14,8 @@ async function index_page_init() {
 
 async function wallets_display() {
     const wallets = await api_info_connection()
-        // console.log("🔥 Fetch wallet information :: ")
-        // console.log(wallets)
+    console.log("🔥 Fetch wallet information :: ")
+    console.log(wallets)
 
     if (wallets.data && wallets.data.length > 0) {
         wallets.data.forEach(ele => {
@@ -25,6 +25,10 @@ async function wallets_display() {
                     break;
                 case 1:
                     wallet_card_connected("phantom", ele.address)
+                    break;
+                case 2:
+                    wallet_card_connected("metamask", ele.address)
+                    break;
                 default:
                     break;
             }
@@ -83,13 +87,13 @@ async function phantom_disconnect_wallet(id) {
     return 0;
 }
 async function ton_disconnect_wallet(id) {
-    await api_disconnect_phantom()
-    wallet_card_connect_button('phantom')
+    await api_disconnect_ton()
+    wallet_card_connect_button('ton')
     return 0;
 }
 async function metamask_disconnect_wallet(id) {
-    await api_disconnect_phantom()
-    wallet_card_connect_button('phantom')
+    await api_disconnect_metamask()
+    wallet_card_connect_button('metamask')
     return 0;
 }
 

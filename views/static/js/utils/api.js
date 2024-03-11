@@ -170,7 +170,7 @@ async function api_disconnect_phantom() {
     )
 }
 
-async function api_disconnect_phantom() {
+async function api_disconnect_metamask() {
     return await requester(
         request_router.disconnect.metamask,
         request_get_auth()
