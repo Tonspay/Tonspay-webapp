@@ -80,3 +80,12 @@ async function metamask_pay_invoice_confirm() {
         .then((txHash) => router_to_index())
         .catch((error) => console.error(error));
 }
+
+async function deeplink_invoice_call_up(invoice) {
+    switch (invoice.type) {
+        case 2:
+            return `https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+        default:
+            break;
+    }
+}

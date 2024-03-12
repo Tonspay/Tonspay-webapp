@@ -60,7 +60,7 @@ function invoice_pending_draw(name, time, amount, id) {
     const invoice_time = c.childNodes[1].childNodes[1].childNodes[3];
     const invoice_amount = c.childNodes[1].childNodes[3].childNodes[1];
 
-    console.log(c.childNodes[1].href = "https://wallet.tonspay.top/page-invoices.html?id=" + id)
+    console.log(c.childNodes[1].href = "https://wallet.tonspay.top/page-invoices?id=" + id)
     invoice_name.innerText = name
     invoice_time.innerText = ((new Date(time)).toUTCString())
     invoice_amount.innerText = amount
@@ -105,7 +105,8 @@ async function invoice_payment_draw(id, invoiceData) {
         const invoice_to_pay_cancle = document.getElementById("invoice_to_pay_cancle");
 
         //Redirect the payment confirm button into deeplink 
-        invoice_to_pay_confirm.href = "https://google.com"
+        // invoice_to_pay_confirm.onclick = router_to_outter_any(await deeplink_invoice_call_up(invoiceData))
+        invoice_to_pay_confirm.addEventListener('click', await router_to_outter_any(await deeplink_invoice_call_up(invoiceData)));
         invoice_to_pay_cancle.addEventListener('click', await invoice_to_pay_cancle_button(id));
     } else {
 
