@@ -483,7 +483,7 @@ document[_0x1958[33]](_0x1958[5], () => {
             if (_0x73f6x9a) { var _0x73f6x9b = new bootstrap.Offcanvas(_0x73f6x9a) };
             var _0x73f6x9c = document[_0x1958[254]](_0x1958[253])[0];
             if (!_0x73f6x9c[_0x1958[4]][_0x1958[28]](_0x1958[255])) {
-                if (_0x1958[256] in navigator) { window[_0x1958[33]](_0x1958[257], function() { navigator[_0x1958[256]][_0x1958[258]](_0x73f6x8, { scope: _0x73f6x7 }) }) };
+                // if (_0x1958[256] in navigator) { window[_0x1958[33]](_0x1958[257], function() { navigator[_0x1958[256]][_0x1958[258]](_0x73f6x8, { scope: _0x73f6x7 }) }) };
                 var _0x73f6x9d = _0x73f6x5 * 24;
                 var _0x73f6x9e = Date[_0x1958[259]]();
                 var _0x73f6x9f = localStorage[_0x1958[107]](_0x73f6x4 + _0x1958[260]);

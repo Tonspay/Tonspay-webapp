@@ -3,17 +3,39 @@ let account;
 let invoice;
 
 async function phantom_connect_wallet() {
-    //Generate a new sign kp
-    const pk = await api_preconnect_phantom();
-    if (pk.data) {
-        console.log("phantom connect wallet")
-            // console.log(`https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/api/connect/phantom/${(storage_get_uid())}`)
-        location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/page-wallet-connect-confirm.html`;
+
+    //Check if phantom exsit
+    if (window.solana) {
+        location.href = `https:///wallet.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`
     } else {
-        console.error("phantom connect failed")
+        //Generate a new sign kp
+        const pk = await api_preconnect_phantom();
+        if (pk.data) {
+            console.log("phantom connect wallet")
+                // console.log(`https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/api/connect/phantom/${(storage_get_uid())}`)
+            location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/page-wallet-connect-confirm.html`;
+        } else {
+            console.error("phantom connect failed")
+        }
     }
 }
-
+async function phantom_connect_wallet_sign() {
+    if (window.solana) {
+        await solana.connect().then(async(x) => {
+            console.log("🔥 Phanton connect :: ")
+            console.log(x)
+            console.log(x.publicKey.toString())
+        })
+        const signedMessage = await window.solana.request({
+            method: "signMessage",
+            params: {
+                message: new TextEncoder().encode("Hello world"),
+                display: "utf8", //hex,utf8
+            },
+        });
+        console.log("Hello world", signedMessage)
+    }
+}
 async function ton_connect_wallet() {
     console.log("ton connect wallet")
 }
