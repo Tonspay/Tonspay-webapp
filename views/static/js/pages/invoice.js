@@ -106,8 +106,15 @@ async function invoice_payment_draw(id, invoiceData) {
 
         //Redirect the payment confirm button into deeplink 
         // invoice_to_pay_confirm.onclick = router_to_outter_any(await deeplink_invoice_call_up(invoiceData))
-        invoice_to_pay_confirm.addEventListener('click', await router_to_outter_any(await deeplink_invoice_call_up(invoiceData)));
-        invoice_to_pay_cancle.addEventListener('click', await invoice_to_pay_cancle_button(id));
+        const path = await deeplink_invoice_call_up(invoiceData)
+        invoice_to_pay_confirm.onclick = function() {
+            router_to_outter_any(path)
+        };
+        invoice_to_pay_cancle.onclick = function() {
+            invoice_to_pay_cancle_button(id)
+        };
+        // invoice_to_pay_confirm.addEventListener('click', router_to_outter_any(path));
+        // invoice_to_pay_cancle.addEventListener('click', invoice_to_pay_cancle_button(id));
     } else {
 
     }
@@ -118,4 +125,5 @@ async function invoice_to_pay_confirm_button(id) {
 }
 async function invoice_to_pay_cancle_button(id) {
     console.log("invoice_to_pay_cancle_button", id)
+    router_to_index()
 }

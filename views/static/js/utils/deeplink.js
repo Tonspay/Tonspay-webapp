@@ -18,7 +18,11 @@ async function ton_connect_wallet() {
     console.log("ton connect wallet")
 }
 async function metamask_connect_wallet() {
-    location.href = `https://metamask.app.link/dapp/cash.tonspay.top/metamask.html?t=${storage_get_authkey()}`
+    if (window.ethereum) {
+        location.href = `https:///wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
+    } else {
+        location.href = `https://metamask.app.link/dapp/wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
+    }
 }
 async function metamask_connect_wallet_sign() {
     await authToken();
@@ -84,7 +88,12 @@ async function metamask_pay_invoice_confirm() {
 async function deeplink_invoice_call_up(invoice) {
     switch (invoice.type) {
         case 2:
-            return `https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+            if (window.ethereum) {
+                return `https://wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+            } else {
+                return `https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+            }
+
         default:
             break;
     }
