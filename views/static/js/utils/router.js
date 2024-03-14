@@ -23,6 +23,10 @@ function router_to_dev() {
     location.href = "./deving"
 }
 
+function router_to_webapp_index() {
+    location.href = "https://t.me/tonspay_bot/wallet"
+}
+
 function router_to_inner_any(url) {
     location.href = "./" + url
 }

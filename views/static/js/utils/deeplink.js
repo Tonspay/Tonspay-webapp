@@ -8,19 +8,27 @@ async function phantom_connect_wallet() {
     if (window.solana) {
         location.href = `https:///wallet.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`
     } else {
+        const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect/page-wallet-connect-phantom/" + storage_get_authkey())
+        const ref = encodeURI("https://wallet.tonspay.top")
+        console.log(`https://phantom.app/ul/browse/${target}?ref=${ref}`)
+        location.href = `https://phantom.app/ul/browse/${target}?ref=${ref}`
+            // location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/page-wallet-connect-phantom.html`;
+            //Ignore the old way
+
         //Generate a new sign kp
-        const pk = await api_preconnect_phantom();
-        if (pk.data) {
-            console.log("phantom connect wallet")
-                // console.log(`https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/api/connect/phantom/${(storage_get_uid())}`)
-            location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/page-wallet-connect-confirm.html`;
-        } else {
-            console.error("phantom connect failed")
-        }
+        // const pk = await api_preconnect_phantom();
+        // if (pk.data) {
+        //     console.log("phantom connect wallet")
+        //         // console.log(`https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/api/connect/phantom/${(storage_get_uid())}`)
+        //     location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/page-wallet-connect-confirm.html`;
+        // } else {
+        //     console.error("phantom connect failed")
+        // }
     }
 }
 async function phantom_connect_wallet_sign() {
     if (window.solana) {
+        await authToken();
         const signData = (await api_preconnect_phantom(true)).data;
         await solana.connect().then(async(x) => {
             // console.log("🔥 Phanton connect :: ")
@@ -47,7 +55,7 @@ async function phantom_connect_wallet_sign() {
         window.alert(location.href);
     }
 
-    router_to_index()
+    router_to_webapp_index()
 }
 async function ton_connect_wallet() {
     console.log("ton connect wallet")
