@@ -21,20 +21,33 @@ async function phantom_connect_wallet() {
 }
 async function phantom_connect_wallet_sign() {
     if (window.solana) {
+        const signData = (await api_preconnect_phantom(true)).data;
         await solana.connect().then(async(x) => {
-            console.log("🔥 Phanton connect :: ")
-            console.log(x)
-            console.log(x.publicKey.toString())
+            // console.log("🔥 Phanton connect :: ")
+            // console.log(x)
+            // console.log(x.publicKey.toString())
         })
         const signedMessage = await window.solana.request({
             method: "signMessage",
             params: {
-                message: new TextEncoder().encode("Hello world"),
+                message: new TextEncoder().encode(signData),
                 display: "utf8", //hex,utf8
             },
         });
-        console.log("Hello world", signedMessage)
+        // console.log(signData, signedMessage)
+        // console.log(signedMessage.signature.toString("hex"))
+        // console.log(signedMessage.publicKey.toString("hex"))
+        // console.log(signedMessage.publicKey.toBase58())
+        await api_connection_phantom({
+            type: true,
+            signature: signedMessage.signature.toString("hex"),
+            publicKey: signedMessage.publicKey.toBase58()
+        })
+    } else {
+        window.alert(location.href);
     }
+
+    router_to_index()
 }
 async function ton_connect_wallet() {
     console.log("ton connect wallet")

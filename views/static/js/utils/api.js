@@ -143,11 +143,18 @@ async function api_info_invoice(id) {
  *      - preconnect
  */
 
-async function api_preconnect_phantom() {
-    return await requester(
-        request_router.preconnect.phantom,
-        request_get_auth()
-    )
+async function api_preconnect_phantom(type) {
+    if (type) {
+        return await requester(
+            request_router.preconnect.phantom + "?type=" + type,
+            request_get_auth({ type: true })
+        )
+    } else {
+        return await requester(
+            request_router.preconnect.phantom,
+            request_get_auth()
+        )
+    }
 }
 
 async function api_preconnect_metamask() {
@@ -179,9 +186,18 @@ async function api_disconnect_metamask() {
 
 /**
  * New connect wallet interface 
+ *  - Phantom
+ *      -connect
  *  - Metamask
  *      -connect
  */
+
+async function api_connection_phantom(data) {
+    return await requester(
+        request_router.connect.phantom,
+        request_post_auth(data)
+    )
+}
 
 async function api_connection_metamask(data) {
     return await requester(
