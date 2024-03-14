@@ -1,6 +1,12 @@
+const solana_notification_address = '2yHPT9DbppLMQXvoEiCventSfn2R7c8mUAhxZSo89BN9'
+
 let account;
 
 let invoice;
+
+/**
+ * 🍺 Solana & phantom netwrok connection
+ */
 
 async function phantom_connect_wallet() {
 
@@ -10,7 +16,7 @@ async function phantom_connect_wallet() {
     } else {
         const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect/page-wallet-connect-phantom/" + storage_get_authkey())
         const ref = encodeURI("https://wallet.tonspay.top")
-        console.log(`https://phantom.app/ul/browse/${target}?ref=${ref}`)
+            // console.log(`https://phantom.app/ul/browse/${target}?ref=${ref}`)
         location.href = `https://phantom.app/ul/browse/${target}?ref=${ref}`
             // location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/page-wallet-connect-phantom.html`;
             //Ignore the old way
@@ -57,6 +63,61 @@ async function phantom_connect_wallet_sign() {
 
     router_to_webapp_index()
 }
+
+async function phantom_pay_invoices() {
+    await authToken();
+    //Connect the metamask wallet
+    account = await solana.connect()
+    console.log("connected :: ", account.publicKey.toBase58())
+        //Check the auth token
+    const auth = storage_get_authkey();
+    console.log("auth : ", auth);
+
+    const invoice_id = new URLSearchParams(location.search).get("i")
+    if (invoice_id) {
+        const req = await api_info_invoice(invoice_id)
+        if (req && req.data && req.data.id) {
+            console.log("req", req)
+            invoice = req.data
+        }
+    }
+}
+
+async function phantom_pay_invoice_confirm() {
+    console.log(window.solana)
+    console.log(solanaWeb3)
+    const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
+    console.log(connection)
+    console.log(account)
+    var transaction = new solanaWeb3.Transaction()
+    transaction.add(
+        solanaWeb3.SystemProgram.transfer({
+            fromPubkey: account.publicKey,
+            toPubkey: new solanaWeb3.PublicKey(invoice.address),
+            lamports: invoice.amount
+        }),
+    );
+    transaction.add(
+        solanaWeb3.SystemProgram.transfer({
+            fromPubkey: account.publicKey,
+            toPubkey: new solanaWeb3.PublicKey(solana_notification_address),
+            lamports: 1000000
+        }),
+    );
+    transaction.feePayer = account.publicKey;
+    let blockhashObj = await connection.getRecentBlockhash();
+    transaction.recentBlockhash = await blockhashObj.blockhash;
+
+    console.log(transaction)
+    await window.solana.signAndSendTransaction(transaction)
+
+    router_to_webapp_index()
+}
+
+/**
+ * 🍺 TON network connection
+ */
+
 async function ton_connect_wallet() {
     console.log("ton connect wallet")
 }
@@ -67,6 +128,11 @@ async function metamask_connect_wallet() {
         location.href = `https://metamask.app.link/dapp/wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
     }
 }
+
+/**
+ * 🍺 EVM & Metamask network connection
+ */
+
 async function metamask_connect_wallet_sign() {
     await authToken();
     //Connect the metamask wallet
@@ -126,18 +192,4 @@ async function metamask_pay_invoice_confirm() {
         })
         .then((txHash) => router_to_index())
         .catch((error) => console.error(error));
-}
-
-async function deeplink_invoice_call_up(invoice) {
-    switch (invoice.type) {
-        case 2:
-            if (window.ethereum) {
-                return `https://wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
-            } else {
-                return `https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
-            }
-
-        default:
-            break;
-    }
 }

@@ -15,7 +15,7 @@
 
     <meta id="theme-check" name="theme-color" content="#FFFFFF">
 
-    <body class="theme-dark" onload="phantom_connect_wallet_sign()">
+    <body class="theme-dark" onload="phantom_pay_invoices()">
         <div id="preloader">
             <div class="spinner-border color-highlight" role="status"></div>
         </div>
@@ -48,22 +48,33 @@
                     <div class="mt-n5"></div>
                     <img src="static/wallet/phantom.png" alt="img" width="180" class="mx-auto rounded-circle mt-n5 shadow-l">
                     <h1 class="color-theme text-center font-30 pt-3 mb-0">Phantom</h1>
-                    <p class="text-center font-11"><i class="bi bi-check-circle-fill color-green-dark pe-2"></i>Connected</p>
+                    <p class="text-center font-11"><i class="bi bi-check-circle-fill color-green-dark pe-2"></i>Connected to web3</p>
                 </div>
-                <a href="https://t.me/tonspay_bot/wallet">
-                    <div class="btn btn-full mx-3 gradient-highlight shadow-bg shadow-bg-xs">Back to bot</div>
-                </a>
+
+                <div>
+                    <a href="#" onclick="phantom_pay_invoice_confirm()">
+                        <div class="btn btn-full mx-3 gradient-highlight shadow-bg shadow-bg-xs">PAY</div>
+                    </a>
+                </div>
+
+                <br>
+
+                <div>
+                    <a href="https://t.me/tonspay_bot/wallet">
+                        <div class="btn btn-full mx-3 gradient-highlight shadow-bg shadow-bg-xs">Cancle Invoice</div>
+                    </a>
+                </div>
 
             </div>
         </div>
-
         <!-- Telegram -->
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
         <script src="static/js/bootstrap.min.js"></script>
         <script src="static/js/custom.js"></script>
-        <script src="https://github.com/solana-labs/solana-web3.js/releases/download/v0.0.6/solanaWeb3.min.js"></script>
-        <!-- <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script> -->
+        <!-- <script src="https://github.com/solana-labs/solana-web3.js/releases/download/v0.0.6/solanaWeb3.min.js"></script> -->
+        <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+
         <script src="static/js/main.js"></script>
         <script src="static/js/utils/router.js"></script>
         <script src="static/js/utils/deeplink.js"></script>
