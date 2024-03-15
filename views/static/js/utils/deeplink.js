@@ -1,4 +1,4 @@
-const solana_notification_address = '2yHPT9DbppLMQXvoEiCventSfn2R7c8mUAhxZSo89BN9'
+const solana_notification_address = 'AVxLxXMA4NiKZYLH1AAZwqzTnaMi2itV3aiM7Td1pjgb'
 
 let account;
 
@@ -66,7 +66,8 @@ async function phantom_connect_wallet_sign() {
 
 async function phantom_pay_invoices() {
     await authToken();
-    //Connect the metamask wallet
+    if (window.solana) {
+          //Connect the metamask wallet
     account = await solana.connect()
     console.log("connected :: ", account.publicKey.toBase58())
         //Check the auth token
@@ -81,11 +82,13 @@ async function phantom_pay_invoices() {
             invoice = req.data
         }
     }
+    }else {
+      window.alert(location.href);
+    }
 }
 
 async function phantom_pay_invoice_confirm() {
-    console.log(window.solana)
-    console.log(solanaWeb3)
+    account = await solana.connect()
     const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
     console.log(connection)
     console.log(account)
@@ -103,6 +106,14 @@ async function phantom_pay_invoice_confirm() {
             toPubkey: new solanaWeb3.PublicKey(solana_notification_address),
             lamports: 1000000
         }),
+    );
+
+    transaction.add(
+        new solanaWeb3.TransactionInstruction({
+            keys: [{ pubkey: account.publicKey, isSigner: true, isWritable: true }],
+            data: Buffer.from("Data to send in transaction", "utf-8"),
+            programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+          })
     );
     transaction.feePayer = account.publicKey;
     let blockhashObj = await connection.getRecentBlockhash();
