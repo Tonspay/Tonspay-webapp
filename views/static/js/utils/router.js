@@ -1,5 +1,5 @@
 function router_to_index() {
-    location.href = "./index"
+    location.href = "./"
 }
 
 function router_to_invoice() {

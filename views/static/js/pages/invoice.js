@@ -2,6 +2,7 @@ var invoice_to_pay;
 
 async function invoice_page_init() {
     console.log("🔥 Invoices init");
+    await authToken()
     const params = new URLSearchParams(window.location.search);
     const invoiceId = params.get('id');
     if (invoiceId) {
