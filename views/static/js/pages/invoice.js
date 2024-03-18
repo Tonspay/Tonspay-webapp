@@ -8,7 +8,7 @@ async function invoice_page_init() {
     if (invoiceId) {
         //Invoice exsit , get rady to pay
         console.log(invoiceId)
-
+        // window.alert(invoiceId)
         //Verfy if invoice exsit
         const invoiceData = await api_info_invoice(invoiceId);
         console.log(invoiceData)
@@ -107,9 +107,8 @@ async function invoice_payment_draw(id, invoiceData) {
 
         //Redirect the payment confirm button into deeplink 
         // invoice_to_pay_confirm.onclick = router_to_outter_any(await deeplink_invoice_call_up(invoiceData))
-        const path = await deeplink_invoice_call_up(invoiceData)
-        invoice_to_pay_confirm.onclick = function() {
-            router_to_outter_any(path)
+        invoice_to_pay_confirm.onclick = async function() {
+            await deeplink_invoice_call_up(invoiceData)
         };
         invoice_to_pay_cancle.onclick = function() {
             invoice_to_pay_cancle_button(id)

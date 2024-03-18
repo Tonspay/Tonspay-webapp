@@ -39,6 +39,11 @@ async function init(r) {
     //set the auth token into global
     await authToken()
     await router(r)
+    // console.log("🔥 Iframe check :: ")
+    // console.log(top);
+    // console.log(top.location);
+    // console.log(self.location);
+    // console.log(top.location == self.location)
 }
 
 async function router(r) {

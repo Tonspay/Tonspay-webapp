@@ -37,19 +37,25 @@
          case 1:
              //SOLANA
              if (window.solana) {
-                 return `https://wallet.tonspay.top/page-payment-phantom-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+                if(top.location == self.location)
+                {
+                    location.href = `https://wallet.tonspay.top/page-payment-phantom-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+                }else{
+                    window.open(`https://wallet.tonspay.top/page-payment-phantom-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                }
+                
              } else {
                  const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect_phantom/page-payment-phantom-confirm/" + storage_get_authkey() + "/" + invoice.id)
                  const ref = encodeURI("https://wallet.tonspay.top")
-                 location.href = `https://phantom.app/ul/browse/${target}?ref=${ref}`
+                 window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
              }
              break;
          case 2:
              //EVM
              if (window.ethereum) {
-                 return `https://wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+                 location.href = `https://wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
              } else {
-                 return `https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+                 location.href =  `https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
              }
 
          default:

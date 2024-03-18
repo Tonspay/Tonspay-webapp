@@ -12,7 +12,8 @@ async function phantom_connect_wallet() {
 
     //Check if phantom exsit
     if (window.solana) {
-        location.href = `https:///wallet.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`
+        // location.href = `https:///wallet.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`
+        window.open(`https:///wallet.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`, "_blank");
     } else {
         const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect/page-wallet-connect-phantom/" + storage_get_authkey())
         const ref = encodeURI("https://wallet.tonspay.top")
@@ -36,11 +37,7 @@ async function phantom_connect_wallet_sign() {
     if (window.solana) {
         await authToken();
         const signData = (await api_preconnect_phantom(true)).data;
-        await solana.connect().then(async(x) => {
-            // console.log("🔥 Phanton connect :: ")
-            // console.log(x)
-            // console.log(x.publicKey.toString())
-        })
+        await solana.connect();
         const signedMessage = await window.solana.request({
             method: "signMessage",
             params: {
