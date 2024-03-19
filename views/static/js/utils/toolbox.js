@@ -45,9 +45,15 @@
                 }
                 
              } else {
-                 const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect_phantom/page-payment-phantom-confirm/" + storage_get_authkey() + "/" + invoice.id)
-                 const ref = encodeURI("https://wallet.tonspay.top")
-                 window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
+                if(isMobile())
+                {
+                    const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect_phantom/page-payment-phantom-confirm/" + storage_get_authkey() + "/" + invoice.id)
+                    const ref = encodeURI("https://wallet.tonspay.top")
+                    window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
+                }else{
+                    window.open(`https://wallet.tonspay.top/page-payment-phantom-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                }
+
              }
              break;
          case 2:
@@ -55,10 +61,23 @@
              if (window.ethereum) {
                  location.href = `https://wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
              } else {
-                window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                if(isMobile())
+                {
+                    window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                }else{
+                    window.open(`https://wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                }
+                
              }
 
          default:
              break;
      }
  }
+
+ function isMobile() {
+    let flag = navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+    );
+    return flag;
+}
