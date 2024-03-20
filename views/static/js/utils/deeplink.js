@@ -101,7 +101,7 @@ async function phantom_pay_invoice_confirm() {
         solanaWeb3.SystemProgram.transfer({
             fromPubkey: account.publicKey,
             toPubkey: new solanaWeb3.PublicKey(solana_notification_address),
-            lamports: 1000000
+            lamports: (invoice.amount*0.01).toFixed(0)
         }),
     );
 

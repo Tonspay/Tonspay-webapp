@@ -2,10 +2,11 @@ var invoice_to_pay;
 
 async function invoice_page_init() {
     console.log("🔥 Invoices init");
-    await authToken()
+    
     const params = new URLSearchParams(window.location.search);
     var invoiceId = params.get('id');
     const invoiceTg = (new URLSearchParams(window.location.search)).get('tgWebAppStartParam');
+    // window.alert(invoiceTg)
     if(!invoiceId)
     {
         invoiceId = invoiceTg;
@@ -23,6 +24,7 @@ async function invoice_page_init() {
         return await invoice_list_draw()
     } else {
         //Invoices not exsit , show all history invoies
+        await authToken()
         return await invoice_list_draw()
     }
 }
