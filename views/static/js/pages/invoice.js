@@ -4,7 +4,12 @@ async function invoice_page_init() {
     console.log("🔥 Invoices init");
     await authToken()
     const params = new URLSearchParams(window.location.search);
-    const invoiceId = params.get('id');
+    var invoiceId = params.get('id');
+    const invoiceTg = (new URLSearchParams(window.location.search)).get('tgWebAppStartParam');
+    if(!invoiceId)
+    {
+        invoiceId = invoiceTg;
+    }
     if (invoiceId) {
         //Invoice exsit , get rady to pay
         console.log(invoiceId)
