@@ -146,6 +146,34 @@ async function metamask_connect_wallet() {
  * 🍺 EVM & Metamask network connection
  */
 
+const tbsc = {
+  chainId: "0x61",
+  rpcUrls: ["https://endpoints.omniatech.io/v1/bsc/testnet/public"],
+  chainName: "BNB Smart Chain Testnet",
+  nativeCurrency: {
+    name: "tBNB",
+    symbol: "tBNB",
+    decimals: 18
+  },
+  blockExplorerUrls: ["https://testnet.bscscan.com"],
+  contract:"0x263aD853F020075De3FC1D3e24e9d8E88BcD9182"
+}
+const arb = {
+chainId: "0xa4b1",
+rpcUrls: ["https://1rpc.io/arb"],
+chainName: "Arbitrum One",
+nativeCurrency: {
+  name: "Arbitrum One",
+  symbol: "Arb",
+  decimals: 18
+},
+blockExplorerUrls: ["https://arbiscan.io/"],
+contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
+}
+const targetChian = arb;
+const metamask_router_rate = 0.01; //1% feerate during test .
+
+
 async function metamask_connect_wallet_sign() {
     await authToken();
     //Connect the metamask wallet
@@ -192,18 +220,17 @@ async function metamask_pay_invoices() {
 async function metamask_pay_invoice_confirm() {
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     window.web3 = new Web3(window.ethereum);
-    const contract = await metamask_load_contract();
-    console.log(        invoice.address , 
+    const contract = await metamask_load_contract(targetChian.contract);
+    console.log(invoice.address , 
         invoice.amount,
-        invoice.id,
-        10)
+        invoice.id)
         try{
+          const finalValue = (invoice.amount*(1+metamask_router_rate)).toFixed(0)
           const ct = await contract.methods.transfer(
             invoice.address , 
             invoice.amount,
-            invoice.id,
-            10)
-        await ct.send({ from: accounts[0], value : invoice.amount }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
+            invoice.id)
+        await ct.send({ from: accounts[0], value : finalValue }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
         }catch(e)
         {
           if(e.code==100)
@@ -218,24 +245,13 @@ async function metamask_pay_invoice_confirm() {
 
 async function metamask_check_chain()
 {
-    const targetChian = {
-        chainId: "0x61",
-        rpcUrls: ["https://endpoints.omniatech.io/v1/bsc/testnet/public"],
-        chainName: "BNB Smart Chain Testnet",
-        nativeCurrency: {
-          name: "tBNB",
-          symbol: "tBNB",
-          decimals: 18
-        },
-        blockExplorerUrls: ["https://testnet.bscscan.com"]
-      }
       var currentChain = "0x"+window.ethereum.networkVersion.toString(16)
       if(currentChain != targetChian.chainId)
       {
         try {
             await window.ethereum.request({
               method: 'wallet_switchEthereumChain',
-              params: [{ chainId: '0x61' }], 
+              params: [{ chainId: targetChian.chainId }], 
             });
           } catch (error) {
             if (error.code === 4902) {
@@ -255,7 +271,7 @@ async function metamask_check_chain()
       }
 }
 
-async function metamask_load_contract() {
+async function metamask_load_contract(contract) {
     return await new window.web3.eth.Contract([
       {
         "inputs": [],
@@ -472,19 +488,6 @@ async function metamask_load_contract() {
         "type": "function"
       },
       {
-        "inputs": [],
-        "name": "routerRateDecimail",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
         "inputs": [
           {
             "internalType": "address",
@@ -500,11 +503,6 @@ async function metamask_load_contract() {
             "internalType": "string",
             "name": "id",
             "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "routerRate",
-            "type": "uint256"
           }
         ],
         "name": "transfer",
@@ -525,6 +523,11 @@ async function metamask_load_contract() {
             "type": "uint256"
           },
           {
+            "internalType": "uint256",
+            "name": "routerAmount",
+            "type": "uint256"
+          },
+          {
             "internalType": "address",
             "name": "token",
             "type": "address"
@@ -533,11 +536,6 @@ async function metamask_load_contract() {
             "internalType": "string",
             "name": "id",
             "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "routerRate",
-            "type": "uint256"
           }
         ],
         "name": "transferToken",
@@ -586,5 +584,5 @@ async function metamask_load_contract() {
         "stateMutability": "nonpayable",
         "type": "function"
       }
-    ], '0x4d978743b36b7f8a72b8c2cd77dd24b33d9e2d9b');
+    ], contract);
 }
