@@ -10,6 +10,7 @@
   * ARB : 18
   * BSC : 18
   * SOLANA : 9
+  * Binance : 4
   */
 
  function amount_to_display(type, amount) {
@@ -21,6 +22,9 @@
              return Number((amount / Math.pow(10, 9)).toFixed(5)) + " SOL"
          case 2:
              return Number((amount / Math.pow(10, 18)).toFixed(6)) + " ETH"
+             break;
+         case 3:
+             return Number((amount / Math.pow(10, 4)).toFixed(4)) + " $"
              break;
          default:
              return false;
@@ -69,7 +73,8 @@
                 }
                 
              }
-
+         case 3:
+            location.href = `https://wallet.tonspay.top/page-payment-binance-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
          default:
              break;
      }

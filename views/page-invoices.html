@@ -73,36 +73,6 @@
                                         </a>
                                     </div>
                                 </div>
-                                <!-- <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-bill" class="d-flex py-1 mb-2">
-                                    <div class="align-self-center">
-                                        <h5 class="pt-1 mb-n1">Water Bill</h5>
-                                        <p class="mb-0 font-11 opacity-70">Overdue by 3 Days</p>
-                                    </div>
-                                    <div class="align-self-center ms-auto text-end">
-                                        <h4 class="pt-1 mb-n1">$15.35</h4>
-                                        <p class="mb-0 font-11 color-red-light">Bill Unpaid</p>
-                                    </div>
-                                </a>
-                                <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-bill" class="d-flex py-1 mb-2">
-                                    <div class="align-self-center">
-                                        <h5 class="pt-1 mb-n1">Telephone Bill</h5>
-                                        <p class="mb-0 font-11 opacity-70">Due in 14 Days</p>
-                                    </div>
-                                    <div class="align-self-center ms-auto text-end">
-                                        <h4 class="pt-1 mb-n1">$31.41</h4>
-                                        <p class="mb-0 font-11 color-red-light">Bill Unpaid</p>
-                                    </div>
-                                </a>
-                                <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-bill-paid" class="d-flex py-1 mb-2">
-                                    <div class="align-self-center">
-                                        <h5 class="pt-1 mb-n1">Spotify Music</h5>
-                                        <p class="mb-0 font-11 opacity-70">Paid via Main Account</p>
-                                    </div>
-                                    <div class="align-self-center ms-auto text-end">
-                                        <h4 class="pt-1 mb-n1">$19.21</h4>
-                                        <p class="mb-0 font-11 color-green-dark">Approved</p>
-                                    </div>
-                                </a> -->
                                 <!-- INVOICES OVER -->
                             </div>
 
@@ -260,6 +230,21 @@
                 </div>
             </div>
 
+            <!-- Select payment method -->
+
+            <div id="payment-method" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m" id="invoice_to_pay_panel">
+
+                <div class="menu-size" style="height:350px;">
+                    <div class="d-flex mx-3 mt-3 py-1">
+                        <div class="align-self-center">
+                            <h1 class="mb-0">Select wallet</h1>
+                        </div>
+                    </div>
+                    <div class="content mt-0" id="payment-method-way">
+                        <a href="#" id="invoice_to_pay_confirm" class="mx-3 btn btn-full gradient-blue shadow-bg shadow-bg-s"></a>
+                    </div>
+                </div>
+            </div>
             <!-- Paided invoice display panel -->
             <!-- <div id="menu-bill-paid" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
 
