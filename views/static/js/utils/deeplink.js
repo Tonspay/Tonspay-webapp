@@ -5,6 +5,41 @@ let account;
 let invoice;
 
 /**
+ * 🍺 Binance payment redirect 
+ */
+async function binance_pay_invoice()
+{
+  const invoice_id = new URLSearchParams(location.search).get("i")
+  if (invoice_id) {
+      const req = await api_info_invoice(invoice_id)
+      if (req && req.data && req.data.id) {
+          console.log("req", req)
+          invoice = req.data
+          // console.log(invoice)
+          if(isMobile())
+          {
+
+          }else{
+            const ele = document.getElementById("binance_pay_invoice_qr");
+            ele.innerHTML = `<img src="${invoice.binance.qrcodeLink}" style="width: 50% ;display: inline-block;">`
+          }
+      }
+  }
+}
+
+async function binance_pay_invoice_confirm()
+{
+  if(isMobile())
+  {
+    window.open(invoice.binance.deeplink, "_blank");
+  }else{
+    window.open(invoice.binance.universalUrl, "_blank");
+  }
+  
+}
+
+
+/**
  * 🍺 Solana & phantom netwrok connection
  */
 
