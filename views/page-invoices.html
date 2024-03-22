@@ -187,7 +187,7 @@
             <!-- Unpaid invoice display panel -->
             <div id="menu-bill" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m" id="invoice_to_pay_panel">
 
-                <div class="menu-size" style="height:350px;">
+                <div class="menu-size" style="height:350px;" id="payment_method_box">
                     <div class="d-flex mx-3 mt-3 py-1">
                         <div class="align-self-center">
                             <h1 class="mb-0">Pay Invoice</h1>
@@ -226,23 +226,36 @@
                         </div>
                         <div class="divider my-2"></div>
                     </div>
-                    <a href="#" id="invoice_to_pay_confirm" class="mx-3 btn btn-full gradient-blue shadow-bg shadow-bg-s">Pay</a>
+
+                    <div class="content mt-0">
+                        <div class="d-flex">
+                            <h5 class="mb-0 font-600 font-14">Pay with : </h5>
+                        </div>
+                    </div>
+
+                    
+                    <!-- <a href="#" data-bs-toggle="offcanvas" data-bs-target="#payment-method"  id="invoice_to_pay_confirm" class="mx-3 btn btn-full gradient-blue shadow-bg shadow-bg-s">Pay</a> -->
                 </div>
             </div>
 
             <!-- Select payment method -->
 
-            <div id="payment-method" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m" id="invoice_to_pay_panel">
-
-                <div class="menu-size" style="height:350px;">
+            <div id="payment-method" class="offcanvas offcanvas-bottom offcanvas-detached rounded-m">
+                <div class="menu-size" style="height:350px;" >
                     <div class="d-flex mx-3 mt-3 py-1">
                         <div class="align-self-center">
                             <h1 class="mb-0">Select wallet</h1>
                         </div>
                     </div>
-                    <div class="content mt-0" id="payment-method-way">
-                        <a href="#" id="invoice_to_pay_confirm" class="mx-3 btn btn-full gradient-blue shadow-bg shadow-bg-s"></a>
+
+                    <div href="#" class="content mt-0" id="payment_method_way">
+                       
                     </div>
+                    <a href="#" id="payment_method_way_confirm" class="mx-3 btn btn-full gradient-blue shadow-bg shadow-bg-s">pay</a>
+                    <!-- <div class="content mt-0" id="payment_method_way" style="display: none;">
+                        <a href="#" id="payment_method_way_confirm" class="mx-3 btn btn-full gradient-blue shadow-bg shadow-bg-s"  style="display: none;"></a>
+                    </div> -->
+                   
                 </div>
             </div>
             <!-- Paided invoice display panel -->

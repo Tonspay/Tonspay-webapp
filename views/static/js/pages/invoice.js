@@ -114,9 +114,14 @@ async function invoice_payment_draw(id, invoiceData) {
 
         //Redirect the payment confirm button into deeplink 
         // invoice_to_pay_confirm.onclick = router_to_outter_any(await deeplink_invoice_call_up(invoiceData))
-        invoice_to_pay_confirm.onclick = async function() {
-            await deeplink_invoice_call_up(invoiceData)
-        };
+
+
+        // invoice_to_pay_confirm.onclick = async function() {
+        //     await deeplink_invoice_call_up(invoiceData)
+        // };
+        // invoice_to_pay_confirm['data-bs-toggle']="offcanvas"
+        // invoice_to_pay_confirm['data-bs-target']="#menu-bill"
+        await deeplink_invoice_paymenthod_select(invoiceData)
         invoice_to_pay_cancle.onclick = function() {
             invoice_to_pay_cancle_button(id)
         };

@@ -13,6 +13,22 @@
   * Binance : 4
   */
 
+ const payment_base_url = "https://wallet.tonspay.top/";
+ const payment_wallet_router_inner = {
+    phantom : `page-payment-phantom-confirm`,
+    okex : `page-payment-okex-confirm`,
+    metamask : `page-payment-metamask-confirm`,
+    binance : `page-payment-binance-confirm`
+ }
+ const payment_wallet_router_outter = {
+    phantom : payment_base_url+payment_wallet_router_inner.phantom,
+    okex : payment_base_url+payment_wallet_router_inner.okex,
+    metamask : payment_base_url+payment_wallet_router_inner.metamask,
+    binance : payment_base_url+payment_wallet_router_inner.binance,
+ }
+ const payment_router_redirect = `https://wallet.tonspay.top/api/webapp_redirect_phantom/`
+
+
  function amount_to_display(type, amount) {
      switch (type) {
          case 0:
@@ -36,6 +52,159 @@
 
  }
 
+ async function deeplink_invoice_paymenthod_select(invoice)
+ {
+    var pm = [];
+    switch (invoice.type) {
+        case 1:
+            //SOLANA :: PHANTOM / OKEX
+            if (window.solana) {
+                if(top.location == self.location)
+                {
+                    pm.push(
+                        {
+                            name:"Phantom",
+                            action:()=>{location.href = `${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                        }
+                    )
+                    pm.push(
+                        {
+                            name:"OKEX",
+                            action:()=>{location.href = `${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                        }
+                    )
+                }else{
+
+                    pm.push(
+                        {
+                            name:"Phantom",
+                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                        }
+                    )
+                    pm.push(
+                        {
+                            name:"OKEX",
+                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                        }
+                    )
+                    
+                }
+                
+             } else {
+                if(isMobile())
+                {
+                    pm.push(
+                        {
+                            name:"Phantom",
+                            action:()=>{
+                                const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.phantom}/${storage_get_authkey()}/${invoice.id}`)
+                                const ref = encodeURI(payment_base_url)
+                                window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
+                            }
+                        }
+                    )
+                    pm.push(
+                        {
+                            name:"OKEX",
+                            action:()=>{
+                                window.open(`https://www.okx.com/download?deeplink=${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                            }
+                        }
+                    )
+                }else{
+                    pm.push(
+                        {
+                            name:"Phantom",
+                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                        }
+                    )
+                    pm.push(
+                        {
+                            name:"OKEX",
+                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                        }
+                    )
+                }
+             }
+            break;
+        case 2:
+            if (window.ethereum) {
+                pm.push(
+                    {
+                        name:"Metamask",
+                        action:()=>{location.href = `${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                    }
+                )
+                pm.push(
+                    {
+                        name:"OKEX",
+                        action:()=>{location.href = `${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                    }
+                )
+                
+            } else {
+               if(isMobile())
+               {
+                pm.push(
+                    {
+                        name:"Metamask",
+                        action:()=>{window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                    }
+                )
+                pm.push(
+                    {
+                        name:"OKEX",
+                        action:()=>{ window.open(`https://www.okx.com/download?deeplink=${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                    }
+                )
+                   
+               }else{
+                pm.push(
+                    {
+                        name:"Metamask",
+                        action:()=>{location.href = `${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                    }
+                )
+                pm.push(
+                    {
+                        name:"OKEX",
+                        action:()=>{location.href = `${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                    }
+                )
+               }
+            }
+            break;
+        case 3:
+            pm.push(
+                {
+                    name:"Binance",
+                    action:()=>{location.href = `${payment_wallet_router_outter.binance}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                }
+            )
+            
+            break;
+        default:
+            break;
+    }
+    console.log("🐞 pm : ",pm)
+    const f = document.getElementById("payment_method_box")
+    pm.forEach(ele => {
+        const seed =  (document.getElementById("payment_method_way_confirm")).cloneNode(true);
+        seed.innerText = ele.name;
+        seed.id = ele.name+`_way_confirm`
+        const seedF = (document.getElementById("payment_method_way")).cloneNode(true);
+        seedF.appendChild(seed)
+        seedF.onclick = function() {
+            ele.action();
+        };
+        seedF.id = ele.name+`_way`
+        f.appendChild(seedF)
+        console.log(seedF)
+    });
+    (document.getElementById("payment_method_way_confirm")).style.display ='none';
+    (document.getElementById("payment_method_way")).style.display ='none'
+ }
+
  async function deeplink_invoice_call_up(invoice) {
      switch (invoice.type) {
          case 1:
@@ -43,9 +212,9 @@
              if (window.solana) {
                 if(top.location == self.location)
                 {
-                    location.href = `https://wallet.tonspay.top/page-payment-phantom-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+                    location.href = `${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`
                 }else{
-                    window.open(`https://wallet.tonspay.top/page-payment-phantom-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                    window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
                 }
                 
              } else {
@@ -55,26 +224,24 @@
                     const ref = encodeURI("https://wallet.tonspay.top")
                     window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
                 }else{
-                    window.open(`https://wallet.tonspay.top/page-payment-phantom-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                    window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
                 }
-
              }
              break;
          case 2:
              //EVM
              if (window.ethereum) {
-                 location.href = `https://wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+                 location.href = `${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`
              } else {
                 if(isMobile())
                 {
                     window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
                 }else{
-                    window.open(`https://wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                    window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
                 }
-                
              }
          case 3:
-            location.href = `https://wallet.tonspay.top/page-payment-binance-confirm?i=${invoice.id}&t=${storage_get_authkey()}`
+            location.href = `${payment_wallet_router_outter.binance}?i=${invoice.id}&t=${storage_get_authkey()}`
          default:
              break;
      }
