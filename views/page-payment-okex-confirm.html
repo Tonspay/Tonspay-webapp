@@ -15,7 +15,7 @@
 
     <meta id="theme-check" name="theme-color" content="#FFFFFF">
 
-    <body class="theme-dark" onload="metamask_pay_invoices()">
+    <body class="theme-dark" onload="okx_pay_invoices()">
         <div id="preloader">
             <div class="spinner-border color-highlight" role="status"></div>
         </div>
@@ -46,13 +46,13 @@
                 <div class="pt-5 mt-4"></div>
                 <div class="card card-style overflow-visible mt-5">
                     <div class="mt-n5"></div>
-                    <img src="static/wallet/metamask.png" alt="img" width="180" class="mx-auto rounded-circle mt-n5 shadow-l">
-                    <h1 class="color-theme text-center font-30 pt-3 mb-0">Metamask</h1>
+                    <img src="static/wallet/okx.png" alt="img" width="180" class="mx-auto rounded-circle mt-n5 shadow-l">
+                    <h1 class="color-theme text-center font-30 pt-3 mb-0">OKX</h1>
                     <p class="text-center font-11"><i class="bi bi-check-circle-fill color-green-dark pe-2"></i>Connected to web3</p>
                 </div>
 
                 <div>
-                    <a href="#" onclick="metamask_pay_invoice_confirm()">
+                    <a href="#" onclick="okx_pay_invoice_confirm()">
                         <div class="btn btn-full mx-3 gradient-highlight shadow-bg shadow-bg-xs">PAY</div>
                     </a>
                 </div>
@@ -78,6 +78,7 @@
           window.Buffer = window.Buffer ?? buffer.Buffer;
         </script>
         <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+        <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
 
         <script src="static/js/main.js"></script>
         <script src="static/js/utils/router.js"></script>

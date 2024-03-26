@@ -70,7 +70,7 @@
                     pm.push(
                         {
                             name:"OKEX",
-                            action:()=>{location.href = `${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                         }
                     )
                 }else{

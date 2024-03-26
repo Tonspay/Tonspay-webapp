@@ -124,34 +124,36 @@ async function phantom_pay_invoice_confirm() {
 try{
   account = await solana.connect()
   const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
-  var transaction = new solanaWeb3.Transaction()
-  transaction.add(
-      solanaWeb3.SystemProgram.transfer({
-          fromPubkey: account.publicKey,
-          toPubkey: new solanaWeb3.PublicKey(invoice.address),
-          lamports: invoice.amount
-      }),
-  );
-  transaction.add(
-      solanaWeb3.SystemProgram.transfer({
-          fromPubkey: account.publicKey,
-          toPubkey: new solanaWeb3.PublicKey(solana_notification_address),
-          lamports: (invoice.amount*0.01).toFixed(0)
-      }),
-  );
-  transaction.add(
-      new solanaWeb3.TransactionInstruction({
-          keys: [{ pubkey: account.publicKey, isSigner: true, isWritable: true }],
-          data: Buffer.from(invoice.id, "utf-8"),
-          programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
-        })
-  );
-  transaction.feePayer = account.publicKey;
-  let blockhashObj = await connection.getRecentBlockhash();
+  // var transaction = new solanaWeb3.Transaction()
+  // transaction.add(
+  //     solanaWeb3.SystemProgram.transfer({
+  //         fromPubkey: account.publicKey,
+  //         toPubkey: new solanaWeb3.PublicKey(invoice.address),
+  //         lamports: invoice.amount
+  //     }),
+  // );
+  // transaction.add(
+  //     solanaWeb3.SystemProgram.transfer({
+  //         fromPubkey: account.publicKey,
+  //         toPubkey: new solanaWeb3.PublicKey(solana_notification_address),
+  //         lamports: (invoice.amount*0.01).toFixed(0)
+  //     }),
+  // );
+  // transaction.add(
+  //     new solanaWeb3.TransactionInstruction({
+  //         keys: [{ pubkey: account.publicKey, isSigner: true, isWritable: true }],
+  //         data: Buffer.from(invoice.id, "utf-8"),
+  //         programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+  //       })
+  // );
+  // transaction.feePayer = account.publicKey;
+  // let blockhashObj = await connection.getRecentBlockhash();
   
-  transaction.recentBlockhash = await blockhashObj.blockhash;
+  // transaction.recentBlockhash = await blockhashObj.blockhash;
 
-  console.log(transaction)
+  // console.log(transaction)
+
+  const transaction = await solana_invoice_confirm(account)
   await window.solana.signAndSendTransaction(transaction)
 }catch(e)
 {
@@ -620,4 +622,96 @@ async function metamask_load_contract(contract) {
         "type": "function"
       }
     ], contract);
+}
+
+//OKX wallet
+
+async function okx_pay_invoices() {
+  // await authToken();
+  console.log("connected :: ", account)
+  //Check the auth token
+  // const auth = storage_get_authkey();
+  // console.log("auth : ", auth);
+
+  const invoice_id = new URLSearchParams(location.search).get("i")
+
+  console.log("invoices : ", invoice_id)
+  if (invoice_id) {
+      const req = await api_info_invoice(invoice_id)
+      if (req && req.data && req.data.id) {
+          console.log("req", req)
+          invoice = req.data
+          switch(invoice.type)
+          {
+            case 1 :
+              account = await window.okxwallet.solana.connect();
+              console.log("account",account)
+              break;
+            case 2:
+                //Connect the okx wallet 
+                const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                account = accounts[0];
+                await metamask_check_chain()
+                break;
+            default : 
+              break;
+          }
+      }
+  }
+}
+
+async function okx_pay_invoice_confirm() {
+  try{
+    switch(invoice.type)
+    {
+      case 1 :
+        account = await window.okxwallet.solana.connect();
+        console.log("account",account)
+        const transaction = await solana_invoice_confirm(account)
+        console.log('transaction',transaction);
+        
+        await window.okxwallet.solana.signAndSendTransaction(transaction)
+        
+        break;
+      case 2:
+          //Connect the okx wallet 
+          await metamask_pay_invoice_confirm()
+          break;
+      default : 
+        break;
+    }
+  }catch(e){console.error(e)}
+}
+
+async function solana_invoice_confirm(account)
+{
+  const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
+  var transaction = new solanaWeb3.Transaction()
+  transaction.add(
+      solanaWeb3.SystemProgram.transfer({
+          fromPubkey: account.publicKey,
+          toPubkey: new solanaWeb3.PublicKey(invoice.address),
+          lamports: invoice.amount
+      }),
+  );
+  transaction.add(
+      solanaWeb3.SystemProgram.transfer({
+          fromPubkey: account.publicKey,
+          toPubkey: new solanaWeb3.PublicKey(solana_notification_address),
+          lamports: (invoice.amount*0.01).toFixed(0)
+      }),
+  );
+  transaction.add(
+      new solanaWeb3.TransactionInstruction({
+          keys: [{ pubkey: account.publicKey, isSigner: true, isWritable: true }],
+          data: Buffer.from(invoice.id, "utf-8"),
+          programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+        })
+  );
+  transaction.feePayer = account.publicKey;
+  let blockhashObj = await connection.getRecentBlockhash();
+  
+  transaction.recentBlockhash = await blockhashObj.blockhash;
+
+  return transaction;
 }
