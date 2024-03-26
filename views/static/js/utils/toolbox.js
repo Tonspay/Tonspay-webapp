@@ -64,7 +64,7 @@
                     pm.push(
                         {
                             name:"Phantom",
-                            action:()=>{location.href = `${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                         }
                     )
                     pm.push(
@@ -78,13 +78,13 @@
                     pm.push(
                         {
                             name:"Phantom",
-                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                         }
                     )
                     pm.push(
                         {
                             name:"OKEX",
-                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                         }
                     )
                     
@@ -99,7 +99,7 @@
                             action:()=>{
                                 const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.phantom}/${storage_get_authkey()}/${invoice.id}`)
                                 const ref = encodeURI(payment_base_url)
-                                window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
+                                window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
                             }
                         }
                     )
@@ -107,7 +107,7 @@
                         {
                             name:"OKEX",
                             action:()=>{
-                                window.open(`https://www.okx.com/download?deeplink=${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                                window.open(`https://www.okx.com/download?deeplink=${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
                             }
                         }
                     )
@@ -115,13 +115,13 @@
                     pm.push(
                         {
                             name:"Phantom",
-                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                         }
                     )
                     pm.push(
                         {
                             name:"OKEX",
-                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                         }
                     )
                 }
@@ -132,7 +132,7 @@
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{location.href = `${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                 pm.push(
@@ -148,13 +148,13 @@
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                        action:()=>{window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                 pm.push(
                     {
                         name:"OKEX",
-                        action:()=>{ window.open(`https://www.okx.com/download?deeplink=${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");}
+                        action:()=>{ window.open(`https://www.okx.com/download?deeplink=${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                    
@@ -162,7 +162,7 @@
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{location.href = `${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                 pm.push(
@@ -214,7 +214,7 @@
                 {
                     location.href = `${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`
                 }else{
-                    window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                    window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
                 }
                 
              } else {
@@ -222,9 +222,9 @@
                 {
                     const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect_phantom/page-payment-phantom-confirm/" + storage_get_authkey() + "/" + invoice.id)
                     const ref = encodeURI("https://wallet.tonspay.top")
-                    window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
+                    window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
                 }else{
-                    window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                    window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
                 }
              }
              break;
@@ -235,9 +235,9 @@
              } else {
                 if(isMobile())
                 {
-                    window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                    window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
                 }else{
-                    window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`, "_blank");
+                    window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
                 }
              }
          case 3:
