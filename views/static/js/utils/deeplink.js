@@ -632,9 +632,7 @@ async function okx_pay_invoices() {
   //Check the auth token
   // const auth = storage_get_authkey();
   // console.log("auth : ", auth);
-
   const invoice_id = new URLSearchParams(location.search).get("i")
-
   console.log("invoices : ", invoice_id)
   if (invoice_id) {
       const req = await api_info_invoice(invoice_id)
@@ -659,6 +657,10 @@ async function okx_pay_invoices() {
       }
   }
 }
+
+/**
+ * OKEX wallet onboard
+ */
 
 async function okx_pay_invoice_confirm() {
   try{
@@ -714,4 +716,96 @@ async function solana_invoice_confirm(account)
   transaction.recentBlockhash = await blockhashObj.blockhash;
 
   return transaction;
+}
+
+/**
+ * Tonconnect wallet 
+ */
+var tonConnectUI;
+async function ton_pay_invoice() {
+  await get_invoice_details();
+    tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json',
+      uiPreferences: {
+        theme: TON_CONNECT_UI.THEME.DARK,
+    },
+    });
+    await tonConnectUI.openModal();
+    console.log(tonConnectUI)
+  
+    tonConnectUI.onStatusChange(
+        walletAndwalletInfo => {
+            // update state/reactive variables to show updates in the ui
+            console.log("change : ",walletAndwalletInfo)
+            account = walletAndwalletInfo
+        } 
+    );
+
+}
+
+async function ton_pay_invoice_confirm() {
+  const state = tonConnectUI.modalState
+  if(state && state.closeReason && state.closeReason == 'wallet-selected' && invoice)
+  {
+    console.log(state,account)
+    console.log(invoice)
+
+
+    let a = new TonWeb.boc.Cell();
+    a.bits.writeUint(0, 32);
+    a.bits.writeString(invoice.id);
+    let payload = TonWeb.utils.bytesToBase64(await a.toBoc());
+
+    console.log(payload)
+
+    const transaction = {
+      validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
+      messages: [
+          {
+              address: invoice.address,
+              amount: invoice.amount,
+          },
+          {
+              address: "UQAaOTy02IgPjn6Pt7LIFyyBqjWe6y4exnx1MIOEjD1OG2xA",
+              amount: (invoice.amount*metamask_router_rate).toFixed(0),
+              payload: payload
+          }
+      ]
+  }
+  
+  try {
+      const result = await tonConnectUI.sendTransaction(transaction);
+      console.log("result : ",result)
+      // you can use signed boc to find the transaction 
+      const someTxData = await myAppExplorerService.getTransaction(result.boc);
+      alert('Transaction was sent successfully', someTxData);
+  } catch (e) {
+      console.error(e);
+  }
+  
+  }else{
+    console.log('try open again')
+    // await tonConnectUI.closeModal();
+    await tonConnectUI.openModal();
+  }
+}
+
+
+/**
+ * Common functions : 
+ */
+
+async function get_invoice_details()
+{
+  const invoice_id = new URLSearchParams(location.search).get("i")
+  console.log("invoices : ", invoice_id)
+  if (invoice_id) {
+      const req = await api_info_invoice(invoice_id)
+      if (req && req.data && req.data.id) {
+          console.log("req", req)
+          invoice = req.data
+          return invoice;
+      }
+  }
+  return false
 }
