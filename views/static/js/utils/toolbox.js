@@ -18,13 +18,15 @@
     phantom : `page-payment-phantom-confirm`,
     okex : `page-payment-okex-confirm`,
     metamask : `page-payment-metamask-confirm`,
-    binance : `page-payment-binance-confirm`
+    binance : `page-payment-binance-confirm`,
+    ton : `page-payment-ton-confirm`
  }
  const payment_wallet_router_outter = {
     phantom : payment_base_url+payment_wallet_router_inner.phantom,
     okex : payment_base_url+payment_wallet_router_inner.okex,
     metamask : payment_base_url+payment_wallet_router_inner.metamask,
     binance : payment_base_url+payment_wallet_router_inner.binance,
+    ton : payment_base_url+payment_wallet_router_inner.ton,
  }
  const payment_router_redirect = `https://wallet.tonspay.top/api/webapp_redirect_phantom/`
 
@@ -56,6 +58,14 @@
  {
     var pm = [];
     switch (invoice.type) {
+        case 0:
+            //Ton , ton-connect
+            if(isMobile())
+            {
+                location.href = `${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`
+            }else{
+                window.open(`${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+            }
         case 1:
             //SOLANA :: PHANTOM / OKEX
             if (window.solana) {
