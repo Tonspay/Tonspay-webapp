@@ -34,7 +34,7 @@
  function amount_to_display(type, amount) {
      switch (type) {
          case 0:
-             return Number((amount / Math.pow(10, 8)).toFixed(4)) + " TON"
+             return Number((amount / Math.pow(10, 9)).toFixed(4)) + " TON"
              break;
          case 1:
              return Number((amount / Math.pow(10, 9)).toFixed(5)) + " SOL"
@@ -74,7 +74,8 @@
                 pm.push(
                     {
                         name:"TON",
-                        action:()=>{window.open(`${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"); Telegram.WebApp.close();}
+                        action:()=>{location.href = `${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}` ;}
+                        // action:()=>{window.open(`${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"); Telegram.WebApp.close();}
                     }
                 )
                 
@@ -146,10 +147,7 @@
                     pm.push(
                         {
                             name:"OKEX",
-                            
-                            action:()=>{
-                                const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.okex}/${storage_get_authkey()}/${invoice.id}`);
-                                window.open(`https://www.okx.com/download?deeplink=okx://wallet/dapp/url?dappUrl=${target}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
                         }
                     )
                 }
