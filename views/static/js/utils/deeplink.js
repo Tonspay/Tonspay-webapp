@@ -777,8 +777,6 @@ async function ton_pay_invoice_confirm() {
       const result = await tonConnectUI.sendTransaction(transaction);
       console.log("result : ",result)
       // you can use signed boc to find the transaction 
-      const someTxData = await myAppExplorerService.getTransaction(result.boc);
-      alert('Transaction was sent successfully', someTxData);
   } catch (e) {
       console.error(e);
   }

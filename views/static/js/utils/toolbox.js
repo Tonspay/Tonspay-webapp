@@ -56,16 +56,30 @@
 
  async function deeplink_invoice_paymenthod_select(invoice)
  {
+    Telegram.WebApp.ready();
     var pm = [];
     switch (invoice.type) {
         case 0:
             //Ton , ton-connect
             if(isMobile())
             {
-                location.href = `${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`
+                pm.push(
+                    {
+                        name:"TON",
+                        action:()=>{location.href = `${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}` ;}
+                    }
+                )
+                
             }else{
-                window.open(`${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+                pm.push(
+                    {
+                        name:"TON",
+                        action:()=>{window.open(`${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"); Telegram.WebApp.close();}
+                    }
+                )
+                
             }
+            break;
         case 1:
             //SOLANA :: PHANTOM / OKEX
             if (window.solana) {
@@ -88,13 +102,13 @@
                     pm.push(
                         {
                             name:"Phantom",
-                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                            action:()=>{window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
                         }
                     )
                     pm.push(
                         {
                             name:"OKEX",
-                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                            action:()=>{window.open(`${payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
                         }
                     )
                     
@@ -146,7 +160,7 @@
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
                     }
                 )
                 pm.push(
@@ -178,7 +192,7 @@
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
                     }
                 )
                 pm.push(
@@ -191,12 +205,23 @@
             }
             break;
         case 3:
-            pm.push(
-                {
-                    name:"Binance",
-                    action:()=>{location.href = `${payment_wallet_router_outter.binance}?i=${invoice.id}&t=${storage_get_authkey()}`}
-                }
-            )
+            if(isMobile())
+            {
+                pm.push(
+                    {
+                        name:"Binance",
+                        action:()=>{location.href = `${payment_wallet_router_outter.binance}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                    }
+                )
+            }else{
+                pm.push(
+                    {
+                        name:"Binance",
+                        action:()=>{window.open(`${payment_wallet_router_outter.binance}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
+                    }
+                )
+            }
+
             
             break;
         default:
