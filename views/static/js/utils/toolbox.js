@@ -44,6 +44,9 @@
          case 3:
              return Number((amount / Math.pow(10, 4)).toFixed(4)) + " $"
              break;
+         case 4 : 
+            return Number((amount / Math.pow(10, 4)).toFixed(6)) + " TRX"
+            break;
          default:
              return false;
              break;
@@ -219,9 +222,26 @@
                     }
                 )
             }
-
-            
             break;
+        case 4:
+            if(isMobile())
+            {
+                pm.push(
+                    {
+                        name:"OKEX",
+                        action:()=>{location.href = `{payment_wallet_router_outter.okex}?i=${invoice.id}&t=${storage_get_authkey()}`}
+                    }
+                )
+            }else{
+                pm.push(
+                    {
+                        name:"OKEX",
+                        action:()=>{
+                            const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.okex}/${storage_get_authkey()}/${invoice.id}`);
+                            window.open(`https://www.okx.com/download?deeplink=okx://wallet/dapp/url?dappUrl=${target}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                    }
+                )
+            }
         default:
             break;
     }

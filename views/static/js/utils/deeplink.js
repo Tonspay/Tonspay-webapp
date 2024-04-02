@@ -267,7 +267,8 @@ async function metamask_pay_invoice_confirm() {
             invoice.address , 
             invoice.amount,
             invoice.id)
-        await ct.send({ from: accounts[0], value : finalValue }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
+            await ct.send({ from: accounts[0], value : finalValue }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
+            router_to_webapp_index()
         }catch(e)
         {
           if(e.code==100)
@@ -647,10 +648,14 @@ async function okx_pay_invoices() {
               break;
             case 2:
                 //Connect the okx wallet 
-                const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                var accounts = await ethereum.request({ method: "eth_requestAccounts" });
                 account = accounts[0];
                 await metamask_check_chain()
                 break;
+            case 4:
+                console.log("TRON")
+                var accounts = await window.okxwallet.tronLink.request({ method: 'tron_requestAccounts'})
+                console.log(accounts)
             default : 
               break;
           }
@@ -678,6 +683,9 @@ async function okx_pay_invoice_confirm() {
       case 2:
           //Connect the okx wallet 
           await metamask_pay_invoice_confirm()
+          break;
+      case 4:
+          await tron_invoice_cofirm(okxwallet.tronLink.tronWeb)
           break;
       default : 
         break;
@@ -716,6 +724,18 @@ async function solana_invoice_confirm(account)
   transaction.recentBlockhash = await blockhashObj.blockhash;
 
   return transaction;
+}
+
+async function tron_invoice_cofirm(tronWeb)
+{
+  try{
+    await tronWeb.transactionBuilder.sendTrx(invoice.address,invoice.amount);
+  }catch(e)
+  {
+    console.log(e)
+    // window.alert(e)
+  }
+  
 }
 
 /**
