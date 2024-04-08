@@ -52,10 +52,12 @@
 
                             <!-- TON CARD -->
                             <div class="splide__slide">
+
                                 <div class="card card-style m-0 bg-5 shadow-card shadow-card-m" style="height:200px">
-                                    <div class="ton-top p-3" id="ton_card_connect_status_connected_disconnect" style="display: none;">
+                                    <div class="card-top p-3" id="ton_card_connect_status_connected_disconnect" style="display: none;">
                                         <a onclick="ton_disconnect_wallet()" class="icon icon-xxs bg-white color-black float-end">❎</a>
                                     </div>
+
                                     <div class="card-center">
 
                                         <div id="ton_card_connect_status_unconnected">
@@ -404,6 +406,9 @@
         <!-- Telegram -->
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
         <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
+        <script src="https://unpkg.com/tonweb@latest/dist/tonweb.js"></script>
+        <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
         <!-- main js  -->
         <script src="static/js/utils/router.js"></script>
         <script src="static/js/utils/toolbox.js"></script>

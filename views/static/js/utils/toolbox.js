@@ -33,13 +33,13 @@
 
  function amount_to_display(type, amount) {
      switch (type) {
-         case 0:
+         case 0 : case "ton":
              return Number((amount / Math.pow(10, 9)).toFixed(4)) + " TON"
              break;
-         case 1:
+         case 1 : case "phantom":
              return Number((amount / Math.pow(10, 9)).toFixed(5)) + " SOL"
-         case 2:
-             return Number((amount / Math.pow(10, 18)).toFixed(6)) + " ETH"
+         case 2 : case "metamask":
+             return Number((Number(amount) / Math.pow(10, 18)).toFixed(6)) + " ETH"
              break;
          case 3:
              return Number((amount / Math.pow(10, 4)).toFixed(4)) + " $"

@@ -165,21 +165,6 @@ try{
 }
 
 /**
- * 🍺 TON network connection
- */
-
-async function ton_connect_wallet() {
-    console.log("ton connect wallet")
-}
-async function metamask_connect_wallet() {
-    if (window.ethereum) {
-        location.href = `https:///wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
-    } else {
-        location.href = `https://metamask.app.link/dapp/wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
-    }
-}
-
-/**
  * 🍺 EVM & Metamask network connection
  */
 
@@ -210,6 +195,14 @@ contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
 const targetChian = arb;
 const metamask_router_rate = 0.01; //1% feerate during test .
 
+
+async function metamask_connect_wallet() {
+  if (window.ethereum) {
+      location.href = `https:///wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
+  } else {
+      location.href = `https://metamask.app.link/dapp/wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
+  }
+}
 
 async function metamask_connect_wallet_sign() {
     await authToken();
@@ -742,6 +735,64 @@ async function tron_invoice_cofirm(tronWeb)
  * Tonconnect wallet 
  */
 var tonConnectUI;
+
+
+
+async function ton_connect_wallet() {
+  console.log("🐞 Tonconnect")
+  location.href=`${window.location.origin}/page-wallet-connect-ton`
+  // window.open(`${window.location.origin}/page-wallet-connect-ton`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+}
+async function ton_connect_init(type) {
+
+    tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json',
+      uiPreferences: {
+        theme: TON_CONNECT_UI.THEME.DARK,
+    },
+    });
+    await tonConnectUI.openModal();
+    console.log(tonConnectUI)
+  
+    tonConnectUI.onStatusChange(
+        walletAndwalletInfo => {
+            console.log("change : ",walletAndwalletInfo)
+            account = walletAndwalletInfo
+            switch(type)
+            {
+              case 0 :
+                ton_connect_wallet_sign() 
+                break;
+              default:
+                break;
+            }
+        } 
+    );
+
+    
+}
+
+async function ton_connect_wallet_sign()
+{
+  const state = tonConnectUI.modalState
+  if(state && state.closeReason && state.closeReason == 'wallet-selected' )
+  {
+    await authToken();
+    console.log("account ",account.account.address)
+    console.log(
+      (new TonWeb.utils.Address(account.account.address)).toString({isUserFriendly:true,isUrlSafe:true,isBounceable:false})
+    )
+    //TODO , sign the data to proof ownership 
+    await api_connection_ton({
+      type: true,
+      publicKey: account.account.address
+  })
+  }else{
+    console.log('try open again')
+    await tonConnectUI.openModal();
+  }
+}
+
 async function ton_pay_invoice() {
   await get_invoice_details();
     tonConnectUI = new TON_CONNECT_UI.TonConnectUI({

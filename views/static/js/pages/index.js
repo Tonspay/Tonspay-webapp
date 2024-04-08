@@ -7,6 +7,15 @@
  *  - Action functions
  */
 
+/**
+ * Global datas
+ */
+var balances = {
+    ton : 0,
+    phantom  :0,
+    metamask : 0,
+}
+
 //Init the page with data fetch
 async function index_page_init() {
     await wallets_display()
@@ -18,21 +27,28 @@ async function wallets_display() {
     console.log(wallets)
 
     if (wallets.data && wallets.data.length > 0) {
-        wallets.data.forEach(ele => {
-            console.log(ele)
+        for(var i = 0 ; i < wallets.data.length ; i ++)
+        {
+            var ele = wallets.data[i]
             switch (ele.type) {
                 case 0: //TON
+                    balances['ton'] = (await api_balance_ton(ele.address)).balance;
+                    ele.address = (new TonWeb.utils.Address(ele.address)).toString({isUserFriendly:true,isUrlSafe:true,isBounceable:false})
+                    wallet_card_connected("ton", ele.address)
                     break;
                 case 1:
+                    balances['phantom'] = (await api_balance_phantom(ele.address));
                     wallet_card_connected("phantom", ele.address)
                     break;
                 case 2:
+                    balances['metamask'] = (await api_balance_metamask(ele.address));
                     wallet_card_connected("metamask", ele.address)
                     break;
                 default:
                     break;
             }
-        });
+        }
+        console.log("🐞",balances)
     }
 
     await invoice_list_draw()
@@ -71,13 +87,14 @@ function wallet_card_connected(id, address) {
     const mount_connected_address = document.getElementById(id + '_card_address')
     mount_connected_address.innerHTML = `${address}`
     wallet_card_connect_button(id)
+    wallet_card_connect_balance(id)
     return 0;
 }
 //Get the connected card balance
-async function wallet_card_connect_balance(id) {
+function wallet_card_connect_balance(id) {
     const mount_connected = document.getElementById(id + '_card_balance')
-    const balance = 0;
-    mount_connected.innerHTML = `${balance} ${id.toUpperCase()}`
+    const balance = amount_to_display(id,balances[id]);
+    mount_connected.innerHTML = `${balance}`
     return 0;
 }
 //Disconnect the card
@@ -87,6 +104,7 @@ async function phantom_disconnect_wallet(id) {
     return 0;
 }
 async function ton_disconnect_wallet(id) {
+    console.log("🐞Disconnect ton")
     await api_disconnect_ton()
     wallet_card_connect_button('ton')
     return 0;

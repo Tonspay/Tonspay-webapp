@@ -7,6 +7,7 @@
  */
 
 const request_baseurl = "https://wallet.tonspay.top/api/"
+const tonapi_baseurl = "https://tonapi.io/"
 const request_router = {
     ping: request_baseurl + "ping",
     debug: request_baseurl + "debug",
@@ -17,17 +18,30 @@ const request_router = {
     },
     connect: {
         phantom: request_baseurl + "connect/phantom",
-        metamask: request_baseurl + "connect/metamask"
+        metamask: request_baseurl + "connect/metamask",
+        ton: request_baseurl + "connect/ton",
     },
     disconnect: {
         phantom: request_baseurl + "disconnect/phantom",
-        metamask: request_baseurl + "disconnect/metamask"
+        metamask: request_baseurl + "disconnect/metamask",
+        ton: request_baseurl + "disconnect/ton"
     },
     info: {
         connection: request_baseurl + "info/connection",
         invoices: request_baseurl + "info/invoices",
         invoice: request_baseurl + "info/invoice",
     },
+    scan  :{
+        tonapi :{
+            balance  : tonapi_baseurl+"v2/blockchain/accounts/",
+        },
+        solscan : {
+            balance  : "",
+        },
+        arbscan : {
+            balance  : ""
+        }
+    }
 }
 
 async function requester(url, requestOptions) {
@@ -184,6 +198,13 @@ async function api_disconnect_metamask() {
     )
 }
 
+async function api_disconnect_ton() {
+    return await requester(
+        request_router.disconnect.ton,
+        request_get_auth()
+    )
+}
+
 /**
  * New connect wallet interface 
  *  - Phantom
@@ -204,4 +225,34 @@ async function api_connection_metamask(data) {
         request_router.connect.metamask,
         request_post_auth(data)
     )
+}
+
+async function api_connection_ton(data) {
+    return await requester(
+        request_router.connect.ton,
+        request_post_auth(data)
+    )
+}
+
+
+/**
+ * Get account balance 
+ */
+
+async function api_balance_ton(data) {
+    return await requester(
+        request_router.scan.tonapi.balance+data,
+        request_get_unauth()
+    )
+}
+
+async function api_balance_phantom(data) {
+    const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
+    // console.log(data)
+    return await connection.getBalance(new solanaWeb3.PublicKey(data));
+}
+
+async function api_balance_metamask(data) {
+    const web3 = new Web3(new Web3.providers.HttpProvider('https://arbitrum.drpc.org'));
+    return web3.eth.getBalance(data);
 }
