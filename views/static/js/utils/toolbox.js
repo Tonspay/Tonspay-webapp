@@ -13,6 +13,233 @@
   * Binance : 4
   */
 
+/**
+ * Contract data 
+ */
+
+const erc20ABI = [
+    {
+    "constant": true,
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+    {
+    "name": "",
+    "type": "string"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": false,
+    "inputs": [
+    {
+    "name": "_spender",
+    "type": "address"
+    },
+    {
+    "name": "_value",
+    "type": "uint256"
+    }
+    ],
+    "name": "approve",
+    "outputs": [
+    {
+    "name": "",
+    "type": "bool"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+    {
+    "name": "",
+    "type": "uint256"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": false,
+    "inputs": [
+    {
+    "name": "_from",
+    "type": "address"
+    },
+    {
+    "name": "_to",
+    "type": "address"
+    },
+    {
+    "name": "_value",
+    "type": "uint256"
+    }
+    ],
+    "name": "transferFrom",
+    "outputs": [
+    {
+    "name": "",
+    "type": "bool"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
+    {
+    "name": "",
+    "type": "uint8"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [
+    {
+    "name": "_owner",
+    "type": "address"
+    }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+    {
+    "name": "balance",
+    "type": "uint256"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+    {
+    "name": "",
+    "type": "string"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": false,
+    "inputs": [
+    {
+    "name": "_to",
+    "type": "address"
+    },
+    {
+    "name": "_value",
+    "type": "uint256"
+    }
+    ],
+    "name": "transfer",
+    "outputs": [
+    {
+    "name": "",
+    "type": "bool"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [
+    {
+    "name": "_owner",
+    "type": "address"
+    },
+    {
+    "name": "_spender",
+    "type": "address"
+    }
+    ],
+    "name": "allowance",
+    "outputs": [
+    {
+    "name": "",
+    "type": "uint256"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
+    },
+    {
+    "anonymous": false,
+    "inputs": [
+    {
+    "indexed": true,
+    "name": "owner",
+    "type": "address"
+    },
+    {
+    "indexed": true,
+    "name": "spender",
+    "type": "address"
+    },
+    {
+    "indexed": false,
+    "name": "value",
+    "type": "uint256"
+    }
+    ],
+    "name": "Approval",
+    "type": "event"
+    },
+    {
+    "anonymous": false,
+    "inputs": [
+    {
+    "indexed": true,
+    "name": "from",
+    "type": "address"
+    },
+    {
+    "indexed": true,
+    "name": "to",
+    "type": "address"
+    },
+    {
+    "indexed": false,
+    "name": "value",
+    "type": "uint256"
+    }
+    ],
+    "name": "Transfer",
+    "type": "event"
+    }
+    ]
+
  const payment_base_url = "https://wallet.tonspay.top/";
  const payment_wallet_router_inner = {
     phantom : `page-payment-phantom-confirm`,
@@ -51,6 +278,21 @@
              return false;
              break;
      }
+ }
+
+ async function amount_to_display_token(chain,token,amount)
+ {
+    switch (chain) {
+        case 2 : case "bsc":
+            const d = Number(await tokenDecimals(chain,token))
+            const s = await tokenSymbol(chain,token)
+            console.log(Number((amount / Math.pow(10, d)).toFixed(4)) + " "+s)
+            return Number((amount / Math.pow(10, d)).toFixed(4)) + " "+s
+            break;
+        default:
+            return false;
+            break;
+    }
  }
 
  function amount_to_display_usd(type, amount) {
@@ -264,51 +506,135 @@
     (document.getElementById("payment_method_way")).style.display ='none'
  }
 
- async function deeplink_invoice_call_up(invoice) {
-     switch (invoice.type) {
-         case 1:
-             //SOLANA
-             if (window.solana) {
-                if(top.location == self.location)
-                {
-                    location.href = `${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`
-                }else{
-                    window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-                }
+ async function deeplink_bridge_paymenthod_select(type,url)
+ {
+    Telegram.WebApp.ready();
+    var pm = [];
+    switch (type) {
+        case 'bsc':  case 'eth':
+            if (window.ethereum) {
+                pm.push(
+                    {
+                        name:"Metamask",
+                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
+                    }
+                )
+                pm.push(
+                    {
+                        name:"OKEX",
+                        action:()=>{location.href = `${payment_wallet_router_outter.okex}?i=${url}&t=${storage_get_authkey()}`}
+                    }
+                )
                 
-             } else {
-                if(isMobile())
-                {
-                    const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect_phantom/page-payment-phantom-confirm/" + storage_get_authkey() + "/" + invoice.id)
-                    const ref = encodeURI("https://wallet.tonspay.top")
-                    window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-                }else{
-                    window.open(`${payment_wallet_router_outter.phantom}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-                }
-             }
-             break;
-         case 2:
-             //EVM
-             if (window.ethereum) {
-                 location.href = `${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`
-             } else {
-                if(isMobile())
-                {
-                    window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-                }else{
-                    window.open(`${payment_wallet_router_outter.metamask}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
-                }
-             }
-         case 3:
-            location.href = `${payment_wallet_router_outter.binance}?i=${invoice.id}&t=${storage_get_authkey()}`
-         default:
-             break;
-     }
+            } else {
+               if(isMobile())
+               {
+                pm.push(
+                    {
+                        name:"Metamask",
+                        action:()=>{window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                    }
+                )
+                pm.push(
+                    {
+                        name:"OKEX",
+                        action:()=>{ 
+                            const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.okex}/${storage_get_authkey()}/${url}`);
+                            window.open(`https://www.okx.com/download?deeplink=okx://wallet/dapp/url?dappUrl=${target}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                    }
+                )
+                   
+               }else{
+                pm.push(
+                    {
+                        name:"Metamask",
+                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
+                    }
+                )
+                pm.push(
+                    {
+                        name:"OKEX",
+                        action:()=>{location.href = `${payment_wallet_router_outter.okex}?i=${url}&t=${storage_get_authkey()}`}
+                    }
+                )
+               }
+            }
+            break;
+        default:
+            break;
+    }
+    console.log("🐞 pm : ",pm)
+    const f = document.getElementById("payment_method_box")
+    pm.forEach(ele => {
+        const seed =  (document.getElementById("payment_method_way_confirm")).cloneNode(true);
+        seed.innerText = ele.name;
+        seed.id = ele.name+`_way_confirm`
+        const seedF = (document.getElementById("payment_method_way")).cloneNode(true);
+        seedF.appendChild(seed)
+        seedF.onclick = function() {
+            ele.action();
+        };
+        seedF.id = ele.name+`_way`
+        f.appendChild(seedF)
+        console.log(seedF)
+    });
+    (document.getElementById("payment_method_way_confirm")).style.display ='none';
+    (document.getElementById("payment_method_way")).style.display ='none'
  }
-
  function isMobile() {
     let flag = navigator.userAgent.match(
         /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
     );
     return flag;
+}
+
+/**
+ * Web3 evm contract part 
+ */
+
+
+async function getWeb3(chain)
+{
+    const eth_chain = {
+        chainId: ethers.utils.hexlify(1),
+        chainName: "ETH",
+        rpcUrls: ["https://rpc.ankr.com/eth"],
+      }
+    const bsc_chain = {
+        chainId: ethers.utils.hexlify(56),
+        chainName: "BNB",
+        rpcUrls: ["https://1rpc.io/bnb"],
+      }
+      
+  switch(chain)
+  {
+    case "bsc":
+      return new Web3(bsc_chain.rpcUrls[0])
+      break;
+    case "eth":
+      return new Web3(eth_chain.rpcUrls[0])
+      break;
+    default:
+      break;
+  }
+}
+
+async function tokenSymbol(chain,address)
+{
+  const web3 = await getWeb3(chain)
+  var contract  = new web3.eth.Contract(erc20ABI,address);
+  return await contract.methods['symbol']().call()
+  .then(function(result){ 
+      return result
+  });
+}
+
+async function tokenDecimals(chain,address)
+{
+    const web3 = await getWeb3(chain)
+  var contract  = new web3.eth.Contract(erc20ABI,address);
+  return await contract.methods['decimals']().call()
+  .then(function(result){ 
+      return result
+  });
 }
