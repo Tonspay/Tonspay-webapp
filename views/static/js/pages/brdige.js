@@ -92,3 +92,58 @@ async function bridge_to_pay_cancle_button(id) {
     console.log("bridge_to_pay_cancle_button", id)
     router_to_index()
 }
+
+/**
+ * Evm bridge to TON
+ * 
+ * Steps : 
+ * 0. Connect to target chain
+ * 1. Approve target token for allowance to 1inch (If it is not mainnet-token)
+ * 2. Api swap call , get call-data .
+ * 3. Call 1inch swap for confirm the trade 
+ * 4. Approve wton to bridge
+ * 5. Burn wton token to bridge 
+ * 
+ */
+const inchRouter = '0x1111111254fb6c44bac0bed2854e76f90643097d'
+var bridge_invoice;
+var Weth = ""
+async function bridge_evm_ton_preload(info)
+{
+    //Check the chain
+    bridge_invoice = info;
+    switch(info.f.c)
+    {
+        case "bsc":
+            Weth =  '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
+            await evm_check_chain(bsc);  
+            bridge_invoice.f.chain = bsc;
+            bridge_invoice.f.token = bridge_invoice.f.t;
+            if(info.f.t=='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+            {
+                bridge_invoice.f.token = Weth
+            }
+        break;
+        default : 
+            
+        break
+    }
+    
+    
+}
+
+async function bridge_evm_ton()
+{
+    //Approve
+    const approve = await evm_approve_erc20_allowance(bridge_invoice.f.t,inchRouter,bridge_invoice.f.a);
+    console.log(approve)
+    //Get swap bytes data;
+    const swapData = await api_1inch_swap(
+        bridge_invoice.f.chain.chainId,
+        bridge_invoice.f.token,
+        bridge_invoice.t.t,
+        bridge_invoice.t.a
+        )
+    console.log(swap);
+    // const swap = await evm_1inch_swap();
+}

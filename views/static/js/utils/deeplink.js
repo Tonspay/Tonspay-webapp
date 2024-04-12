@@ -192,6 +192,42 @@ nativeCurrency: {
 blockExplorerUrls: ["https://arbiscan.io/"],
 contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
 }
+const bsc = {
+  chainId: "0x38",
+  rpcUrls: ["https://binance.llamarpc.com"],
+  chainName: "BNB Chain ",
+  nativeCurrency: {
+    name: "BNB Chain ",
+    symbol: "BNB",
+    decimals: 18
+  },
+  blockExplorerUrls: ["https://arbiscan.io/"],
+  contract:'0xab03f37611728B23A6e9Bf89E2C5a5dfAA5b7C4c'
+}
+const eth = {
+  chainId: "0xa4b1",
+  rpcUrls: ["https://1rpc.io/arb"],
+  chainName: "Arbitrum One",
+  nativeCurrency: {
+    name: "Arbitrum One",
+    symbol: "Arb",
+    decimals: 18
+  },
+  blockExplorerUrls: ["https://arbiscan.io/"],
+  contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
+}
+const op = {
+chainId: "0xa4b1",
+rpcUrls: ["https://1rpc.io/arb"],
+chainName: "Arbitrum One",
+nativeCurrency: {
+  name: "Arbitrum One",
+  symbol: "Arb",
+  decimals: 18
+},
+blockExplorerUrls: ["https://arbiscan.io/"],
+contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
+}
 const targetChian = arb;
 const metamask_router_rate = 0.01; //1% feerate during test .
 
@@ -302,6 +338,39 @@ async function metamask_check_chain()
       }
 }
 
+async function evm_check_chain(t)
+{
+    if(window.ethereum.networkVersion)
+    {
+
+    }else{
+      window.ethereum.networkVersion = 999999
+    }
+      var currentChain = "0x"+window.ethereum.networkVersion.toString(16)
+      if(currentChain != t.chainId)
+      {
+        try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: t.chainId }], 
+            });
+          } catch (error) {
+            if (error.code === 4902) {
+              try {
+                await window.ethereum.request({
+                  method: 'wallet_addEthereumChain',
+                  params: [
+                    t
+                  ],
+                });
+              } catch (addError) {
+                console.error(addError);
+              }
+            }
+            console.error(error);
+          }
+      }
+}
 async function metamask_load_contract(contract) {
     return await new window.web3.eth.Contract([
       {
@@ -618,6 +687,250 @@ async function metamask_load_contract(contract) {
     ], contract);
 }
 
+async function evm_load_erc20_contract(contract) {
+  return await new window.web3.eth.Contract([
+    {
+    "constant": true,
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+    {
+    "name": "",
+    "type": "string"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": false,
+    "inputs": [
+    {
+    "name": "_spender",
+    "type": "address"
+    },
+    {
+    "name": "_value",
+    "type": "uint256"
+    }
+    ],
+    "name": "approve",
+    "outputs": [
+    {
+    "name": "",
+    "type": "bool"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+    {
+    "name": "",
+    "type": "uint256"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": false,
+    "inputs": [
+    {
+    "name": "_from",
+    "type": "address"
+    },
+    {
+    "name": "_to",
+    "type": "address"
+    },
+    {
+    "name": "_value",
+    "type": "uint256"
+    }
+    ],
+    "name": "transferFrom",
+    "outputs": [
+    {
+    "name": "",
+    "type": "bool"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
+    {
+    "name": "",
+    "type": "uint8"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [
+    {
+    "name": "_owner",
+    "type": "address"
+    }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+    {
+    "name": "balance",
+    "type": "uint256"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+    {
+    "name": "",
+    "type": "string"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "constant": false,
+    "inputs": [
+    {
+    "name": "_to",
+    "type": "address"
+    },
+    {
+    "name": "_value",
+    "type": "uint256"
+    }
+    ],
+    "name": "transfer",
+    "outputs": [
+    {
+    "name": "",
+    "type": "bool"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+    },
+    {
+    "constant": true,
+    "inputs": [
+    {
+    "name": "_owner",
+    "type": "address"
+    },
+    {
+    "name": "_spender",
+    "type": "address"
+    }
+    ],
+    "name": "allowance",
+    "outputs": [
+    {
+    "name": "",
+    "type": "uint256"
+    }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+    },
+    {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
+    },
+    {
+    "anonymous": false,
+    "inputs": [
+    {
+    "indexed": true,
+    "name": "owner",
+    "type": "address"
+    },
+    {
+    "indexed": true,
+    "name": "spender",
+    "type": "address"
+    },
+    {
+    "indexed": false,
+    "name": "value",
+    "type": "uint256"
+    }
+    ],
+    "name": "Approval",
+    "type": "event"
+    },
+    {
+    "anonymous": false,
+    "inputs": [
+    {
+    "indexed": true,
+    "name": "from",
+    "type": "address"
+    },
+    {
+    "indexed": true,
+    "name": "to",
+    "type": "address"
+    },
+    {
+    "indexed": false,
+    "name": "value",
+    "type": "uint256"
+    }
+    ],
+    "name": "Transfer",
+    "type": "event"
+    }
+    ], contract);
+}
+
+async function evm_approve_erc20_allowance(address,target,amount)
+{
+  window.web3 = new Web3(window.ethereum);
+  const contract = await evm_load_erc20_contract(address);
+      try{
+        const finalValue = (invoice.amount*(1+metamask_router_rate)).toFixed(0)
+        const ct = await contract.methods.approve(
+          target,amount)
+          var ret = await ct.send().then((txHash) =>  {console.log(txHash) ; router_to_index()});
+          return ret;
+      }catch(e)
+      {
+        if(e.code==100)
+        {
+          //User cancel
+        }
+      }
+}
+
 //OKX wallet
 
 async function okx_pay_invoices() {
@@ -626,34 +939,48 @@ async function okx_pay_invoices() {
   //Check the auth token
   // const auth = storage_get_authkey();
   // console.log("auth : ", auth);
-  const invoice_id = new URLSearchParams(location.search).get("i")
-  console.log("invoices : ", invoice_id)
-  if (invoice_id) {
-      const req = await api_info_invoice(invoice_id)
-      if (req && req.data && req.data.id) {
-          console.log("req", req)
-          invoice = req.data
-          switch(invoice.type)
-          {
-            case 1 :
-              account = await window.okxwallet.solana.connect();
-              console.log("account",account)
-              break;
-            case 2:
-                //Connect the okx wallet 
-                var accounts = await ethereum.request({ method: "eth_requestAccounts" });
-                account = accounts[0];
-                await metamask_check_chain()
+  const type = new URLSearchParams(location.search).get("type")
+  if(type && type == "bridge")
+  {
+    const invoice = new URLSearchParams(location.search).get("i");
+    // console.log(invoice)
+    // console.log(Buffer.from(invoice,'hex').toString())
+    const data = JSON.parse(
+      Buffer.from(invoice,'hex').toString()
+    )
+
+    await bridge_evm_ton_preload(data);
+  }else{
+    const invoice_id = new URLSearchParams(location.search).get("i")
+    console.log("invoices : ", invoice_id)
+    if (invoice_id) {
+        const req = await api_info_invoice(invoice_id)
+        if (req && req.data && req.data.id) {
+            console.log("req", req)
+            invoice = req.data
+            switch(invoice.type)
+            {
+              case 1 :
+                account = await window.okxwallet.solana.connect();
+                console.log("account",account)
                 break;
-            case 4:
-                console.log("TRON")
-                var accounts = await window.okxwallet.tronLink.request({ method: 'tron_requestAccounts'})
-                console.log(accounts)
-            default : 
-              break;
-          }
-      }
+              case 2:
+                  //Connect the okx wallet 
+                  var accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                  account = accounts[0];
+                  await metamask_check_chain()
+                  break;
+              case 4:
+                  console.log("TRON")
+                  var accounts = await window.okxwallet.tronLink.request({ method: 'tron_requestAccounts'})
+                  console.log(accounts)
+              default : 
+                break;
+            }
+        }
+    }
   }
+
 }
 
 /**
@@ -661,29 +988,36 @@ async function okx_pay_invoices() {
  */
 
 async function okx_pay_invoice_confirm() {
-  try{
-    switch(invoice.type)
-    {
-      case 1 :
-        account = await window.okxwallet.solana.connect();
-        console.log("account",account)
-        const transaction = await solana_invoice_confirm(account)
-        console.log('transaction',transaction);
-        
-        await window.okxwallet.solana.signAndSendTransaction(transaction)
-        
-        break;
-      case 2:
-          //Connect the okx wallet 
-          await metamask_pay_invoice_confirm()
+  const type = new URLSearchParams(location.search).get("type")
+  if(type && type == "bridge")
+  {
+    await bridge_evm_ton()
+  }else{
+    try{
+      switch(invoice.type)
+      {
+        case 1 :
+          account = await window.okxwallet.solana.connect();
+          console.log("account",account)
+          const transaction = await solana_invoice_confirm(account)
+          console.log('transaction',transaction);
+          
+          await window.okxwallet.solana.signAndSendTransaction(transaction)
+          
           break;
-      case 4:
-          await tron_invoice_cofirm(okxwallet.tronLink.tronWeb)
+        case 2:
+            //Connect the okx wallet 
+            await metamask_pay_invoice_confirm()
+            break;
+        case 4:
+            await tron_invoice_cofirm(okxwallet.tronLink.tronWeb)
+            break;
+        default : 
           break;
-      default : 
-        break;
-    }
-  }catch(e){console.error(e)}
+      }
+    }catch(e){console.error(e)}
+  }
+
 }
 
 async function solana_invoice_confirm(account)

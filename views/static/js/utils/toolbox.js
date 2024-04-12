@@ -516,13 +516,13 @@ const erc20ABI = [
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
+                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
                     }
                 )
                 pm.push(
                     {
                         name:"OKEX",
-                        action:()=>{location.href = `${payment_wallet_router_outter.okex}?i=${url}&t=${storage_get_authkey()}`}
+                        action:()=>{location.href = `${payment_wallet_router_outter.okex}?type=bridge&i=${url}&t=${storage_get_authkey()}`}
                     }
                 )
                 
@@ -532,14 +532,14 @@ const erc20ABI = [
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                        action:()=>{window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                 pm.push(
                     {
                         name:"OKEX",
                         action:()=>{ 
-                            const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.okex}/${storage_get_authkey()}/${url}`);
+                            const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.okex}/${storage_get_authkey()}/${url}&type=bridge`);
                             window.open(`https://www.okx.com/download?deeplink=okx://wallet/dapp/url?dappUrl=${target}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
@@ -548,13 +548,13 @@ const erc20ABI = [
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
+                        action:()=>{window.open(`${payment_wallet_router_outter.metamask}?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
                     }
                 )
                 pm.push(
                     {
                         name:"OKEX",
-                        action:()=>{location.href = `${payment_wallet_router_outter.okex}?i=${url}&t=${storage_get_authkey()}`}
+                        action:()=>{location.href = `${payment_wallet_router_outter.okex}?type=bridge&i=${url}&t=${storage_get_authkey()}`}
                     }
                 )
                }

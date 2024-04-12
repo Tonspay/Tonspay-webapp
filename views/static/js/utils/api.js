@@ -8,6 +8,7 @@
 
 const request_baseurl = "https://wallet.tonspay.top/api/"
 const tonapi_baseurl = "https://tonapi.io/"
+const tonsbrige_baseurl = "https://bridge.tonspay.top/api"
 const request_router = {
     ping: request_baseurl + "ping",
     debug: request_baseurl + "debug",
@@ -41,6 +42,10 @@ const request_router = {
         arbscan : {
             balance  : ""
         }
+    },
+    bridge : {
+        quote: tonsbrige_baseurl+"quote",
+        swap: tonsbrige_baseurl+"swap"
     }
 }
 
@@ -255,4 +260,25 @@ async function api_balance_phantom(data) {
 async function api_balance_metamask(data) {
     const web3 = new Web3(new Web3.providers.HttpProvider('https://arbitrum.drpc.org'));
     return web3.eth.getBalance(data);
+}
+
+
+/**
+ * 1inch 
+ */
+
+async function api_1inch_quote(chain,src,dst,amount) {
+    console.log(`${request_router.bridge.quote}?chain=${chain}&src=${src}&dst=${dst}&amount=${amount}&fee=3`)
+    return await requester(
+        `${request_router.bridge.quote}?chain=${chain}&src=${src}&dst=${dst}&amount=${amount}&fee=3`,
+        request_get_unauth()
+    )
+}
+
+async function api_1inch_swap(chain,src,dst,amount) {
+    console.log(`${request_router.bridge.quote}?chain=${chain}&src=${src}&dst=${dst}&amount=${amount}&fee=3`)
+    return await requester(
+        `${request_router.bridge.quote}?chain=${chain}&src=${src}&dst=${dst}&amount=${amount}&fee=3`,
+        request_get_unauth()
+    )
 }
