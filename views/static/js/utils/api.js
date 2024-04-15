@@ -8,7 +8,7 @@
 
 const request_baseurl = "https://wallet.tonspay.top/api/"
 const tonapi_baseurl = "https://tonapi.io/"
-const tonsbrige_baseurl = "https://bridge.tonspay.top/api"
+const tonsbrige_baseurl = "https://wallet.tonspay.top/bridge/"
 const request_router = {
     ping: request_baseurl + "ping",
     debug: request_baseurl + "debug",
@@ -275,10 +275,10 @@ async function api_1inch_quote(chain,src,dst,amount) {
     )
 }
 
-async function api_1inch_swap(chain,src,dst,amount) {
-    console.log(`${request_router.bridge.quote}?chain=${chain}&src=${src}&dst=${dst}&amount=${amount}&fee=3`)
+async function api_1inch_swap(chain,src,dst,amount,from,slippage) {
+    console.log(`${request_router.bridge.swap}?chain=${chain}&src=${src}&dst=${dst}&amount=${amount}&from=${from}&slippage=${slippage}&fee=3`)
     return await requester(
-        `${request_router.bridge.quote}?chain=${chain}&src=${src}&dst=${dst}&amount=${amount}&fee=3`,
+        `${request_router.bridge.swap}?chain=${chain}&src=${src}&dst=${dst}&amount=${amount}&from=${from}&slippage=${slippage}&fee=3`,
         request_get_unauth()
     )
 }

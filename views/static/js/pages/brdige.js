@@ -22,7 +22,8 @@ async function bridge_page_init() {
             invoice_to_pay = data
             console.log(data)
             
-            await bridge_payment_draw(1, invoice_to_pay)
+            await bridge_evm_ton_preload(data);
+            await bridge_payment_draw(1, bridge_invoice)
             
         }catch(e){console.error(e)}
         
@@ -122,7 +123,9 @@ async function bridge_evm_ton_preload(info)
             if(info.f.t=='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
             {
                 bridge_invoice.f.token = Weth
+                bridge_invoice.f['tokenType'] = true;
             }
+            bridge_invoice.t.token = bsc.wton;
         break;
         default : 
             
@@ -134,16 +137,29 @@ async function bridge_evm_ton_preload(info)
 
 async function bridge_evm_ton()
 {
-    //Approve
-    const approve = await evm_approve_erc20_allowance(bridge_invoice.f.t,inchRouter,bridge_invoice.f.a);
-    console.log(approve)
+    if(!bridge_invoice.f.tokenType)
+    {
+        //Approve
+        const allowance = await evm_allowance_erc20(bridge_invoice.f.t,inchRouter)
+        console.log(allowance)
+        if(Number(allowance)<Number(bridge_invoice.f.a))
+        {
+            const approve = await evm_approve_erc20_allowance(bridge_invoice.f.t,inchRouter,bridge_invoice.f.a);
+            console.log(approve)
+        }
+    }
+
+
+    console.log(bridge_invoice)
     //Get swap bytes data;
     const swapData = await api_1inch_swap(
-        bridge_invoice.f.chain.chainId,
+        bridge_invoice.f.chain.chainIdRaw,
         bridge_invoice.f.token,
-        bridge_invoice.t.t,
-        bridge_invoice.t.a
+        bridge_invoice.t.token,
+        bridge_invoice.f.a,
+        (await evm_get_account())[0],
+        1
         )
-    console.log(swap);
+    console.log(swapData);
     // const swap = await evm_1inch_swap();
 }

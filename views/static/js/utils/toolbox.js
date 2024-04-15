@@ -284,9 +284,16 @@ const erc20ABI = [
  {
     switch (chain) {
         case 2 : case "bsc":
-            const d = Number(await tokenDecimals(chain,token))
-            const s = await tokenSymbol(chain,token)
-            console.log(Number((amount / Math.pow(10, d)).toFixed(4)) + " "+s)
+            var d = 0;
+            var s = 0;
+            if(token=='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+            {
+                d = Number(bsc.nativeCurrency.decimals)
+                s = bsc.nativeCurrency.symbol
+            }else{
+                d = Number(await tokenDecimals(chain,token))
+                s = await tokenSymbol(chain,token)
+            }
             return Number((amount / Math.pow(10, d)).toFixed(4)) + " "+s
             break;
         default:

@@ -193,6 +193,7 @@ blockExplorerUrls: ["https://arbiscan.io/"],
 contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
 }
 const bsc = {
+  chainIdRaw:56,
   chainId: "0x38",
   rpcUrls: ["https://binance.llamarpc.com"],
   chainName: "BNB Chain ",
@@ -202,9 +203,11 @@ const bsc = {
     decimals: 18
   },
   blockExplorerUrls: ["https://arbiscan.io/"],
-  contract:'0xab03f37611728B23A6e9Bf89E2C5a5dfAA5b7C4c'
+  contract:'0xab03f37611728B23A6e9Bf89E2C5a5dfAA5b7C4c',
+  wton:"0x76A797A59Ba2C17726896976B7B3747BfD1d220f"
 }
 const eth = {
+  chainIdRaw:1,
   chainId: "0xa4b1",
   rpcUrls: ["https://1rpc.io/arb"],
   chainName: "Arbitrum One",
@@ -214,7 +217,8 @@ const eth = {
     decimals: 18
   },
   blockExplorerUrls: ["https://arbiscan.io/"],
-  contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
+  contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4',
+  wton:"0x582d872a1b094fc48f5de31d3b73f2d9be47def1"
 }
 const op = {
 chainId: "0xa4b1",
@@ -912,23 +916,51 @@ async function evm_load_erc20_contract(contract) {
     ], contract);
 }
 
-async function evm_approve_erc20_allowance(address,target,amount)
+async function evm_allowance_erc20(address,target)
 {
   window.web3 = new Web3(window.ethereum);
   const contract = await evm_load_erc20_contract(address);
       try{
-        const finalValue = (invoice.amount*(1+metamask_router_rate)).toFixed(0)
-        const ct = await contract.methods.approve(
-          target,amount)
-          var ret = await ct.send().then((txHash) =>  {console.log(txHash) ; router_to_index()});
+        var accounts = await ethereum.request({ method: "eth_requestAccounts" });
+        const ct = await contract.methods.allowance(
+          accounts[0],target)
+          console.log(ret)
+          var ret = await ct.call();
           return ret;
       }catch(e)
       {
+        console.error(e)
         if(e.code==100)
         {
           //User cancel
         }
       }
+}
+async function evm_approve_erc20_allowance(address,target,amount)
+{
+  window.web3 = new Web3(window.ethereum);
+  const contract = await evm_load_erc20_contract(address);
+      try{
+        const ct = await contract.methods.approve(
+          target,amount)
+          console.log(ct)
+          var accounts = await ethereum.request({ method: "eth_requestAccounts" });
+          console.log(accounts)
+          var ret = await ct.send({ from: accounts[0] }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
+          return ret;
+      }catch(e)
+      {
+        console.error(e)
+        if(e.code==100)
+        {
+          //User cancel
+        }
+      }
+}
+
+async function evm_get_account()
+{
+  return await ethereum.request({ method: "eth_requestAccounts" });
 }
 
 //OKX wallet
