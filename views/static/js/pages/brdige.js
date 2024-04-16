@@ -185,6 +185,11 @@ async function bridge_evm_ton()
         {
             balance = swapData.data.dstAmount
         }
+
+        if(Number(balance)<=miniAmount)
+        {
+            window.alert("🐞 Must bridge more than 10 TON")
+        }
         console.log(balance)
         const targetAddress= {
             workchain:0,
@@ -201,5 +206,4 @@ async function bridge_evm_ton()
             window.open(bridge_invoice.f.chain.blockExplorerUrls+"tx/"+burn.transactionHash)
         }
     }
-    
 }

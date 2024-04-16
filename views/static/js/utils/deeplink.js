@@ -265,52 +265,79 @@ async function metamask_connect_wallet_sign() {
     console.log("req", req)
 }
 async function metamask_pay_invoices() {
-    await authToken();
+    // await authToken();
     //Connect the metamask wallet
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     account = accounts[0];
-    await metamask_check_chain()
-    console.log("connected :: ", account)
-        //Check the auth token
-    const auth = storage_get_authkey();
-    console.log("auth : ", auth);
 
-    const invoice_id = new URLSearchParams(location.search).get("i")
-
-    console.log("invoices : ", invoice_id)
-    if (invoice_id) {
-        const req = await api_info_invoice(invoice_id)
-        if (req && req.data && req.data.id) {
-            console.log("req", req)
-            invoice = req.data
-        }
+    const type = new URLSearchParams(location.search).get("type")
+    if(type && type == "bridge")
+    {
+      const invoice = new URLSearchParams(location.search).get("i");
+      // console.log(invoice)
+      // console.log(Buffer.from(invoice,'hex').toString())
+      const data = JSON.parse(
+        Buffer.from(invoice,'hex').toString()
+      )
+      await bridge_evm_ton_preload(data);
+    }else{
+      await metamask_check_chain()
+      console.log("connected :: ", account)
+          //Check the auth token
+      const auth = storage_get_authkey();
+      console.log("auth : ", auth);
+  
+      const invoice_id = new URLSearchParams(location.search).get("i")
+  
+      console.log("invoices : ", invoice_id)
+      if (invoice_id) {
+          const req = await api_info_invoice(invoice_id)
+          if (req && req.data && req.data.id) {
+              console.log("req", req)
+              invoice = req.data
+          }
+      }
     }
 }
 
 async function metamask_pay_invoice_confirm() {
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     window.web3 = new Web3(window.ethereum);
-    const contract = await metamask_load_contract(targetChian.contract);
-    console.log(invoice.address , 
-        invoice.amount,
-        invoice.id)
-        try{
-          const finalValue = (invoice.amount*(1+metamask_router_rate)).toFixed(0)
-          const ct = await contract.methods.transfer(
-            invoice.address , 
-            invoice.amount,
-            invoice.id)
-            await ct.send({ from: accounts[0], value : finalValue }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
-            router_to_webapp_index()
-        }catch(e)
-        {
-          if(e.code==100)
+    const type = new URLSearchParams(location.search).get("type")
+    if(type && type == "bridge")
+    {
+      try{
+        await bridge_evm_ton()
+      }catch(e)
+      {
+        console.error(e)
+        //Reload the page 
+      }
+      
+    }else{
+      const contract = await metamask_load_contract(targetChian.contract);
+      console.log(invoice.address , 
+          invoice.amount,
+          invoice.id)
+          try{
+            const finalValue = (invoice.amount*(1+metamask_router_rate)).toFixed(0)
+            const ct = await contract.methods.transfer(
+              invoice.address , 
+              invoice.amount,
+              invoice.id)
+              await ct.send({ from: accounts[0], value : finalValue }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
+              router_to_webapp_index()
+          }catch(e)
           {
-            //User cancel
-          }else{
-            router_to_index()
+            if(e.code==100)
+            {
+              //User cancel
+            }else{
+              router_to_index()
+            }
           }
-        }
+    }
+
 
 }
 
