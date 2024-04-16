@@ -296,6 +296,19 @@ const erc20ABI = [
             }
             return Number((amount / Math.pow(10, d)).toFixed(4)) + " "+s
             break;
+        case 9 : case "eth":
+            var d = 0;
+            var s = 0;
+            if(token=='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+            {
+                d = Number(eth.nativeCurrency.decimals)
+                s = eth.nativeCurrency.symbol
+            }else{
+                d = Number(await tokenDecimals(chain,token))
+                s = await tokenSymbol(chain,token)
+            }
+            return Number((amount / Math.pow(10, d)).toFixed(4)) + " "+s
+            break;
         default:
             return false;
             break;

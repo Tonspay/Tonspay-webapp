@@ -208,12 +208,12 @@ const bsc = {
 }
 const eth = {
   chainIdRaw:1,
-  chainId: "0xa4b1",
-  rpcUrls: ["https://1rpc.io/arb"],
-  chainName: "Arbitrum One",
+  chainId: "0x1",
+  rpcUrls: ["https://rpc.ankr.com/eth"],
+  chainName: "ETH",
   nativeCurrency: {
-    name: "Arbitrum One",
-    symbol: "Arb",
+    name: "Eth",
+    symbol: "ETH",
     decimals: 18
   },
   blockExplorerUrls: ["https://etherscan.io/"],

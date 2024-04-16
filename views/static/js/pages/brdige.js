@@ -128,6 +128,18 @@ async function bridge_evm_ton_preload(info)
             }
             bridge_invoice.t.token = bsc.wton;
         break;
+        case "eth":
+            Weth =  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            await evm_check_chain(eth);  
+            bridge_invoice.f.chain = eth;
+            bridge_invoice.f.token = bridge_invoice.f.t;
+            if(info.f.t=='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+            {
+                // bridge_invoice.f.token = Weth
+                bridge_invoice.f['tokenType'] = true;
+            }
+            bridge_invoice.t.token = eth.wton;
+        break;
         default : 
             
         break
