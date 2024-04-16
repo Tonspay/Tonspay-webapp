@@ -109,6 +109,7 @@ async function bridge_to_pay_cancle_button(id) {
 const inchRouter = '0x1111111254fb6c44bac0bed2854e76f90643097d'
 var bridge_invoice;
 var Weth = ""
+const miniAmount = Math.pow(10,10)
 async function bridge_evm_ton_preload(info)
 {
     //Check the chain
@@ -122,7 +123,7 @@ async function bridge_evm_ton_preload(info)
             bridge_invoice.f.token = bridge_invoice.f.t;
             if(info.f.t=='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
             {
-                bridge_invoice.f.token = Weth
+                // bridge_invoice.f.token = Weth
                 bridge_invoice.f['tokenType'] = true;
             }
             bridge_invoice.t.token = bsc.wton;
@@ -161,5 +162,44 @@ async function bridge_evm_ton()
         1
         )
     console.log(swapData);
-    // const swap = await evm_1inch_swap();
+    if(swapData.code==200 && swapData.data.tx)
+    {
+        if(Number(swapData.data.dstAmount)<=miniAmount)
+        {
+            window.alert("🐞 Must bridge more than 10 TON")
+        }
+        window.web3 = new Web3(window.ethereum);
+        console.log("🐞SEND TX  :: ",swapData.data.tx)
+        console.log(window.web3)
+        await window.web3.eth.sendTransaction(swapData.data.tx)
+    }else
+    {
+        //Reload the page
+    }
+
+    //Check TON balance and burn .
+    if(bridge_invoice.t.token)
+    {
+        const balance = await evm_balance_erc20(bridge_invoice.t.token,(await evm_get_account())[0])
+        if(balance > Number(swapData.data.dstAmount))
+        {
+            balance = swapData.data.dstAmount
+        }
+        console.log(balance)
+        const targetAddress= {
+            workchain:0,
+            address_hash:Buffer.from(
+                (new TonWeb.utils.Address(bridge_invoice.t.w)).hashPart
+            )
+        };
+        console.log(targetAddress)
+        const burn = await evm_burn_erc20(bridge_invoice.t.token,targetAddress,balance);
+        console.log(burn)
+        if(burn&&burn.transactionHash)
+        {
+            window.alert("🐞 Bridge success : "+burn.transactionHash);
+            window.open(bridge_invoice.f.chain.blockExplorerUrls+"tx/"+burn.transactionHash)
+        }
+    }
+    
 }

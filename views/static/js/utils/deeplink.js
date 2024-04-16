@@ -202,7 +202,7 @@ const bsc = {
     symbol: "BNB",
     decimals: 18
   },
-  blockExplorerUrls: ["https://arbiscan.io/"],
+  blockExplorerUrls: ["https://bscscan.io/"],
   contract:'0xab03f37611728B23A6e9Bf89E2C5a5dfAA5b7C4c',
   wton:"0x76A797A59Ba2C17726896976B7B3747BfD1d220f"
 }
@@ -216,7 +216,7 @@ const eth = {
     symbol: "Arb",
     decimals: 18
   },
-  blockExplorerUrls: ["https://arbiscan.io/"],
+  blockExplorerUrls: ["https://etherscan.io/"],
   contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4',
   wton:"0x582d872a1b094fc48f5de31d3b73f2d9be47def1"
 }
@@ -692,228 +692,27 @@ async function metamask_load_contract(contract) {
 }
 
 async function evm_load_erc20_contract(contract) {
-  return await new window.web3.eth.Contract([
-    {
-    "constant": true,
-    "inputs": [],
-    "name": "name",
-    "outputs": [
-    {
-    "name": "",
-    "type": "string"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "constant": false,
-    "inputs": [
-    {
-    "name": "_spender",
-    "type": "address"
-    },
-    {
-    "name": "_value",
-    "type": "uint256"
-    }
-    ],
-    "name": "approve",
-    "outputs": [
-    {
-    "name": "",
-    "type": "bool"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-    },
-    {
-    "constant": true,
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
-    {
-    "name": "",
-    "type": "uint256"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "constant": false,
-    "inputs": [
-    {
-    "name": "_from",
-    "type": "address"
-    },
-    {
-    "name": "_to",
-    "type": "address"
-    },
-    {
-    "name": "_value",
-    "type": "uint256"
-    }
-    ],
-    "name": "transferFrom",
-    "outputs": [
-    {
-    "name": "",
-    "type": "bool"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-    },
-    {
-    "constant": true,
-    "inputs": [],
-    "name": "decimals",
-    "outputs": [
-    {
-    "name": "",
-    "type": "uint8"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "constant": true,
-    "inputs": [
-    {
-    "name": "_owner",
-    "type": "address"
-    }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-    {
-    "name": "balance",
-    "type": "uint256"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "constant": true,
-    "inputs": [],
-    "name": "symbol",
-    "outputs": [
-    {
-    "name": "",
-    "type": "string"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "constant": false,
-    "inputs": [
-    {
-    "name": "_to",
-    "type": "address"
-    },
-    {
-    "name": "_value",
-    "type": "uint256"
-    }
-    ],
-    "name": "transfer",
-    "outputs": [
-    {
-    "name": "",
-    "type": "bool"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-    },
-    {
-    "constant": true,
-    "inputs": [
-    {
-    "name": "_owner",
-    "type": "address"
-    },
-    {
-    "name": "_spender",
-    "type": "address"
-    }
-    ],
-    "name": "allowance",
-    "outputs": [
-    {
-    "name": "",
-    "type": "uint256"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "fallback"
-    },
-    {
-    "anonymous": false,
-    "inputs": [
-    {
-    "indexed": true,
-    "name": "owner",
-    "type": "address"
-    },
-    {
-    "indexed": true,
-    "name": "spender",
-    "type": "address"
-    },
-    {
-    "indexed": false,
-    "name": "value",
-    "type": "uint256"
-    }
-    ],
-    "name": "Approval",
-    "type": "event"
-    },
-    {
-    "anonymous": false,
-    "inputs": [
-    {
-    "indexed": true,
-    "name": "from",
-    "type": "address"
-    },
-    {
-    "indexed": true,
-    "name": "to",
-    "type": "address"
-    },
-    {
-    "indexed": false,
-    "name": "value",
-    "type": "uint256"
-    }
-    ],
-    "name": "Transfer",
-    "type": "event"
-    }
-    ], contract);
+  return await new window.web3.eth.Contract([{"inputs":[{"internalType":"string","name":"name_","type":"string"},{"internalType":"string","name":"symbol_","type":"string"},{"internalType":"address[]","name":"initialSet","type":"address[]"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"int256","name":"oracleSetHash","type":"int256"},{"indexed":false,"internalType":"address[]","name":"newOracles","type":"address[]"}],"name":"NewOracleSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"int8","name":"to_wc","type":"int8"},{"indexed":true,"internalType":"bytes32","name":"to_addr_hash","type":"bytes32"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"SwapEthToTon","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"int8","name":"workchain","type":"int8"},{"indexed":true,"internalType":"bytes32","name":"ton_address_hash","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"ton_tx_hash","type":"bytes32"},{"indexed":false,"internalType":"uint64","name":"lt","type":"uint64"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"SwapTonToEth","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"allowBurn","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"components":[{"internalType":"int8","name":"workchain","type":"int8"},{"internalType":"bytes32","name":"address_hash","type":"bytes32"}],"internalType":"struct TonUtils.TonAddress","name":"addr","type":"tuple"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"components":[{"internalType":"int8","name":"workchain","type":"int8"},{"internalType":"bytes32","name":"address_hash","type":"bytes32"}],"internalType":"struct TonUtils.TonAddress","name":"addr","type":"tuple"}],"name":"burnFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"digest","type":"bytes32"},{"components":[{"internalType":"address","name":"signer","type":"address"},{"internalType":"bytes","name":"signature","type":"bytes"}],"internalType":"struct TonUtils.Signature","name":"sig","type":"tuple"}],"name":"checkSignature","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"finishedVotings","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getFullOracleSet","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bool","name":"newBurnStatus","type":"bool"},{"internalType":"int256","name":"nonce","type":"int256"}],"name":"getNewBurnStatusId","outputs":[{"internalType":"bytes32","name":"result","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int256","name":"oracleSetHash","type":"int256"},{"internalType":"address[]","name":"set","type":"address[]"}],"name":"getNewSetId","outputs":[{"internalType":"bytes32","name":"result","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"receiver","type":"address"},{"internalType":"uint64","name":"amount","type":"uint64"},{"components":[{"components":[{"internalType":"int8","name":"workchain","type":"int8"},{"internalType":"bytes32","name":"address_hash","type":"bytes32"}],"internalType":"struct TonUtils.TonAddress","name":"address_","type":"tuple"},{"internalType":"bytes32","name":"tx_hash","type":"bytes32"},{"internalType":"uint64","name":"lt","type":"uint64"}],"internalType":"struct TonUtils.TonTxID","name":"tx","type":"tuple"}],"internalType":"struct TonUtils.SwapData","name":"data","type":"tuple"}],"name":"getSwapDataId","outputs":[{"internalType":"bytes32","name":"result","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"isOracle","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"oraclesSet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"receiver","type":"address"},{"internalType":"uint64","name":"amount","type":"uint64"},{"components":[{"components":[{"internalType":"int8","name":"workchain","type":"int8"},{"internalType":"bytes32","name":"address_hash","type":"bytes32"}],"internalType":"struct TonUtils.TonAddress","name":"address_","type":"tuple"},{"internalType":"bytes32","name":"tx_hash","type":"bytes32"},{"internalType":"uint64","name":"lt","type":"uint64"}],"internalType":"struct TonUtils.TonTxID","name":"tx","type":"tuple"}],"internalType":"struct TonUtils.SwapData","name":"data","type":"tuple"},{"components":[{"internalType":"address","name":"signer","type":"address"},{"internalType":"bytes","name":"signature","type":"bytes"}],"internalType":"struct TonUtils.Signature[]","name":"signatures","type":"tuple[]"}],"name":"voteForMinting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"int256","name":"oracleSetHash","type":"int256"},{"internalType":"address[]","name":"newOracles","type":"address[]"},{"components":[{"internalType":"address","name":"signer","type":"address"},{"internalType":"bytes","name":"signature","type":"bytes"}],"internalType":"struct TonUtils.Signature[]","name":"signatures","type":"tuple[]"}],"name":"voteForNewOracleSet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"newBurnStatus","type":"bool"},{"internalType":"int256","name":"nonce","type":"int256"},{"components":[{"internalType":"address","name":"signer","type":"address"},{"internalType":"bytes","name":"signature","type":"bytes"}],"internalType":"struct TonUtils.Signature[]","name":"signatures","type":"tuple[]"}],"name":"voteForSwitchBurn","outputs":[],"stateMutability":"nonpayable","type":"function"}], contract);
+}
+
+async function evm_balance_erc20(address,target)
+{
+  window.web3 = new Web3(window.ethereum);
+  const contract = await evm_load_erc20_contract(address);
+      try{
+        const ct = await contract.methods.balanceOf(
+          target)
+          console.log(ret)
+          var ret = await ct.call();
+          return ret;
+      }catch(e)
+      {
+        console.error(e)
+        if(e.code==100)
+        {
+          //User cancel
+        }
+      }
 }
 
 async function evm_allowance_erc20(address,target)
@@ -946,7 +745,29 @@ async function evm_approve_erc20_allowance(address,target,amount)
           console.log(ct)
           var accounts = await ethereum.request({ method: "eth_requestAccounts" });
           console.log(accounts)
-          var ret = await ct.send({ from: accounts[0] }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
+          var ret = await ct.send({ from: accounts[0] })
+          return ret;
+      }catch(e)
+      {
+        console.error(e)
+        if(e.code==100)
+        {
+          //User cancel
+        }
+      }
+}
+
+async function evm_burn_erc20(address,target,amount)
+{
+  window.web3 = new Web3(window.ethereum);
+  const contract = await evm_load_erc20_contract(address);
+      try{
+        const ct = await contract.methods.burn(
+          amount,target)
+          console.log(ct)
+          var accounts = await ethereum.request({ method: "eth_requestAccounts" });
+          console.log(accounts)
+          var ret = await ct.send({ from: accounts[0] })
           return ret;
       }catch(e)
       {
@@ -1023,7 +844,14 @@ async function okx_pay_invoice_confirm() {
   const type = new URLSearchParams(location.search).get("type")
   if(type && type == "bridge")
   {
-    await bridge_evm_ton()
+    try{
+      await bridge_evm_ton()
+    }catch(e)
+    {
+      console.error(e)
+      //Reload the page 
+    }
+    
   }else{
     try{
       switch(invoice.type)
