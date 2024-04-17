@@ -421,7 +421,7 @@ const erc20ABI = [
                 }
              }
             break;
-        case 2:
+        case 2: case 5:
             if (window.ethereum) {
                 pm.push(
                     {

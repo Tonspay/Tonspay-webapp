@@ -281,11 +281,10 @@ async function metamask_pay_invoices() {
       )
       await bridge_evm_ton_preload(data);
     }else{
-      await metamask_check_chain()
-      console.log("connected :: ", account)
+
           //Check the auth token
-      const auth = storage_get_authkey();
-      console.log("auth : ", auth);
+      // const auth = storage_get_authkey();
+      // console.log("auth : ", auth);
   
       const invoice_id = new URLSearchParams(location.search).get("i")
   
@@ -295,6 +294,19 @@ async function metamask_pay_invoices() {
           if (req && req.data && req.data.id) {
               console.log("req", req)
               invoice = req.data
+              switch(invoice.type)
+              {
+                case 2 :
+                  await evm_check_chain(arb);
+                  break;
+                case 5:
+                  await evm_check_chain(bsc);
+                  break;
+                default :
+                  break;
+              }
+              // await evm_check_chain()
+              console.log("connected :: ", account)
           }
       }
     }
@@ -854,12 +866,19 @@ async function okx_pay_invoices() {
                   //Connect the okx wallet 
                   var accounts = await ethereum.request({ method: "eth_requestAccounts" });
                   account = accounts[0];
-                  await metamask_check_chain()
+                  await evm_check_chain(arb)
+                  // await metamask_check_chain()
                   break;
+
               case 4:
                   console.log("TRON")
                   var accounts = await window.okxwallet.tronLink.request({ method: 'tron_requestAccounts'})
                   console.log(accounts)
+              case 5:
+                var accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                account = accounts[0];
+                await evm_check_chain(bsc)
+                break;
               default : 
                 break;
             }
@@ -899,7 +918,7 @@ async function okx_pay_invoice_confirm() {
           await window.okxwallet.solana.signAndSendTransaction(transaction)
           
           break;
-        case 2:
+        case 2: case 5:
             //Connect the okx wallet 
             await metamask_pay_invoice_confirm()
             break;
