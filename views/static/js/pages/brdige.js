@@ -25,7 +25,7 @@ async function bridge_page_init() {
             await bridge_evm_ton_preload(data);
             await bridge_payment_draw(1, bridge_invoice)
             
-        }catch(e){console.error(e)}
+        }catch(e){console.error(e) , window.alert(e)}
         
     } else {
         //Invoices not exsit , show all history invoies
@@ -118,7 +118,6 @@ async function bridge_evm_ton_preload(info)
     {
         case "bsc":
             Weth =  '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
-            await evm_check_chain(bsc);  
             bridge_invoice.f.chain = bsc;
             bridge_invoice.f.token = bridge_invoice.f.t;
             if(info.f.t=='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
@@ -130,7 +129,6 @@ async function bridge_evm_ton_preload(info)
         break;
         case "eth":
             Weth =  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
-            await evm_check_chain(eth);  
             bridge_invoice.f.chain = eth;
             bridge_invoice.f.token = bridge_invoice.f.t;
             if(info.f.t=='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
@@ -150,6 +148,9 @@ async function bridge_evm_ton_preload(info)
 
 async function bridge_evm_ton()
 {
+    // window.alert("🐞 , bridge_evm_ton")
+    await evm_check_chain(bridge_invoice.f.chain);
+    // window.alert("🐞 , evm_check_chain")
     if(!bridge_invoice.f.tokenType)
     {
         //Approve
@@ -162,7 +163,7 @@ async function bridge_evm_ton()
         }
     }
 
-
+    // window.alert("🐞 , allowance")
     console.log(bridge_invoice)
     //Get swap bytes data;
     const swapData = await api_1inch_swap(

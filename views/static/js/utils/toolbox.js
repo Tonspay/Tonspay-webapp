@@ -272,7 +272,10 @@ const erc20ABI = [
              return Number((amount / Math.pow(10, 4)).toFixed(4)) + " $"
              break;
          case 4 : 
-            return Number((amount / Math.pow(10, 4)).toFixed(6)) + " TRX"
+            return Number((amount / Math.pow(10, 9)).toFixed(6)) + " TRX"
+            break;
+        case 5 : 
+            return Number((amount / Math.pow(10, 18)).toFixed(6)) + " BNB"
             break;
          default:
              return false;
@@ -559,7 +562,7 @@ const erc20ABI = [
                     {
                         name:"OKEX",
                         action:()=>{ 
-                            const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.okex}/${storage_get_authkey()}/${url}&type=bridge`);
+                            const target = encodeURI(`${payment_router_redirect}${payment_wallet_router_inner.okex}/${storage_get_authkey()}&type=bridge/${url}`);
                             window.open(`https://www.okx.com/download?deeplink=okx://wallet/dapp/url?dappUrl=${target}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )

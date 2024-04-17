@@ -386,6 +386,7 @@ async function evm_check_chain(t)
               params: [{ chainId: t.chainId }], 
             });
           } catch (error) {
+            window.alert(error)
             if (error.code === 4902) {
               try {
                 await window.ethereum.request({
@@ -395,6 +396,7 @@ async function evm_check_chain(t)
                   ],
                 });
               } catch (addError) {
+                window.alert(addError)
                 console.error(addError);
               }
             }
@@ -822,14 +824,18 @@ async function okx_pay_invoices() {
   const type = new URLSearchParams(location.search).get("type")
   if(type && type == "bridge")
   {
-    const invoice = new URLSearchParams(location.search).get("i");
-    // console.log(invoice)
-    // console.log(Buffer.from(invoice,'hex').toString())
-    const data = JSON.parse(
-      Buffer.from(invoice,'hex').toString()
-    )
+    // window.alert("🐞 , bridge")
+    try{
+      const invoice = new URLSearchParams(location.search).get("i");
+      const data = JSON.parse(
+        Buffer.from(invoice,'hex').toString()
+      )
+      await bridge_evm_ton_preload(data);
+    }catch(e)
+    {
+      window.alert(e)
+    }
 
-    await bridge_evm_ton_preload(data);
   }else{
     const invoice_id = new URLSearchParams(location.search).get("i")
     console.log("invoices : ", invoice_id)
@@ -876,6 +882,7 @@ async function okx_pay_invoice_confirm() {
     }catch(e)
     {
       console.error(e)
+      window.alert(e)
       //Reload the page 
     }
     
