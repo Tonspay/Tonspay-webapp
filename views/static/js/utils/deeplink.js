@@ -232,7 +232,7 @@ nativeCurrency: {
 blockExplorerUrls: ["https://arbiscan.io/"],
 contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
 }
-const targetChian = arb;
+var targetChian = arb;
 const metamask_router_rate = 0.01; //1% feerate during test .
 
 
@@ -383,6 +383,7 @@ async function metamask_check_chain()
 
 async function evm_check_chain(t)
 {
+  targetChian = t;
     if(window.ethereum.networkVersion)
     {
 
