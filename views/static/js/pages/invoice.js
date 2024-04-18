@@ -4,29 +4,48 @@ async function invoice_page_init() {
     console.log("🔥 Invoices init");
     
     const params = new URLSearchParams(window.location.search);
-    var invoiceId = params.get('id');
-    const invoiceTg = (new URLSearchParams(window.location.search)).get('tgWebAppStartParam');
-    // window.alert(invoiceTg)
-    if(!invoiceId)
+
+    const type = new URLSearchParams(location.search).get("type")
+    if(type && type == "offlineInvoice")
     {
-        invoiceId = invoiceTg;
-    }
-    if (invoiceId) {
-        //Invoice exsit , get rady to pay
-        console.log(invoiceId)
-        // window.alert(invoiceId)
-        //Verfy if invoice exsit
-        const invoiceData = await api_info_invoice(invoiceId);
-        console.log(invoiceData)
-        if (invoiceData && invoiceData.code == 200) {
-            return invoice_payment_draw(invoiceId, invoiceData.data)
+        var invoiceId = params.get('id');
+        const invoiceTg = (new URLSearchParams(window.location.search)).get('tgWebAppStartParam');
+        // window.alert(invoiceTg)
+        if(!invoiceId)
+        {
+            invoiceId = invoiceTg;
         }
-        return await invoice_list_draw()
-    } else {
-        //Invoices not exsit , show all history invoies
-        await authToken()
-        return await invoice_list_draw()
+        if (invoiceId) {
+            console.log(invoiceId)
+        }
+
+    }else
+    {
+        var invoiceId = params.get('id');
+        const invoiceTg = (new URLSearchParams(window.location.search)).get('tgWebAppStartParam');
+        // window.alert(invoiceTg)
+        if(!invoiceId)
+        {
+            invoiceId = invoiceTg;
+        }
+        if (invoiceId) {
+            //Invoice exsit , get rady to pay
+            console.log(invoiceId)
+            // window.alert(invoiceId)
+            //Verfy if invoice exsit
+            const invoiceData = await api_info_invoice(invoiceId);
+            console.log(invoiceData)
+            if (invoiceData && invoiceData.code == 200) {
+                return invoice_payment_draw(invoiceId, invoiceData.data)
+            }
+            return await invoice_list_draw()
+        } else {
+            //Invoices not exsit , show all history invoies
+            await authToken()
+            return await invoice_list_draw()
+        }
     }
+
 }
 
 async function invoice_list_draw() {

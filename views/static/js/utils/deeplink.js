@@ -233,7 +233,8 @@ blockExplorerUrls: ["https://arbiscan.io/"],
 contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
 }
 var targetChian = arb;
-const metamask_router_rate = 0.01; //1% feerate during test .
+var metamask_router_rate = 0.01; //1% feerate during test .
+var ton_fee_rate = 0;
 
 
 async function metamask_connect_wallet() {
@@ -1028,7 +1029,7 @@ async function ton_connect_wallet_sign()
     await authToken();
     console.log("account ",account.account.address)
     console.log(
-      (new TonWeb.utils.Address(account.account.address)).toString({isUserFriendly:true,isUrlSafe:true,isBounceable:false})
+      (new TonWeb.utils.Address(account.account.address)).toString(true,true,false)
     )
     //TODO , sign the data to proof ownership 
     await api_connection_ton({
@@ -1086,7 +1087,7 @@ async function ton_pay_invoice_confirm() {
           },
           {
               address: "UQAaOTy02IgPjn6Pt7LIFyyBqjWe6y4exnx1MIOEjD1OG2xA",
-              amount: (invoice.amount*metamask_router_rate).toFixed(0),
+              amount: (invoice.amount*ton_fee_rate).toFixed(0),
               payload: payload
           }
       ]

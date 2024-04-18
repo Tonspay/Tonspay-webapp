@@ -33,7 +33,7 @@ async function wallets_display() {
             switch (ele.type) {
                 case 0: //TON
                     balances['ton'] = (await api_balance_ton(ele.address)).balance;
-                    ele.address = (new TonWeb.utils.Address(ele.address)).toString({isUserFriendly:true,isUrlSafe:true,isBounceable:false})
+                    ele.address = (new TonWeb.utils.Address(ele.address)).toString(true,true,false)
                     wallet_card_connected("ton", ele.address)
                     break;
                 case 1:
