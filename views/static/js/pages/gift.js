@@ -1,5 +1,6 @@
 var gift;
 var tonwebInstance;
+const tonscan_url = `https://tonscan.org/`
 const gift_web_base_url = `https://wallet.tonspay.top/gift/`
 const gift_webapp_base_url = `https://t.me/Tonsgift_bot/`;
 const gift_webapp_router = {
@@ -61,9 +62,7 @@ async function gift_page_init() {
 
             }catch(e){console.error(e) ; window.alert(e)}
         }else{
-            window.alert('Generate gift')
             const raw = gift_generate_ton(0,'TON gift !')
-            window.alert(gift_web_base_url+'ton'+"?id="+raw)
             location.href = gift_web_base_url+'ton'+"?id="+raw;
         }
     }
@@ -169,8 +168,11 @@ async function gift_take()
             console.log(send)
             const transferQuery = await transfer.getQuery(); // get transfer query Cell
             console.log(transferQuery)
-            window.alert("🍬 Take success ! 💐")
+            window.alert("🍬 Take success, wait for 3~5 min ! 💐")
             Telegram.WebApp.close()
+        }else
+        {
+            window.alert("💐 Noting to take .")
         }
     }else{
         await ton_connect_ui_connect()
@@ -188,6 +190,7 @@ async function gift_deposit()
     if(state)
     {
         const amount = (Number(document.getElementById('deposit_amount').value)*Math.pow(10,9)).toFixed(0)
+        // window.alert(amount)
         if(amount>0)
         {
             const transaction = {
@@ -202,7 +205,7 @@ async function gift_deposit()
             try {
                 const result = await tonConnectUI.sendTransaction(transaction);
                 console.log("result : ",result)
-                location.href = location.href;
+                await gift_share()
                 // you can use signed boc to find the transaction 
             } catch (e) {
                 console.error(e);
@@ -217,4 +220,10 @@ async function gift_share()
 {
     const redir = gift_webapp_router.ton+"?startapp="+gift.raw
     location.href = encodeURI(`https://t.me/share/url?url=${redir}&text= \n 🍬 Gift comment : 🍬 \n ${gift.c}`)
+}
+
+async function gift_view()
+{
+    const url = `${tonscan_url}address/${gift.address}`
+    window.open(url,"newwindow");
 }
