@@ -1,5 +1,6 @@
 var gift;
 var tonwebInstance;
+const gift_web_base_url = `https://wallet.tonspay.top/gift/`
 const gift_webapp_base_url = `https://t.me/Tonsgift_bot/`;
 const gift_webapp_router = {
     ton : gift_webapp_base_url+"ton"
@@ -46,7 +47,7 @@ async function gift_page_init() {
                     if(raw.length>1)
                     {
                         gift.short = raw[0]
-                        gift.c = gift.c = Buffer.from(raw[1],'base64').toString('utf-8')
+                        gift.c = Buffer.from(raw[1],'base64').toString('utf-8')
                     }
                     // gift.c = Buffer.from(gift.c,'base64').toString('utf-8')
                 }
@@ -60,8 +61,10 @@ async function gift_page_init() {
 
             }catch(e){console.error(e) ; window.alert(e)}
         }else{
+            window.alert('Generate gift')
             const raw = gift_generate_ton(0,'TON gift !')
-            location.href = location.href+"?id="+raw;
+            window.alert(gift_web_base_url+'ton'+"?id="+raw)
+            location.href = gift_web_base_url+'ton'+"?id="+raw;
         }
     }
 
@@ -75,7 +78,7 @@ function gift_generate_ton(type,msg)
     const body = {
         "t": type,
         "s": sk,
-        "c": Buffer.from("0_"+msg).toString("base64"),
+        "c": "0_"+Buffer.from(msg).toString("base64"),
     }
     console.log(body)
     return base58.encode(
