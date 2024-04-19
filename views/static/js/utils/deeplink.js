@@ -992,6 +992,53 @@ async function ton_connect_wallet() {
   location.href=`${window.location.origin}/page-wallet-connect-ton`
   // window.open(`${window.location.origin}/page-wallet-connect-ton`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
 }
+function ton_connect_status_check()
+{
+  if(!tonConnectUI)
+  {
+    return false;
+  }
+
+  var state = tonConnectUI.modalState
+
+  if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected'))
+  {
+    return true;
+  }else
+  {
+    return false;
+  }
+}
+async function ton_connect_ui_connect() {
+      if(!tonConnectUI)
+      {
+        tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+          manifestUrl: 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json',
+          uiPreferences: {
+            theme: TON_CONNECT_UI.THEME.DARK,
+        },
+        });
+      }
+
+      var state = tonConnectUI.modalState
+      try{
+          console.log(state)
+          if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected'))
+          {
+              await tonConnectUI.disconnect();
+          }
+          
+          await tonConnectUI.openModal();
+  
+          tonConnectUI.onStatusChange(
+              walletAndwalletInfo => {
+                  console.log("change : ", walletAndwalletInfo)
+                  account = walletAndwalletInfo;
+              }
+              
+          );
+      }catch(e){console.error(e)}      
+}
 async function ton_connect_init(type) {
 
     tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
