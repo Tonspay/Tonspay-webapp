@@ -1,4 +1,4 @@
-const siteBaseUrl = 'https://test.tonspay.top'
+const siteBaseUrl = 'https://wallet.tonspay.top'
 const botWebappBaseUrl = 'https://t.me/tonspay_bot/wallet'
 
 function router_to_index() {
