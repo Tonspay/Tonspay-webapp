@@ -44,7 +44,7 @@ function bridge_pending_draw(name, time, amount, id) {
     const invoice_time = c.childNodes[1].childNodes[1].childNodes[3];
     const invoice_amount = c.childNodes[1].childNodes[3].childNodes[1];
 
-    // console.log(c.childNodes[1].href = "https://wallet.tonspay.top/page-invoices?id=" + id)
+    // console.log(c.childNodes[1].href = "https://test.tonspay.top/page-invoices?id=" + id)
     invoice_name.innerText = name
     invoice_time.innerText = ((new Date(time)).toUTCString())
     invoice_amount.innerText = amount

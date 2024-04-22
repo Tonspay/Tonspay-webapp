@@ -47,22 +47,22 @@ async function phantom_connect_wallet() {
 
     //Check if phantom exsit
     if (window.solana) {
-        // location.href = `https:///wallet.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`
-        window.open(`https:///wallet.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`, "_blank");
+        // location.href = `https:///test.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`
+        window.open(`https:///test.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`, "_blank");
     } else {
-        const target = encodeURI("https://wallet.tonspay.top/api/webapp_redirect/page-wallet-connect-phantom/" + storage_get_authkey())
-        const ref = encodeURI("https://wallet.tonspay.top")
+        const target = encodeURI("https://test.tonspay.top/api/webapp_redirect/page-wallet-connect-phantom/" + storage_get_authkey())
+        const ref = encodeURI("https://test.tonspay.top")
             // console.log(`https://phantom.app/ul/browse/${target}?ref=${ref}`)
             window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
-            // location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/page-wallet-connect-phantom.html`;
+            // location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=test.tonspay.top/page-wallet-connect-phantom.html`;
             //Ignore the old way
 
         //Generate a new sign kp
         // const pk = await api_preconnect_phantom();
         // if (pk.data) {
         //     console.log("phantom connect wallet")
-        //         // console.log(`https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/api/connect/phantom/${(storage_get_uid())}`)
-        //     location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=wallet.tonspay.top/page-wallet-connect-confirm.html`;
+        //         // console.log(`https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=test.tonspay.top/api/connect/phantom/${(storage_get_uid())}`)
+        //     location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=test.tonspay.top/page-wallet-connect-confirm.html`;
         // } else {
         //     console.error("phantom connect failed")
         // }
@@ -239,9 +239,9 @@ var ton_fee_rate = 0;
 
 async function metamask_connect_wallet() {
   if (window.ethereum) {
-      location.href = `https:///wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
+      location.href = `https:///test.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
   } else {
-      location.href = `https://metamask.app.link/dapp/wallet.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
+      location.href = `https://metamask.app.link/dapp/test.tonspay.top/page-wallet-connect-metamask?t=${storage_get_authkey()}`
   }
 }
 

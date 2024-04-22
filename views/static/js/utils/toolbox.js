@@ -240,7 +240,7 @@ const erc20ABI = [
     }
     ]
 
- const payment_base_url = "https://wallet.tonspay.top/";
+ const payment_base_url = "https://test.tonspay.top/";
  const payment_wallet_router_inner = {
     phantom : `page-payment-phantom-confirm`,
     okex : `page-payment-okex-confirm`,
@@ -255,7 +255,7 @@ const erc20ABI = [
     binance : payment_base_url+payment_wallet_router_inner.binance,
     ton : payment_base_url+payment_wallet_router_inner.ton,
  }
- const payment_router_redirect = `https://wallet.tonspay.top/api/webapp_redirect_phantom/`
+ const payment_router_redirect = `https://test.tonspay.top/api/webapp_redirect_phantom/`
 
 
  function amount_to_display(type, amount) {
@@ -442,7 +442,7 @@ const erc20ABI = [
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                        action:()=>{window.open(`https://metamask.app.link/dapp/test.tonspay.top/page-payment-metamask-confirm?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                 pm.push(
@@ -555,7 +555,7 @@ const erc20ABI = [
                 pm.push(
                     {
                         name:"Metamask",
-                        action:()=>{window.open(`https://metamask.app.link/dapp/wallet.tonspay.top/page-payment-metamask-confirm?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                        action:()=>{window.open(`https://metamask.app.link/dapp/test.tonspay.top/page-payment-metamask-confirm?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                 pm.push(

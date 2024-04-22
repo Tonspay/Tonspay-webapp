@@ -1,7 +1,7 @@
 var gift;
 var tonwebInstance;
 const tonscan_url = `https://tonscan.org/`
-const gift_web_base_url = `https://wallet.tonspay.top/gift/`
+const gift_web_base_url = `https://test.tonspay.top/gift/`
 const gift_webapp_base_url = `https://t.me/Tonsgift_bot/`;
 const gift_webapp_router = {
     ton : gift_webapp_base_url+"ton"
@@ -94,7 +94,7 @@ function gift_pending_draw(name, time, amount, id) {
     const gift_time = c.childNodes[1].childNodes[1].childNodes[3];
     const gift_amount = c.childNodes[1].childNodes[3].childNodes[1];
 
-    // console.log(c.childNodes[1].href = "https://wallet.tonspay.top/page-gifts?id=" + id)
+    // console.log(c.childNodes[1].href = "https://test.tonspay.top/page-gifts?id=" + id)
     gift_name.innerText = name
     gift_time.innerText = ((new Date(time)).toUTCString())
     gift_amount.innerText = amount

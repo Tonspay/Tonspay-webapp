@@ -8,7 +8,7 @@
 
 const request_baseurl = "https://test.tonspay.top/api/"
 const tonapi_baseurl = "https://tonapi.io/"
-const tonsbrige_baseurl = "https://wallet.tonspay.top/bridge/"
+const tonsbrige_baseurl = "https://test.tonspay.top/bridge/"
 const request_router = {
     ping: request_baseurl + "ping",
     debug: request_baseurl + "debug",
