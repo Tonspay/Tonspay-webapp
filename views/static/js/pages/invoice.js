@@ -83,6 +83,7 @@ function invoice_pending_draw(name, time, amount, id) {
     const c = document.getElementById("pending_invoice_template").cloneNode(true);
     c.id = "invoice_" + id;
     c.style.display = "inline"
+    c.onclick = function(){window.location = `${siteBaseUrl}/page-invoices?id=${id}`} 
     const invoice_name = c.childNodes[1].childNodes[1].childNodes[1];
     const invoice_time = c.childNodes[1].childNodes[1].childNodes[3];
     const invoice_amount = c.childNodes[1].childNodes[3].childNodes[1];

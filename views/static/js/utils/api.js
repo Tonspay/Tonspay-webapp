@@ -6,9 +6,9 @@
  * Making fetch request router . 
  */
 
-const request_baseurl = "${siteBaseUrl}/api/"
+const request_baseurl = `${siteBaseUrl}/api/`
 const tonapi_baseurl = "https://tonapi.io/"
-const tonsbrige_baseurl = "${siteBaseUrl}/bridge/"
+const tonsbrige_baseurl = `${siteBaseUrl}/bridge/`
 const request_router = {
     ping: request_baseurl + "ping",
     debug: request_baseurl + "debug",
