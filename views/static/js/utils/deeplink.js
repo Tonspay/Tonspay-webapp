@@ -333,7 +333,7 @@ async function metamask_pay_invoice_confirm() {
           invoice.amount,
           invoice.id)
           try{
-            const finalValue = (invoice.amount*(1+metamask_router_rate)).toFixed(0)
+            const finalValue = (invoice.amount*(1+invoice.routerFeeRate)).toFixed(0)
             const ct = await contract.methods.transfer(
               invoice.address , 
               invoice.amount,
@@ -949,8 +949,8 @@ async function solana_invoice_confirm(account)
   transaction.add(
       solanaWeb3.SystemProgram.transfer({
           fromPubkey: account.publicKey,
-          toPubkey: new solanaWeb3.PublicKey(solana_notification_address),
-          lamports: (invoice.amount*0.01).toFixed(0)
+          toPubkey: new solanaWeb3.PublicKey(invoice.routerAddress),
+          lamports: (invoice.amount*Number(invoice.routerFeeRate)).toFixed(0)
       }),
   );
   transaction.add(
@@ -1133,8 +1133,8 @@ async function ton_pay_invoice_confirm() {
               amount: invoice.amount,
           },
           {
-              address: "UQAaOTy02IgPjn6Pt7LIFyyBqjWe6y4exnx1MIOEjD1OG2xA",
-              amount: (invoice.amount*ton_fee_rate).toFixed(0),
+              address: invoice.routerAddress,
+              amount: (invoice.amount*Number(invoice.routerFeeRate)).toFixed(0),
               payload: payload
           }
       ]
