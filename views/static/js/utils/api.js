@@ -6,7 +6,7 @@
  * Making fetch request router . 
  */
 
-const request_baseurl = "https://wallet.tonspay.top/api/"
+const request_baseurl = "https://test.tonspay.top/api/"
 const tonapi_baseurl = "https://tonapi.io/"
 const tonsbrige_baseurl = "https://wallet.tonspay.top/bridge/"
 const request_router = {
