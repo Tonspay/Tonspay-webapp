@@ -105,7 +105,7 @@ async function authToken() {
 
         //Redirect to telegram login
         console.log("Require to login")
-        location.href = `https://test.tonspay.top/page-require-login.html`
+        location.href = `${siteBaseUrl}/page-require-login.html`
     }
 
 }

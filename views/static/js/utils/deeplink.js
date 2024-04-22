@@ -50,8 +50,8 @@ async function phantom_connect_wallet() {
         // location.href = `https:///test.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`
         window.open(`https:///test.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`, "_blank");
     } else {
-        const target = encodeURI("https://test.tonspay.top/api/webapp_redirect/page-wallet-connect-phantom/" + storage_get_authkey())
-        const ref = encodeURI("https://test.tonspay.top")
+        const target = encodeURI(`${siteBaseUrl}/api/webapp_redirect/page-wallet-connect-phantom/` + storage_get_authkey())
+        const ref = encodeURI(`${siteBaseUrl}`)
             // console.log(`https://phantom.app/ul/browse/${target}?ref=${ref}`)
             window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
             // location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=test.tonspay.top/page-wallet-connect-phantom.html`;

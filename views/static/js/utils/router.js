@@ -1,3 +1,6 @@
+const siteBaseUrl = 'https://test.tonspay.top'
+const botWebappBaseUrl = 'https://t.me/tonspay_bot/wallet'
+
 function router_to_index() {
     location.href = "./"
 }
@@ -24,7 +27,7 @@ function router_to_dev() {
 }
 
 function router_to_webapp_index() {
-    location.href = "https://t.me/tonspay_bot/wallet"
+    location.href = botWebappBaseUrl
 }
 
 function router_to_inner_any(url) {

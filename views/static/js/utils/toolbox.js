@@ -240,7 +240,7 @@ const erc20ABI = [
     }
     ]
 
- const payment_base_url = "https://test.tonspay.top/";
+ const payment_base_url = `${siteBaseUrl}/`;
  const payment_wallet_router_inner = {
     phantom : `page-payment-phantom-confirm`,
     okex : `page-payment-okex-confirm`,
@@ -255,7 +255,7 @@ const erc20ABI = [
     binance : payment_base_url+payment_wallet_router_inner.binance,
     ton : payment_base_url+payment_wallet_router_inner.ton,
  }
- const payment_router_redirect = `https://test.tonspay.top/api/webapp_redirect_phantom/`
+ const payment_router_redirect = `${siteBaseUrl}/api/webapp_redirect_phantom/`
 
 
  function amount_to_display(type, amount) {
