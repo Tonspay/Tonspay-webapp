@@ -21,7 +21,6 @@
         </div>
 
         <div id="page">
-
             <!-- FOOTER HERE  -->
             <div id="footer-bar" class="footer-bar-1 footer-bar-detached">
                 <a onclick="router_to_wallet()"><i class="bi bi-wallet2"></i><span>Wallets</span></a>
@@ -60,6 +59,7 @@
 
                                 <!-- Pending template -->
                                 <div id="invoice_disply_frame">
+
                                     <div style="display: none;" id="pending_invoice_template">
                                         <a class="d-flex py-1 mb-2">
                                             <div class="align-self-center">
@@ -72,6 +72,33 @@
                                             </div>
                                         </a>
                                     </div>
+
+                                    <div style="display: none;" id="paid_invoice_template">
+                                        <a class="d-flex py-1 mb-2">
+                                            <div class="align-self-center">
+                                                <h5 class="pt-1 mb-n1"></h5>
+                                                <p class="mb-0 font-11 opacity-70"></p>
+                                            </div>
+                                            <div class="align-self-center ms-auto text-end">
+                                                <h4 class="pt-1 mb-n1"></h4>
+                                                <p class="mb-0 font-11 color-green-dark">Paid</p>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div style="display: none;" id="expired_invoice_template">
+                                        <a class="d-flex py-1 mb-2">
+                                            <div class="align-self-center">
+                                                <h5 class="pt-1 mb-n1"></h5>
+                                                <p class="mb-0 font-11 opacity-70"></p>
+                                            </div>
+                                            <div class="align-self-center ms-auto text-end">
+                                                <h4 class="pt-1 mb-n1"></h4>
+                                                <p class="mb-0 font-11 color-red-dark">Expired</p>
+                                            </div>
+                                        </a>
+                                    </div>
+
                                 </div>
                                 <!-- INVOICES OVER -->
                             </div>
@@ -170,6 +197,29 @@
                     </div>
                 </div>
 
+                <!-- PAID INVOICE CHECK DETAILS -->
+                <div id="invoice_paid_buttom" style="display: none;">
+                    <div class="card card-style gradient-green rounded-s shadow-bg shadow-bg-xs mb-3">
+                        <div class="content my-2">
+                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-bill" class="d-flex">
+                                <div class="align-self-center">
+                                    <h1 class="mb-0 font-14"><i class="bi bi-droplet color-white pe-3"></i></h1>
+                                </div>
+                                <div class="align-self-center">
+                                    <h5 class="color-white font-600 mb-0 mt-0 font-14 line-height-s">
+                                        Details
+                                    </h5>
+                                </div>
+                                <div class="align-self-center ms-auto">
+                                    <h5 class="color-white font-600 mb-0 mt-0 font-14 line-height-s">
+                                        Tap to check invoice details
+                                    </h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
 
@@ -220,14 +270,17 @@
                             <h5 class="mb-0 ms-auto font-700 font-14 color-blue-dark" id="invoice_to_pay_amount"></h5>
                         </div>
                         <div class="divider my-2"></div>
-                        <div class="d-flex">
+                        <div class="d-flex"  id="invoice_to_pay_status">
                             <h5 class="mb-0 font-600 font-14">Invoice Status</h5>
-                            <h5 class="mb-0 ms-auto font-700 font-14 color-yellow-dark">Pending</h5>
+                            
+                            <h5 class="mb-0 ms-auto font-700 font-14 color-yellow-dark"style="display: none;" id = "panel_status_pending_template">Pending</h5>
+                            <h5 class="mb-0 ms-auto font-700 font-14 color-green-dark"style="display: none;"id = "panel_status_paid_template">Paid</h5>
+                            <h5 class="mb-0 ms-auto font-700 font-14 color-red-dark"style="display: none;"id = "panel_status_experid_template">Expired</h5>
                         </div>
                         <div class="divider my-2"></div>
                     </div>
 
-                    <div class="content mt-0">
+                    <div class="content mt-0" id="invoice_pending_pay_with" >
                         <div class="d-flex">
                             <h5 class="mb-0 font-600 font-14">Pay with : </h5>
                         </div>

@@ -4,6 +4,8 @@ let account;
 
 let invoice;
 
+let ton_manifest = 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json'
+
 /**
  * 🍺 Binance payment redirect 
  */
@@ -1013,7 +1015,7 @@ async function ton_connect_ui_connect() {
       if(!tonConnectUI)
       {
         tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-          manifestUrl: 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json',
+          manifestUrl: ton_manifest,
           uiPreferences: {
             theme: TON_CONNECT_UI.THEME.DARK,
         },
@@ -1023,8 +1025,9 @@ async function ton_connect_ui_connect() {
       var state = tonConnectUI.modalState
       try{
           console.log(state)
-          if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected'))
+          if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected' || !state.closeReason))
           {
+            console.log("Disconnect for connection reload")
               await tonConnectUI.disconnect();
           }
           
@@ -1041,15 +1044,23 @@ async function ton_connect_ui_connect() {
 }
 async function ton_connect_init(type) {
 
+  if(!tonConnectUI)
+  {
     tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json',
+      manifestUrl: ton_manifest,
       uiPreferences: {
         theme: TON_CONNECT_UI.THEME.DARK,
     },
     });
+  }else{
+    var state = tonConnectUI.modalState
+    if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected'))
+    {
+        await tonConnectUI.disconnect();
+    }
+    
     await tonConnectUI.openModal();
-    console.log(tonConnectUI)
-  
+  }
     tonConnectUI.onStatusChange(
         walletAndwalletInfo => {
             console.log("change : ",walletAndwalletInfo)
@@ -1090,23 +1101,32 @@ async function ton_connect_wallet_sign()
 }
 
 async function ton_pay_invoice() {
-  await get_invoice_details();
-    tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json',
-      uiPreferences: {
-        theme: TON_CONNECT_UI.THEME.DARK,
-    },
-    });
-    await tonConnectUI.openModal();
-    console.log(tonConnectUI)
+  try{
+    await get_invoice_details();
+    // tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+    //   manifestUrl: ton_manifest,
+    //   uiPreferences: {
+    //     theme: TON_CONNECT_UI.THEME.DARK,
+    // },
+    // });
+    // await tonConnectUI.openModal();
+    // console.log(tonConnectUI)
   
-    tonConnectUI.onStatusChange(
-        walletAndwalletInfo => {
-            // update state/reactive variables to show updates in the ui
-            console.log("change : ",walletAndwalletInfo)
-            account = walletAndwalletInfo
-        } 
-    );
+    // tonConnectUI.onStatusChange(
+    //     walletAndwalletInfo => {
+    //         // update state/reactive variables to show updates in the ui
+    //         console.log("change : ",walletAndwalletInfo)
+    //         account = walletAndwalletInfo
+    //     } 
+    // );
+
+
+    await ton_connect_ui_connect()
+  }catch(e)
+  {
+    window.alert(e)
+  }
+
 
 }
 
@@ -1146,6 +1166,7 @@ async function ton_pay_invoice_confirm() {
       // you can use signed boc to find the transaction 
   } catch (e) {
       console.error(e);
+      window.alert(e)
   }
   
   }else{
