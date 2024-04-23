@@ -2,6 +2,10 @@ var invoice_to_pay;
 
 async function invoice_page_init() {
     console.log("🔥 Invoices init");
+    if(Telegram&&Telegram.WebApp)
+    {
+        Telegram.WebApp.expand();
+    }
     
     const params = new URLSearchParams(window.location.search);
 
@@ -191,16 +195,15 @@ async function invoice_payment_draw(id, invoiceData) {
             if(Date.now() > invoiceData.expiredTime)
             {
                 //Time out 
-
                 f.appendChild(invoice_expired_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type, invoiceData.amount), id))
-                document.getElementById("panel_status_expired_template").style.display =  "inline";
+                document.getElementById("panel_status_experid_template").style.display =  "inline";
+                document.getElementById('invoice_pending_pay_with').style.display="none"
 
             }else{
                 f.appendChild(invoice_pending_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type, invoiceData.amount), id))
                 const btn = document.getElementById('invoice_to_pay_buttom');
                 btn.style.display = "inline"
-                document.getElementById('invoice_pending_pay_with').style.display="inline"
-
+                
                 document.getElementById("panel_status_pending_template").style.display =  "inline";
 
                 await deeplink_invoice_paymenthod_select(invoiceData)
@@ -216,6 +219,7 @@ async function invoice_payment_draw(id, invoiceData) {
             btn.style.display = "inline"
             
             document.getElementById("panel_status_paid_template").style.display =  "inline";
+            document.getElementById('invoice_pending_pay_with').style.display="none"
             
         }
 
