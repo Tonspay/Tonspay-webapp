@@ -342,8 +342,8 @@ const erc20ABI = [
                 pm.push(
                     {
                         name:"TON",
-                        // action:()=>{location.href = `${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}` ;}
-                        action:()=>{window.open(`${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no"); Telegram.WebApp.close();}
+                        action:()=>{location.href = `${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}` ;}
+                        // action:()=>{window.open(`${payment_wallet_router_outter.ton}?i=${invoice.id}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                 
