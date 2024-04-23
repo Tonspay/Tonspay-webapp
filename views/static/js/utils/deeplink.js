@@ -1090,7 +1090,8 @@ async function ton_connect_wallet_sign()
 }
 
 async function ton_pay_invoice() {
-  await get_invoice_details();
+  try{
+    await get_invoice_details();
     tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
       manifestUrl: 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json',
       uiPreferences: {
@@ -1107,6 +1108,11 @@ async function ton_pay_invoice() {
             account = walletAndwalletInfo
         } 
     );
+  }catch(e)
+  {
+    window.alert(e)
+  }
+
 
 }
 
@@ -1146,6 +1152,7 @@ async function ton_pay_invoice_confirm() {
       // you can use signed boc to find the transaction 
   } catch (e) {
       console.error(e);
+      window.alert(e)
   }
   
   }else{
