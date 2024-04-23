@@ -1003,7 +1003,7 @@ function ton_connect_status_check()
 
   var state = tonConnectUI.modalState
 
-  if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected'))
+  if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected' || !state.closeReason))
   {
     return true;
   }else
@@ -1012,6 +1012,7 @@ function ton_connect_status_check()
   }
 }
 async function ton_connect_ui_connect() {
+    try{
       if(!tonConnectUI)
       {
         tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -1023,7 +1024,7 @@ async function ton_connect_ui_connect() {
       }
 
       var state = tonConnectUI.modalState
-      try{
+      
           console.log(state)
           if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected' || !state.closeReason))
           {
@@ -1040,7 +1041,7 @@ async function ton_connect_ui_connect() {
               }
               
           );
-      }catch(e){console.error(e)}      
+      }catch(e){console.error(e) ;}      
 }
 async function ton_connect_init(type) {
 
