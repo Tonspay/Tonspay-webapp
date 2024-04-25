@@ -1,7 +1,7 @@
 const siteBaseUrl = 'https://test.tonspay.top'
 const botBaseUrl = 'https://t.me/tonspaydev_bot'
 const botWebappBaseUrl = `${botBaseUrl}/wallet`
-const botWebappInvoiceBaseUrl = `${botBaseUrl}/wallet`
+const botWebappInvoiceBaseUrl = `${botBaseUrl}/invoice`
 const botShareBaseUrl = `https://t.me/share/url?url=`
 
 function router_to_index() {
