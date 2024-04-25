@@ -187,6 +187,7 @@ async function invoice_payment_draw(id, invoiceData) {
 
         const invoice_to_pay_confirm = document.getElementById("invoice_to_pay_confirm");
         const invoice_to_pay_cancle = document.getElementById("invoice_to_pay_cancle");
+        const invoice_to_pay_share = document.getElementById("invoice_to_pay_share");
 
         //switch inovce status
         const invoice_status = document.getElementById("invoice_to_pay_status")
@@ -209,6 +210,10 @@ async function invoice_payment_draw(id, invoiceData) {
                 await deeplink_invoice_paymenthod_select(invoiceData)
                 invoice_to_pay_cancle.onclick = function() {
                     invoice_to_pay_cancle_button(id)
+                };
+
+                invoice_to_pay_share.onclick = function() {
+                    invoice_to_pay_share_button(id)
                 };
             }
 
@@ -235,4 +240,9 @@ async function invoice_to_pay_confirm_button(id) {
 async function invoice_to_pay_cancle_button(id) {
     console.log("invoice_to_pay_cancle_button", id)
     router_to_index()
+}
+async function invoice_to_pay_share_button(id) {
+    console.log("invoice_to_pay_share_button", id)
+    const redir = botWebappInvoiceBaseUrl+"?startapp="+id
+    router_to_share(redir , `💐 Please help me to pay this invoice 💐 \n Thanks ! `)
 }
