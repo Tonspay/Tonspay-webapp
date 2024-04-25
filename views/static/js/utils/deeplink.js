@@ -163,6 +163,10 @@ try{
   window.alert(e)
 }
 
+  if(invoice?.redirect)
+  {
+    router_to_outter_any(invoice.redirect)
+  }
     router_to_webapp_index()
 }
 
@@ -382,7 +386,12 @@ async function metamask_pay_invoice_confirm() {
               invoice.amount,
               invoice.id)
               await ct.send({ from: accounts[0], value : finalValue }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
-              // router_to_webapp_index()
+              if(invoice?.redirect)
+              {
+                router_to_outter_any(invoice.redirect)
+              }
+              router_to_webapp_index()
+              
           }catch(e)
           {
             if(e.code==100)
@@ -390,7 +399,7 @@ async function metamask_pay_invoice_confirm() {
               //User cancel
             }else{
               console.log("🐞 ERROR :: ",e)
-              // router_to_index()
+              router_to_index()
             }
           }
     }
@@ -1207,6 +1216,12 @@ async function ton_pay_invoice_confirm() {
       const result = await tonConnectUI.sendTransaction(transaction);
       console.log("result : ",result)
       // you can use signed boc to find the transaction 
+
+      if(invoice?.redirect)
+      {
+        router_to_outter_any(invoice.redirect)
+      }
+      close_window_webapp()
   } catch (e) {
       console.error(e);
       window.alert(e)
