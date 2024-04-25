@@ -234,6 +234,32 @@ nativeCurrency: {
 blockExplorerUrls: ["https://arbiscan.io/"],
 contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
 }
+
+const planq = {
+  chainId: "0x1b9e",
+  rpcUrls: ["https://planq-rpc.nodies.app"],
+  chainName: "Planq Mainnet",
+  nativeCurrency: {
+    name: "Planq Mainnet",
+    symbol: "PLQ",
+    decimals: 18
+  },
+  blockExplorerUrls: ["https://evm.planq.network"],
+  contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
+  }
+
+const scroll = {
+  chainId: "0x82750",
+  rpcUrls: ["https://rpc.ankr.com/scroll"],
+  chainName: "Scroll Mainnet",
+  nativeCurrency: {
+    name: "ETH",
+    symbol: "ETH",
+    decimals: 18
+  },
+  blockExplorerUrls: ["https://scrollscan.com"],
+  contract:'0x318b6ab1cbC3258a083c77a6FBC9a1215FfdDeA4'
+  }
 var targetChian = arb;
 var metamask_router_rate = 0.01; //1% feerate during test .
 var ton_fee_rate = 0;
@@ -297,22 +323,37 @@ async function metamask_pay_invoices() {
           if (req && req.data && req.data.id) {
               console.log("req", req)
               invoice = req.data
-              switch(invoice.type)
-              {
-                case 2 :
-                  await evm_check_chain(arb);
-                  break;
-                case 5:
-                  await evm_check_chain(bsc);
-                  break;
-                default :
-                  break;
-              }
+              await evm_check_chain_router(invoice.type)
               // await evm_check_chain()
               console.log("connected :: ", account)
           }
       }
     }
+}
+
+async function evm_check_chain_router(type)
+{
+  switch(type)
+  {
+    case 2 :
+      await evm_check_chain(arb);
+      break;
+    case 5:
+      await evm_check_chain(bsc);
+      break;
+    case 6:
+      await evm_check_chain(planq);
+      break;
+    case 7:
+      await evm_check_chain(scroll);
+      break;
+    default :
+      break;
+  }
+
+  var accounts = await ethereum.request({ method: "eth_requestAccounts" });
+  account = accounts[0];
+  return account
 }
 
 async function metamask_pay_invoice_confirm() {
@@ -333,7 +374,7 @@ async function metamask_pay_invoice_confirm() {
       const contract = await metamask_load_contract(targetChian.contract);
       console.log(invoice.address , 
           invoice.amount,
-          invoice.id)
+          invoice.id,contract)
           try{
             const finalValue = (invoice.amount*(1+invoice.routerFeeRate)).toFixed(0)
             const ct = await contract.methods.transfer(
@@ -341,14 +382,15 @@ async function metamask_pay_invoice_confirm() {
               invoice.amount,
               invoice.id)
               await ct.send({ from: accounts[0], value : finalValue }).then((txHash) =>  {console.log(txHash) ; router_to_index()});
-              router_to_webapp_index()
+              // router_to_webapp_index()
           }catch(e)
           {
             if(e.code==100)
             {
               //User cancel
             }else{
-              router_to_index()
+              console.log("🐞 ERROR :: ",e)
+              // router_to_index()
             }
           }
     }
@@ -402,18 +444,20 @@ async function evm_check_chain(t)
               params: [{ chainId: t.chainId }], 
             });
           } catch (error) {
-            window.alert(error)
+            // window.alert(error)
             if (error.code === 4902) {
               try {
+                const addchain = JSON.parse(JSON.stringify(t));
+                delete addchain.contract;
                 await window.ethereum.request({
                   method: 'wallet_addEthereumChain',
                   params: [
-                    t
+                    addchain
                   ],
                 });
               } catch (addError) {
-                window.alert(addError)
-                console.error(addError);
+                // window.alert(addError)
+                console.error("🐞Add chain error",addError);
               }
             }
             console.error(error);
@@ -866,22 +910,12 @@ async function okx_pay_invoices() {
                 account = await window.okxwallet.solana.connect();
                 console.log("account",account)
                 break;
-              case 2:
-                  //Connect the okx wallet 
-                  var accounts = await ethereum.request({ method: "eth_requestAccounts" });
-                  account = accounts[0];
-                  await evm_check_chain(arb)
-                  // await metamask_check_chain()
-                  break;
-
               case 4:
                   console.log("TRON")
                   var accounts = await window.okxwallet.tronLink.request({ method: 'tron_requestAccounts'})
                   console.log(accounts)
-              case 5:
-                var accounts = await ethereum.request({ method: "eth_requestAccounts" });
-                account = accounts[0];
-                await evm_check_chain(bsc)
+              case 2: case 5: case 6: case 7:
+                await evm_check_chain_router(invoice.type)
                 break;
               default : 
                 break;
@@ -922,7 +956,7 @@ async function okx_pay_invoice_confirm() {
           await window.okxwallet.solana.signAndSendTransaction(transaction)
           
           break;
-        case 2: case 5:
+        case 2: case 5: case 6 : case 7:
             //Connect the okx wallet 
             await metamask_pay_invoice_confirm()
             break;
@@ -1155,7 +1189,7 @@ async function ton_pay_invoice_confirm() {
     console.log(payload)
 
     const transaction = {
-      validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
+      validUntil: Math.floor(Date.now() / 1000) + 6000, // 6000 sec
       messages: [
           {
               address: invoice.address,

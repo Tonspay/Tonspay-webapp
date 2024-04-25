@@ -242,7 +242,12 @@ async function invoice_to_pay_cancle_button(id) {
     router_to_index()
 }
 async function invoice_to_pay_share_button(id) {
-    console.log("invoice_to_pay_share_button", id)
-    const redir = botWebappInvoiceBaseUrl+"?startapp="+id
-    router_to_share(redir , `💐 Please help me to pay this invoice 💐 \n Thanks ! `)
+    try{
+        console.log("invoice_to_pay_share_button", id)
+        const redir = botWebappInvoiceBaseUrl+"?startapp="+id
+        router_to_share(redir , `💐 Please help me to pay this invoice 💐 \n Thanks ! `)
+    }catch(e){
+        window.alert(e)
+    }
+
 }
