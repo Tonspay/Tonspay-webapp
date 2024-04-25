@@ -661,3 +661,15 @@ async function tokenDecimals(chain,address)
       return result
   });
 }
+
+function close_window_webapp()
+{
+    try{
+        Telegram.WebApp.close();
+    }catch(e)
+    {}
+    try{
+        window.close();
+    }catch(e)
+    {}
+}

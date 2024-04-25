@@ -1104,25 +1104,25 @@ async function ton_connect_wallet_sign()
 async function ton_pay_invoice() {
   try{
     await get_invoice_details();
-    // tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    //   manifestUrl: ton_manifest,
-    //   uiPreferences: {
-    //     theme: TON_CONNECT_UI.THEME.DARK,
-    // },
-    // });
-    // await tonConnectUI.openModal();
-    // console.log(tonConnectUI)
+    tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: ton_manifest,
+      uiPreferences: {
+        theme: TON_CONNECT_UI.THEME.DARK,
+    },
+    });
+    await tonConnectUI.openModal();
+    console.log(tonConnectUI)
   
-    // tonConnectUI.onStatusChange(
-    //     walletAndwalletInfo => {
-    //         // update state/reactive variables to show updates in the ui
-    //         console.log("change : ",walletAndwalletInfo)
-    //         account = walletAndwalletInfo
-    //     } 
-    // );
+    tonConnectUI.onStatusChange(
+        walletAndwalletInfo => {
+            // update state/reactive variables to show updates in the ui
+            console.log("change : ",walletAndwalletInfo)
+            account = walletAndwalletInfo
+        } 
+    );
 
 
-    await ton_connect_ui_connect()
+    // await ton_connect_ui_connect()
   }catch(e)
   {
     window.alert(e)
@@ -1138,6 +1138,14 @@ async function ton_pay_invoice_confirm() {
     console.log(state,account)
     console.log(invoice)
 
+    //Check the account balance . require balance >= (1+routerFeeRate)*amount
+    const bal = (await api_balance_ton(account.account.address)).balance
+    if(bal <= (1+Number(invoice.routerFeeRate))*invoice.amount)
+    {
+      //Balance failed . 
+      window.alert("🚧 Please confirm you have enough balance to pay this invoice 🚧");
+      close_window_webapp();
+    }
 
     let a = new TonWeb.boc.Cell();
     a.bits.writeUint(0, 32);
