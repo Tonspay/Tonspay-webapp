@@ -148,7 +148,7 @@
                                     <span>(required)</span>
                                 </div>
                                 <div class="pb-3"></div> -->
-                                <a href="#" class="btn btn-full gradient-green rounded-s shadow-bg shadow-bg-s mb-4">Generate Invoice</a>
+                                <a href="#" onclick="router_to_bot()" class="btn btn-full gradient-green rounded-s shadow-bg shadow-bg-s mb-4">Generate Invoice</a>
                             </div>
                         </div>
                     </div>
@@ -157,6 +157,7 @@
 
                 <!-- BUTTON PAY / CANCEL -->
                 <div id="invoice_to_pay_buttom" style="display: none;">
+
                     <div class="card card-style gradient-green rounded-s shadow-bg shadow-bg-xs mb-3">
                         <div class="content my-2">
                             <a href="#" data-bs-toggle="offcanvas" data-bs-target="#menu-bill" class="d-flex">
@@ -176,9 +177,30 @@
                             </a>
                         </div>
                     </div>
+
+                    <div class="card card-style gradient-blue rounded-s shadow-bg shadow-bg-xs" id="invoice_to_pay_share">
+                        <div class="content my-2">
+                            <a href="#" class="d-flex">
+                                <div class="align-self-center">
+                                    <h1 class="mb-0 font-14"><i class="bi bi-wallet color-white pe-3"></i></h1>
+                                </div>
+                                <div class="align-self-center">
+                                    <h5 class="color-white font-600 mb-0 mt-0 font-14 line-height-s">
+                                        Share invoice
+                                    </h5>
+                                </div>
+                                <div class="align-self-center ms-auto">
+                                    <h5 class="color-white font-600 mb-0 mt-0 font-14 line-height-s">
+                                        Share to someone to pay
+                                    </h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
                     <div class="card card-style gradient-red rounded-s shadow-bg shadow-bg-xs" id="invoice_to_pay_cancle">
                         <div class="content my-2">
-                            <a class="d-flex">
+                            <a href="#" class="d-flex">
                                 <div class="align-self-center">
                                     <h1 class="mb-0 font-14"><i class="bi bi-wallet color-white pe-3"></i></h1>
                                 </div>
@@ -195,6 +217,7 @@
                             </a>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- PAID INVOICE CHECK DETAILS -->

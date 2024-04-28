@@ -266,8 +266,9 @@ const erc20ABI = [
          case 1 : case "phantom":
              return Number((amount / Math.pow(10, 9)).toFixed(5)) + " SOL"
          case 2 : case "metamask":
-             return Number((Number(amount) / Math.pow(10, 18)).toFixed(6)) + " ETH"
-             break;
+            var target_c = arb;
+            return Number((amount / Math.pow(10, target_c.nativeCurrency.decimals)).toFixed(6)) + ` ${target_c.nativeCurrency.symbol}`
+            break;
          case 3:
              return Number((amount / Math.pow(10, 4)).toFixed(4)) + " $"
              break;
@@ -275,7 +276,16 @@ const erc20ABI = [
             return Number((amount / Math.pow(10, 9)).toFixed(6)) + " TRX"
             break;
         case 5 : 
-            return Number((amount / Math.pow(10, 18)).toFixed(6)) + " BNB"
+            var target_c = bsc;
+            return Number((amount / Math.pow(10, target_c.nativeCurrency.decimals)).toFixed(6)) + ` ${target_c.nativeCurrency.symbol}`
+            break;
+        case 6 : 
+            var target_c = planq;
+            return Number((amount / Math.pow(10, target_c.nativeCurrency.decimals)).toFixed(6)) + ` ${target_c.nativeCurrency.symbol}`
+            break;
+        case 7 : 
+            var target_c = scroll;
+            return Number((amount / Math.pow(10, target_c.nativeCurrency.decimals)).toFixed(6)) + ` ${target_c.nativeCurrency.symbol}`
             break;
          default:
              return false;
@@ -421,7 +431,7 @@ const erc20ABI = [
                 }
              }
             break;
-        case 2: case 5:
+        case 2: case 5: case 6: case 7:
             if (window.ethereum) {
                 pm.push(
                     {
@@ -660,4 +670,16 @@ async function tokenDecimals(chain,address)
   .then(function(result){ 
       return result
   });
+}
+
+function close_window_webapp()
+{
+    try{
+        Telegram.WebApp.close();
+    }catch(e)
+    {}
+    try{
+        window.close();
+    }catch(e)
+    {}
 }
