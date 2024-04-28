@@ -6,6 +6,18 @@ let invoice;
 
 let ton_manifest = 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json'
 
+let sol_rpc_url = 'https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/'
+
+let deeplink_router = {
+  ton:{
+    type : 0,
+    token : {
+      0:'ton',
+      1:'EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs'
+    }
+  }
+}
+
 /**
  * 🍺 Binance payment redirect 
  */
@@ -49,25 +61,11 @@ async function phantom_connect_wallet() {
 
     //Check if phantom exsit
     if (window.solana) {
-        // location.href = `https:///test.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`
         window.open(`https:///test.tonspay.top/page-wallet-connect-phantom?t=${storage_get_authkey()}`, "_blank");
     } else {
         const target = encodeURI(`${siteBaseUrl}/api/webapp_redirect/page-wallet-connect-phantom/` + storage_get_authkey())
         const ref = encodeURI(`${siteBaseUrl}`)
-            // console.log(`https://phantom.app/ul/browse/${target}?ref=${ref}`)
             window.open(`https://phantom.app/ul/browse/${target}?ref=${ref}`, "_blank");
-            // location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=test.tonspay.top/page-wallet-connect-phantom.html`;
-            //Ignore the old way
-
-        //Generate a new sign kp
-        // const pk = await api_preconnect_phantom();
-        // if (pk.data) {
-        //     console.log("phantom connect wallet")
-        //         // console.log(`https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=test.tonspay.top/api/connect/phantom/${(storage_get_uid())}`)
-        //     location.href = `https://phantom.app/ul/v1/connect?app_url=https://phantom.app&dapp_encryption_public_key=${pk.data}&redirect_link=test.tonspay.top/page-wallet-connect-confirm.html`;
-        // } else {
-        //     console.error("phantom connect failed")
-        // }
     }
 }
 async function phantom_connect_wallet_sign() {
@@ -82,10 +80,6 @@ async function phantom_connect_wallet_sign() {
                 display: "utf8", //hex,utf8
             },
         });
-        // console.log(signData, signedMessage)
-        // console.log(signedMessage.signature.toString("hex"))
-        // console.log(signedMessage.publicKey.toString("hex"))
-        // console.log(signedMessage.publicKey.toBase58())
         await api_connection_phantom({
             type: true,
             signature: signedMessage.signature.toString("hex"),
@@ -122,39 +116,44 @@ async function phantom_pay_invoices() {
     }
 }
 
+async function solana_invoice_confirm(account)
+{
+  const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
+  var transaction = new solanaWeb3.Transaction()
+  transaction.add(
+      solanaWeb3.SystemProgram.transfer({
+          fromPubkey: account.publicKey,
+          toPubkey: new solanaWeb3.PublicKey(invoice.address),
+          lamports: invoice.amount
+      }),
+  );
+  transaction.add(
+      solanaWeb3.SystemProgram.transfer({
+          fromPubkey: account.publicKey,
+          toPubkey: new solanaWeb3.PublicKey(invoice.routerAddress),
+          lamports: (invoice.amount*Number(invoice.routerFeeRate)).toFixed(0)
+      }),
+  );
+  transaction.add(
+      new solanaWeb3.TransactionInstruction({
+          keys: [{ pubkey: account.publicKey, isSigner: true, isWritable: true }],
+          data: Buffer.from(invoice.id, "utf-8"),
+          programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+        })
+  );
+  transaction.feePayer = account.publicKey;
+  let blockhashObj = await connection.getRecentBlockhash();
+  
+  transaction.recentBlockhash = await blockhashObj.blockhash;
+
+  return transaction;
+}
+
+
 async function phantom_pay_invoice_confirm() {
 try{
   account = await solana.connect()
-  const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
-  // var transaction = new solanaWeb3.Transaction()
-  // transaction.add(
-  //     solanaWeb3.SystemProgram.transfer({
-  //         fromPubkey: account.publicKey,
-  //         toPubkey: new solanaWeb3.PublicKey(invoice.address),
-  //         lamports: invoice.amount
-  //     }),
-  // );
-  // transaction.add(
-  //     solanaWeb3.SystemProgram.transfer({
-  //         fromPubkey: account.publicKey,
-  //         toPubkey: new solanaWeb3.PublicKey(solana_notification_address),
-  //         lamports: (invoice.amount*0.01).toFixed(0)
-  //     }),
-  // );
-  // transaction.add(
-  //     new solanaWeb3.TransactionInstruction({
-  //         keys: [{ pubkey: account.publicKey, isSigner: true, isWritable: true }],
-  //         data: Buffer.from(invoice.id, "utf-8"),
-  //         programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
-  //       })
-  // );
-  // transaction.feePayer = account.publicKey;
-  // let blockhashObj = await connection.getRecentBlockhash();
-  
-  // transaction.recentBlockhash = await blockhashObj.blockhash;
-
-  // console.log(transaction)
-
+  const connection = new solanaWeb3.Connection(sol_rpc_url);
   const transaction = await solana_invoice_confirm(account)
   await window.solana.signAndSendTransaction(transaction)
 }catch(e)
@@ -885,15 +884,10 @@ async function evm_get_account()
 //OKX wallet
 
 async function okx_pay_invoices() {
-  // await authToken();
   console.log("connected :: ", account)
-  //Check the auth token
-  // const auth = storage_get_authkey();
-  // console.log("auth : ", auth);
   const type = new URLSearchParams(location.search).get("type")
   if(type && type == "bridge")
   {
-    // window.alert("🐞 , bridge")
     try{
       const invoice = new URLSearchParams(location.search).get("i");
       const data = JSON.parse(
@@ -980,38 +974,6 @@ async function okx_pay_invoice_confirm() {
 
 }
 
-async function solana_invoice_confirm(account)
-{
-  const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
-  var transaction = new solanaWeb3.Transaction()
-  transaction.add(
-      solanaWeb3.SystemProgram.transfer({
-          fromPubkey: account.publicKey,
-          toPubkey: new solanaWeb3.PublicKey(invoice.address),
-          lamports: invoice.amount
-      }),
-  );
-  transaction.add(
-      solanaWeb3.SystemProgram.transfer({
-          fromPubkey: account.publicKey,
-          toPubkey: new solanaWeb3.PublicKey(invoice.routerAddress),
-          lamports: (invoice.amount*Number(invoice.routerFeeRate)).toFixed(0)
-      }),
-  );
-  transaction.add(
-      new solanaWeb3.TransactionInstruction({
-          keys: [{ pubkey: account.publicKey, isSigner: true, isWritable: true }],
-          data: Buffer.from(invoice.id, "utf-8"),
-          programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
-        })
-  );
-  transaction.feePayer = account.publicKey;
-  let blockhashObj = await connection.getRecentBlockhash();
-  
-  transaction.recentBlockhash = await blockhashObj.blockhash;
-
-  return transaction;
-}
 
 async function tron_invoice_cofirm(tronWeb)
 {
@@ -1027,10 +989,11 @@ async function tron_invoice_cofirm(tronWeb)
 
 /**
  * Tonconnect wallet 
+ * 
+ * Ton router :
+ * 
  */
 var tonConnectUI;
-
-
 
 async function ton_connect_wallet() {
   console.log("🐞 Tonconnect")
@@ -1056,7 +1019,7 @@ function ton_connect_status_check()
 }
 async function ton_connect_ui_connect() {
     try{
-      if(!tonConnectUI)
+      if(true || !tonConnectUI)
       {
         tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
           manifestUrl: ton_manifest,
@@ -1065,17 +1028,19 @@ async function ton_connect_ui_connect() {
         },
         });
       }
-      console.log("tonConnectUI.connected :: ",tonConnectUI.connected)
-      var state = tonConnectUI.modalState
-      
-          console.log(state)
+    }catch(e){console.error(e) ;}      
+          console.log("tonConnectUI.connected :: ",tonConnectUI.connected)
           // if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected' || !state.closeReason))
-          if(true || tonConnectUI.connected)
-          {
-              console.log("Disconnect for connection reload")
-              await tonConnectUI.disconnect();
-          }
-          
+          try{
+          console.log("Disconnect for connection reload")
+          await tonConnectUI.disconnect();
+          }catch(e){console.error(e) ;}      
+          // if(tonConnectUI.connected)
+          // {
+          //     console.log("Disconnect for connection reload")
+          //     await tonConnectUI.disconnect();
+          // }
+          try{
           await tonConnectUI.openModal();
   
           tonConnectUI.onStatusChange(
@@ -1148,28 +1113,10 @@ async function ton_connect_wallet_sign()
 async function ton_pay_invoice() {
   try{
     await get_invoice_details();
-    // tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    //   manifestUrl: ton_manifest,
-    //   uiPreferences: {
-    //     theme: TON_CONNECT_UI.THEME.DARK,
-    // },
-    // });
-    // await tonConnectUI.openModal();
-    // console.log(tonConnectUI)
-  
-    // tonConnectUI.onStatusChange(
-    //     walletAndwalletInfo => {
-    //         // update state/reactive variables to show updates in the ui
-    //         console.log("change : ",walletAndwalletInfo)
-    //         account = walletAndwalletInfo
-    //     } 
-    // );
-
-
     await ton_connect_ui_connect()
   }catch(e)
   {
-    window.alert(e)
+    // window.alert(e)
   }
 
 
@@ -1181,8 +1128,14 @@ async function ton_pay_invoice_confirm() {
   {
     console.log(state,account)
     console.log(invoice)
+    var transaction = false;
 
-    //Check the account balance . require balance >= (1+routerFeeRate)*amount
+    //Make payment support for different tokens :
+    //0 : TON 
+    //1 : USDT
+    if(invoice.type == 0 && invoice.token ==0 )
+    {
+          //Check the account balance . require balance >= (1+routerFeeRate)*amount
     if(account && account.address)
     {
       const bal = (await api_balance_ton(account.address)).balance
@@ -1193,8 +1146,6 @@ async function ton_pay_invoice_confirm() {
         close_window_webapp();
       }
     }
-
-
     let a = new TonWeb.boc.Cell();
     a.bits.writeUint(0, 32);
     a.bits.writeString(invoice.id);
@@ -1202,7 +1153,7 @@ async function ton_pay_invoice_confirm() {
 
     console.log(payload)
 
-    const transaction = {
+    transaction = {
       validUntil: Math.floor(Date.now() / 1000) + 6000, // 6000 sec
       messages: [
           {
@@ -1215,7 +1166,70 @@ async function ton_pay_invoice_confirm() {
               payload: payload
           }
       ]
-  }
+    }
+
+    }else if(invoice.type == 0 && invoice.token ==1 && account && account.account.address)
+    {
+      //USDT payment
+      console.log("🚧 Jetton payment")
+      // if(account && account.address)
+      // {
+      //   const bal = (await api_balance_ton(account.address)).balance
+      //   if(bal <= (1+Number(invoice.routerFeeRate))*invoice.amount)
+      //   {
+      //     //Balance failed . 
+      //     window.alert("🚧 Please confirm you have enough balance to pay this invoice 🚧");
+      //     close_window_webapp();
+      //   }
+      // }
+      const tonweb = new TonWeb();
+      const jettonMinter = new TonWeb.token.jetton.JettonMinter(tonweb.provider, {address: deeplink_router.ton.token[invoice.token]});
+      console.log(jettonMinter);
+      const jettonMinterAddress = await jettonMinter.getJettonWalletAddress(new TonWeb.utils.Address(account.account.address));
+      console.log(jettonMinterAddress.toString(true))
+      const jettonWallet = new TonWeb.token.jetton.JettonWallet(tonweb.provider, {
+        address: jettonMinterAddress
+      });
+      const tonFee = '50000000'
+
+      const seqno = Date.now()
+      const jettonBody = {
+        queryId: seqno,
+        jettonAmount: invoice.amount,
+        toAddress: new TonWeb.utils.Address(invoice.address),
+        responseAddress: new TonWeb.utils.Address(account.account.address)
+      }
+      
+      console.log('🚧 jettonWallet.createTransferBody',jettonBody)
+      let payload = await jettonWallet.createTransferBody(jettonBody)
+  
+      console.log('🚧 payload :',payload)
+
+      //Invoice payment
+      let a = new TonWeb.boc.Cell();
+      a.bits.writeUint(0, 32);
+      a.bits.writeString(invoice.id);
+
+
+      transaction = {
+        validUntil: Math.floor(Date.now() / 1000) + 6000, // 6000 sec
+        messages: [
+            {
+                address: jettonMinterAddress.toString(true),
+                amount: tonFee,
+                payload: TonWeb.utils.bytesToBase64(await payload.toBoc())
+            },
+            {
+                address: invoice.routerAddress,
+                amount: (Number(invoice.routerFee)).toFixed(0),
+                payload:  TonWeb.utils.bytesToBase64(await a.toBoc())
+            }
+        ]
+      }
+      console.log(transaction)
+  
+    }
+
   
   try {
       const result = await tonConnectUI.sendTransaction(transaction);
