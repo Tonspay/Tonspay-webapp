@@ -1019,8 +1019,9 @@ function ton_connect_status_check()
 }
 async function ton_connect_ui_connect() {
     try{
-      if(true || !tonConnectUI)
+      if(!tonConnectUI)
       {
+        console.log("🚧 INIT the tonconnect ",tonConnectUI)
         tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
           manifestUrl: ton_manifest,
           uiPreferences: {
@@ -1029,17 +1030,18 @@ async function ton_connect_ui_connect() {
         });
       }
     }catch(e){console.error(e) ;}      
-          console.log("tonConnectUI.connected :: ",tonConnectUI.connected)
+          console.log("tonConnectUI.connected :: @2.0.0",tonConnectUI.connected)
           // if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected' || !state.closeReason))
           try{
-          console.log("Disconnect for connection reload")
-          await tonConnectUI.disconnect();
+              if(tonConnectUI.connected)
+              {
+                  console.log("Disconnect for connection reload")
+                  await tonConnectUI.disconnect();
+              }
+            // console.log("Disconnect for connection reload")
+            // await tonConnectUI.disconnect();
           }catch(e){console.error(e) ;}      
-          // if(tonConnectUI.connected)
-          // {
-          //     console.log("Disconnect for connection reload")
-          //     await tonConnectUI.disconnect();
-          // }
+
           try{
           await tonConnectUI.openModal();
   

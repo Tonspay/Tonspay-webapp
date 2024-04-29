@@ -258,9 +258,14 @@ const erc20ABI = [
  const payment_router_redirect = `${siteBaseUrl}/api/webapp_redirect_phantom/`
 
 
- function amount_to_display(type, amount) {
+ function amount_to_display(type,token, amount) {
      switch (type) {
          case 0 : case "ton":
+             if(token == 1)
+             {
+                //usdt jetton
+                return Number((amount / Math.pow(10, 6)).toFixed(4)) + " USDT"
+             }
              return Number((amount / Math.pow(10, 9)).toFixed(4)) + " TON"
              break;
          case 1 : case "phantom":

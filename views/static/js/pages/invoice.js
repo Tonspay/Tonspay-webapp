@@ -70,14 +70,14 @@ async function invoice_list_draw() {
                         newnode = invoice_expired_draw(
                             ele.comment,
                             ele.createTime,
-                            amount_to_display(ele.type, ele.amount),
+                            amount_to_display(ele.type,ele.token, ele.amount),
                             ele.id
                         )
                     }else{
                         newnode = invoice_pending_draw(
                             ele.comment,
                             ele.createTime,
-                            amount_to_display(ele.type, ele.amount),
+                            amount_to_display(ele.type,ele.token, ele.amount),
                             ele.id
                         )
                     }
@@ -87,7 +87,7 @@ async function invoice_list_draw() {
                     newnode = invoice_paid_draw(
                         ele.comment,
                         ele.createTime,
-                        amount_to_display(ele.type, ele.amount),
+                        amount_to_display(ele.type,ele.token, ele.amount),
                         ele.id
                     )
                 }else{
@@ -183,7 +183,7 @@ async function invoice_payment_draw(id, invoiceData) {
         invoice_to_pay_panel_comment.innerText = invoiceData.comment
         invoice_to_pay_panel_time.innerText = ((new Date(invoiceData.createTime)).toUTCString())
         invoice_to_pay_panel_id.innerText = id
-        invoice_to_pay_amount.innerText = amount_to_display(invoiceData.type, invoiceData.amount)
+        invoice_to_pay_amount.innerText = amount_to_display(invoiceData.type,invoiceData.token, invoiceData.amount)
 
         const invoice_to_pay_confirm = document.getElementById("invoice_to_pay_confirm");
         const invoice_to_pay_cancle = document.getElementById("invoice_to_pay_cancle");
@@ -196,12 +196,12 @@ async function invoice_payment_draw(id, invoiceData) {
             if(Date.now() > invoiceData.expiredTime)
             {
                 //Time out 
-                f.appendChild(invoice_expired_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type, invoiceData.amount), id))
+                f.appendChild(invoice_expired_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type,invoiceData.token, invoiceData.amount), id))
                 document.getElementById("panel_status_experid_template").style.display =  "inline";
                 document.getElementById('invoice_pending_pay_with').style.display="none"
 
             }else{
-                f.appendChild(invoice_pending_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type, invoiceData.amount), id))
+                f.appendChild(invoice_pending_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type,invoiceData.token, invoiceData.amount), id))
                 const btn = document.getElementById('invoice_to_pay_buttom');
                 btn.style.display = "inline"
                 
@@ -218,7 +218,7 @@ async function invoice_payment_draw(id, invoiceData) {
             }
 
         }else if(invoiceData.status == 1){
-            f.appendChild(invoice_paid_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type, invoiceData.amount), id))
+            f.appendChild(invoice_paid_draw(invoiceData.comment, invoiceData.createTime, amount_to_display(invoiceData.type,invoiceData.token, invoiceData.amount), id))
 
             const btn = document.getElementById('invoice_paid_buttom');
             btn.style.display = "inline"
