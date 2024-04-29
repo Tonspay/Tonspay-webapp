@@ -1206,9 +1206,9 @@ async function ton_pay_invoice_confirm() {
       console.log('🚧 payload :',payload)
 
       //Invoice payment
-      let a = new TonWeb.boc.Cell();
-      a.bits.writeUint(0, 32);
-      a.bits.writeString(invoice.id);
+      let invoicePayload = new TonWeb.boc.Cell();
+      invoicePayload.bits.writeUint(0, 32);
+      invoicePayload.bits.writeString(invoice.id);
 
 
       transaction = {
@@ -1222,7 +1222,7 @@ async function ton_pay_invoice_confirm() {
             {
                 address: invoice.routerAddress,
                 amount: (Number(invoice.routerFee)).toFixed(0),
-                payload:  TonWeb.utils.bytesToBase64(await a.toBoc())
+                payload:  TonWeb.utils.bytesToBase64(await invoicePayload.toBoc())
             }
         ]
       }
