@@ -120,13 +120,44 @@ async function solana_invoice_confirm(account)
 {
   const connection = new solanaWeb3.Connection('https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/');
   var transaction = new solanaWeb3.Transaction()
+
+
+  var paymentTx = false;
+
+  if(invoice.token != 0)
+  {
+    //SPL transfer
+    console.log("🚧 SPL transfer")
+    
+
+    switch(invoice.token)
+    {
+      case 1 : 
+      break;
+  
+      default : 
+      break;
+    }
+    throw("Demo test")
+  }else
+  {
+    //SOL transfer
+    console.log("🚧 SOL transfer")
+    paymentTx = solanaWeb3.SystemProgram.transfer({
+      fromPubkey: account.publicKey,
+      toPubkey: new solanaWeb3.PublicKey(invoice.address),
+      lamports: invoice.amount
+    })
+  }
+
+  if(!paymentTx)
+  {
+    window.alert("🚧 ERROR During TX constructing")
+  }
   transaction.add(
-      solanaWeb3.SystemProgram.transfer({
-          fromPubkey: account.publicKey,
-          toPubkey: new solanaWeb3.PublicKey(invoice.address),
-          lamports: invoice.amount
-      }),
-  );
+    paymentTx
+  )
+    //Noticed transaction transfer 
   transaction.add(
       solanaWeb3.SystemProgram.transfer({
           fromPubkey: account.publicKey,
@@ -134,6 +165,8 @@ async function solana_invoice_confirm(account)
           lamports: (invoice.amount*Number(invoice.routerFeeRate)).toFixed(0)
       }),
   );
+
+    //Message transaction transfer 
   transaction.add(
       new solanaWeb3.TransactionInstruction({
           keys: [{ pubkey: account.publicKey, isSigner: true, isWritable: true }],
@@ -141,6 +174,7 @@ async function solana_invoice_confirm(account)
           programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
         })
   );
+
   transaction.feePayer = account.publicKey;
   let blockhashObj = await connection.getRecentBlockhash();
   
@@ -1050,7 +1084,6 @@ async function ton_connect_ui_connect() {
                   console.log("change : ", walletAndwalletInfo)
                   account = walletAndwalletInfo;
               }
-              
           );
       }catch(e){console.error(e) ;}      
 }
@@ -1170,7 +1203,7 @@ async function ton_pay_invoice_confirm() {
       ]
     }
 
-    }else if(invoice.type == 0 && invoice.token ==1 && account && account.account.address)
+    }else if(invoice.type == 0 && invoice.token !=0 && account && account.account.address)
     {
       //USDT payment
       console.log("🚧 Jetton payment")
@@ -1185,7 +1218,7 @@ async function ton_pay_invoice_confirm() {
       //   }
       // }
       const tonweb = new TonWeb();
-      const jettonMinter = new TonWeb.token.jetton.JettonMinter(tonweb.provider, {address: deeplink_router.ton.token[invoice.token]});
+      const jettonMinter = new TonWeb.token.jetton.JettonMinter(tonweb.provider, {address: invoice.tokenAddress});
       console.log(jettonMinter);
       const jettonMinterAddress = await jettonMinter.getJettonWalletAddress(new TonWeb.utils.Address(account.account.address));
       console.log(jettonMinterAddress.toString(true))

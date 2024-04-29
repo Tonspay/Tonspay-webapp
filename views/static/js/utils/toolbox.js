@@ -269,6 +269,11 @@ const erc20ABI = [
              return Number((amount / Math.pow(10, 9)).toFixed(4)) + " TON"
              break;
          case 1 : case "phantom":
+            if(token == 1)
+            {
+               //usdc jetton
+               return Number((amount / Math.pow(10, 6)).toFixed(4)) + " USDC"
+            }
              return Number((amount / Math.pow(10, 9)).toFixed(5)) + " SOL"
          case 2 : case "metamask":
             var target_c = arb;
