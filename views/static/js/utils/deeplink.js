@@ -408,7 +408,7 @@ async function metamask_pay_invoice_confirm() {
       }
       
     }else{
-      const contract = await metamask_load_contract(targetChian.contract);
+      const contract = await metamask_load_contract(invoice.routerAddress);
       console.log(invoice.address , 
           invoice.amount,
           invoice.id,contract)
