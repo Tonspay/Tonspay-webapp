@@ -1051,13 +1051,19 @@ function ton_connect_status_check()
     return false;
   }
 }
-async function ton_connect_ui_connect() {
+async function ton_connect_ui_connect(url) {
     try{
       if(!tonConnectUI)
       {
         console.log("🚧 INIT the tonconnect ",tonConnectUI)
+        var manifest = ton_manifest ;
+        if(url)
+        {
+          manifest+=`?url=${url}`
+        }
+        console.log(ton_manifest)
         tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-          manifestUrl: ton_manifest,
+          manifestUrl: manifest,
           uiPreferences: {
             theme: TON_CONNECT_UI.THEME.DARK,
         },
