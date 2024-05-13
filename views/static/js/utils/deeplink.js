@@ -4,7 +4,7 @@ let account;
 
 let invoice;
 
-let ton_manifest = 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json'
+let ton_manifest = `${siteBaseUrl}/api/manifest`
 
 let sol_rpc_url = 'https://hardworking-dimensional-shard.solana-mainnet.quiknode.pro/751ff4a4207ab5375a094a904551836b73028cee/'
 
@@ -1147,8 +1147,12 @@ async function ton_connect_wallet_sign()
 
 async function ton_pay_invoice() {
   try{
-    await get_invoice_details();
-    await ton_connect_ui_connect()
+    var i = await get_invoice_details();
+    if(i)
+    {
+      await ton_connect_ui_connect(`${siteBaseUrl}/page-payment-ton-confirm?i=${i.id}`)
+    }
+    
   }catch(e)
   {
     // window.alert(e)
