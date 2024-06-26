@@ -246,7 +246,8 @@ const erc20ABI = [
     okex : `page-payment-okex-confirm`,
     metamask : `page-payment-metamask-confirm`,
     binance : `page-payment-binance-confirm`,
-    ton : `page-payment-ton-confirm`
+    ton : `page-payment-ton-confirm`,
+    tonspack : `page-payment-tonspack-confirm`
  }
  const payment_wallet_router_outter = {
     phantom : payment_base_url+payment_wallet_router_inner.phantom,
@@ -254,6 +255,7 @@ const erc20ABI = [
     metamask : payment_base_url+payment_wallet_router_inner.metamask,
     binance : payment_base_url+payment_wallet_router_inner.binance,
     ton : payment_base_url+payment_wallet_router_inner.ton,
+    tonspack : payment_base_url+payment_wallet_router_inner.tonspack
  }
  const payment_router_redirect = `${siteBaseUrl}/api/webapp_redirect_phantom/`
 
@@ -558,6 +560,12 @@ const erc20ABI = [
             if (window.ethereum) {
                 pm.push(
                     {
+                        name:"Tonspack",
+                        action:()=>{location.href = `${payment_wallet_router_outter.tonspack}?type=bridge&i=${url}&t=${storage_get_authkey()}`}
+                    }
+                )
+                pm.push(
+                    {
                         name:"Metamask",
                         action:()=>{window.open(`${payment_wallet_router_outter.metamask}?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");Telegram.WebApp.close();}
                     }
@@ -574,8 +582,14 @@ const erc20ABI = [
                {
                 pm.push(
                     {
+                        name:"Tonspack",
+                        action:()=>{window.open(`${payment_wallet_router_outter.tonspack}?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                    }
+                )
+                pm.push(
+                    {
                         name:"Metamask",
-                        action:()=>{window.open(`https://metamask.app.link/dapp/test.tonspay.top/page-payment-metamask-confirm?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                        action:()=>{window.open(`https://metamask.app.link/dapp/www.tonspay.top/page-payment-metamask-confirm?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
                     }
                 )
                 pm.push(
@@ -588,6 +602,12 @@ const erc20ABI = [
                 )
                    
                }else{
+                pm.push(
+                    {
+                        name:"Tonspack",
+                        action:()=>{window.open(`${payment_wallet_router_outter.tonspack}?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                    }
+                )
                 pm.push(
                     {
                         name:"Metamask",

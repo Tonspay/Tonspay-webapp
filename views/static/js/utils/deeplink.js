@@ -203,6 +203,157 @@ try{
     router_to_webapp_index()
 }
 
+async function tonspack_pay_invoices() {
+  const type = new URLSearchParams(location.search).get("type")
+  if(type && type == "bridge")
+  {
+    try{
+      const invoice = new URLSearchParams(location.search).get("i");
+      const data = JSON.parse(
+        Buffer.from(invoice,'hex').toString()
+      )
+      bridge_evm_ton_preload(data)
+      
+    }catch(e)
+    {
+      console.error(e)
+      window.alert(e)
+      //Reload the page 
+    }
+    return true;
+  }
+  const invoice_id = new URLSearchParams(location.search).get("i")
+  if (invoice_id) {
+      const req = await api_info_invoice(invoice_id)
+      if (req && req.data && req.data.id) {
+          // console.log("req", req)
+          invoice = req.data
+          console.log(invoice)
+          await tonspack_pay_invoices_connectwallet(invoice)
+      }
+  }
+}
+
+async function tonspack_pay_invoices_confirm() {
+  try{
+    const type = new URLSearchParams(location.search).get("type")
+    if(type && type == "bridge")
+    {
+      await bridge_evm_ton_tonspack()
+    }
+   
+    switch(invoice.type)
+    {
+      case 1 :
+        const transaction = await solana_invoice_confirm(new solanaWeb3.publicKey(account))
+        console.log('transaction',transaction);
+        
+        await window.okxwallet.solana.signAndSendTransaction(transaction)
+        
+        break;
+      case 2: case 5: case 6 : case 7:
+          //Connect the okx wallet 
+          window.web3 = new Web3(window.ethereum);
+
+            const contract = await metamask_load_contract(invoice.routerAddress);
+            console.log(invoice.address , 
+                invoice.amount,
+                invoice.id,contract)
+                try{
+                  const finalValue = (invoice.amount*(1+invoice.routerFeeRate)).toFixed(0)
+                  const ct = await contract.methods.transfer(
+                    invoice.address , 
+                    invoice.amount,
+                    invoice.id)
+                    data =await ct.encodeABI();
+
+                    var txns = {
+                      t:invoice.address,
+                      v:invoice.amount,
+                      d:data
+                  }
+                  var pack = new Tonspack();
+                  await await pack.send(chain,txns)
+                    if(invoice?.redirect)
+                    {
+                      router_to_outter_any(invoice.redirect)
+                    }
+                    router_to_webapp_index()
+                    
+                }catch(e)
+                {
+                  if(e.code==100)
+                  {
+                    //User cancel
+                  }else{
+                    console.log("🐞 ERROR :: ",e)
+                    router_to_index()
+                  }
+                }
+          
+      case 4:
+          await tron_invoice_cofirm(okxwallet.tronLink.tronWeb)
+          break;
+      default : 
+        break;
+    }
+  }catch(e){console.error(e)}
+}
+
+
+async function tonspack_pay_invoices_connectwallet(invoice)
+{
+  switch(invoice.type)
+  {
+    case 1 :
+      var pack = new Tonspack();
+      console.log('pack.uuid',pack.uuid)
+      var account = await pack.connect({t:1,i:1})
+      console.log("account",account)
+      break;
+    case 2: case 5: case 6: case 7:
+      var chain = await tonspack_pay_invoices_evm_check_chain_router(invoice.type)
+      if(chain)
+      {
+        var pack = new Tonspack();
+        console.log('pack.uuid',pack.uuid)
+        console.log(chain)
+        const chainId = parseInt(chain.chainId)
+        console.log(chainId)
+        var account = await pack.connect({t:1,i:chainId})
+        console.log("account",account)
+      }
+      break;
+    default : 
+      break;
+  }
+}
+
+async function tonspack_pay_invoices_evm_check_chain_router(type)
+{
+  switch(type)
+  {
+    case 2 :
+      return (arb);
+      break;
+    case 5:
+      return (bsc);
+      break;
+    case 6:
+      return (planq);
+      break;
+    case 7:
+      return (scroll);
+      break;
+    default :
+      break;
+  }
+
+  var accounts = await ethereum.request({ method: "eth_requestAccounts" });
+  account = accounts[0];
+  return account
+}
+
 /**
  * 🍺 EVM & Metamask network connection
  */
