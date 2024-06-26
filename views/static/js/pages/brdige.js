@@ -179,7 +179,7 @@ async function bridge_evm_ton()
     {
         if(Number(swapData.data.dstAmount)<=miniAmount)
         {
-            window.alert("🐞 Must bridge more than 10 TON")
+            // window.alert("🐞 Must bridge more than 10 TON")
         }
         window.web3 = new Web3(window.ethereum);
         console.log("🐞SEND TX  :: ",swapData.data.tx)
@@ -201,7 +201,7 @@ async function bridge_evm_ton()
 
         if(Number(balance)<=miniAmount)
         {
-            window.alert("🐞 Must bridge more than 10 TON")
+            // window.alert("🐞 Must bridge more than 10 TON")
         }
         console.log(balance)
         const targetAddress= {
