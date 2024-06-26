@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Test call up.</title>
+    <body onload="ton_connect_ui_connect()">
+        <button onclick="sendTx()"> Send txn</button>
+        <!-- Telegram -->
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
+        <script src="https://bundle.run/buffer@6.0.3"></script>
+        <script type="text/javascript">
+          window.Buffer = window.Buffer ?? buffer.Buffer;
+        </script>
+        <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+        <script src="https://unpkg.com/tonweb@latest/dist/tonweb.js"></script>
+
+        <script>
+var tonConnectUI;
+
+
+async function ton_connect_ui_connect(url) {
+    try{
+      if(!tonConnectUI)
+      {
+        console.log("🚧 INIT the tonconnect ",tonConnectUI)
+        var manifest = 'https://tonspay.github.io/Tonspay-manifest/tonsmarket.json' ;
+        tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+          manifestUrl: manifest,
+          uiPreferences: {
+            theme: TON_CONNECT_UI.THEME.DARK,
+        },
+        });
+      }
+    }catch(e){console.error(e) ;}      
+          console.log("tonConnectUI.connected :: @2.0.0",tonConnectUI.connected)
+          // if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected' || !state.closeReason))
+          try{
+              if(tonConnectUI.connected)
+              {
+                  console.log("Disconnect for connection reload")
+                  await tonConnectUI.disconnect();
+              }
+            // console.log("Disconnect for connection reload")
+            // await tonConnectUI.disconnect();
+          }catch(e){console.error(e) ;}      
+
+          try{
+          await tonConnectUI.openModal();
+  
+          tonConnectUI.onStatusChange(
+              walletAndwalletInfo => {
+                  console.log("change : ", walletAndwalletInfo)
+                  account = walletAndwalletInfo;
+              }
+          );
+      }catch(e){console.error(e) ;}      
+}
+
+function ton_connect_status_check()
+{
+  if(!tonConnectUI)
+  {
+    return false;
+  }
+
+  var state = tonConnectUI.modalState
+
+  if(state && (state.status != 'closed' || state.closeReason == 'wallet-selected' || !state.closeReason))
+  {
+    return true;
+  }else
+  {
+    return false;
+  }
+}
+
+async function sendTx() {
+  const state = tonConnectUI.modalState
+  if(state && state.closeReason && state.closeReason == 'wallet-selected'  )
+  {
+    var transaction = false;
+
+
+
+    transaction = {
+      validUntil: Math.floor(Date.now() / 1000) + 6000, // 6000 sec
+      messages: [
+          {
+              address: 'UQAI9ack-mbNMw2oQEuiB6899ZZ1gdDAZXWzv_oIz_N7j9-0',
+              amount: 1000000,
+          }
+      ]
+    }
+  
+  try {
+      const result = await tonConnectUI.sendTransaction(transaction);
+      console.log("result : ",result)
+      // you can use signed boc to find the transaction 
+
+  } catch (e) {
+      console.error(e);
+      window.alert(e)
+  }
+  
+  }else{
+    console.log('try open again')
+    await tonConnectUI.openModal();
+  }
+}
+        </script>
+    </body>
+</head>
+
+</html>

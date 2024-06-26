@@ -220,3 +220,84 @@ async function bridge_evm_ton()
         }
     }
 }
+
+
+async function bridge_evm_ton_tonspack()
+{
+    // window.alert("🐞 , bridge_evm_ton")
+    // await evm_check_chain(bridge_invoice.f.chain);
+    // window.alert("🐞 , evm_check_chain")
+    console.log(bridge_invoice)
+    var chain = await tonspack_pay_invoices_evm_check_chain_router(bridge_invoice.f.chain)
+    const chainId = parseInt(chain.chainId)
+    if(!bridge_invoice.f.tokenType)
+    {
+        //Approve
+        const allowance = await evm_allowance_erc20(bridge_invoice.f.t,inchRouter)
+        console.log(allowance)
+        if(Number(allowance)<Number(bridge_invoice.f.a))
+        {
+            const approve = await evm_approve_erc20_allowance(bridge_invoice.f.t,inchRouter,bridge_invoice.f.a);
+            console.log(approve)
+        }
+    }
+
+    // window.alert("🐞 , allowance")
+    console.log(bridge_invoice)
+    //Get swap bytes data;
+    var account = await (new Tonspack()).connect({t:0,i:chainId})
+    const swapData = await api_1inch_swap(
+        bridge_invoice.f.chain.chainIdRaw,
+        bridge_invoice.f.token,
+        bridge_invoice.t.token,
+        bridge_invoice.f.a,
+        account,
+        1
+        )
+    console.log(swapData);
+    if(swapData.code==200 && swapData.data.tx)
+    {
+        if(Number(swapData.data.dstAmount)<=miniAmount)
+        {
+            window.alert("🐞 Must bridge more than 10 TON")
+        }
+        window.web3 = new Web3(window.ethereum);
+        console.log("🐞SEND TX  :: ",swapData.data.tx)
+        console.log(window.web3)
+        await (new Tonspack()).send(swapData.data.tx)
+        // await window.web3.eth.sendTransaction(swapData.data.tx)
+    }else
+    {
+        //Reload the page
+    }
+
+    //Check TON balance and burn .
+    if(bridge_invoice.t.token)
+    {
+        const balance = await evm_balance_erc20(bridge_invoice.t.token,(await evm_get_account())[0])
+        if(balance > Number(swapData.data.dstAmount))
+        {
+            balance = swapData.data.dstAmount
+        }
+
+        if(Number(balance)<=miniAmount)
+        {
+            window.alert("🐞 Must bridge more than 10 TON")
+        }
+        console.log(balance)
+        const targetAddress= {
+            workchain:0,
+            address_hash:Buffer.from(
+                (new TonWeb.utils.Address(bridge_invoice.t.w)).hashPart
+            )
+        };
+        console.log(targetAddress)
+        const burn = await evm_burn_erc20(bridge_invoice.t.token,targetAddress,balance);
+        console.log(burn)
+        if(burn&&burn.transactionHash)
+        {
+            window.alert("🐞 Bridge success : "+burn.transactionHash);
+            window.open(bridge_invoice.f.chain.blockExplorerUrls+"tx/"+burn.transactionHash)
+        }
+    }
+}
