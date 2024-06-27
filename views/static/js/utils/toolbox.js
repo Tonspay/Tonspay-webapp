@@ -583,7 +583,7 @@ const erc20ABI = [
                 pm.push(
                     {
                         name:"Tonspack",
-                        action:()=>{window.open(`${payment_wallet_router_outter.tonspack}?type=bridge&i=${url}&t=${storage_get_authkey()}`,"newwindow","height=800, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");}
+                        action:()=>{location.href = `${payment_wallet_router_outter.tonspack}?type=bridge&i=${url}&t=${storage_get_authkey()}`}
                     }
                 )
                 pm.push(

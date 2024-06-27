@@ -333,10 +333,10 @@ async function tonspack_pay_invoices_evm_check_chain_router(type)
 {
   switch(type)
   {
-    case 2 :
+    case 2 : case "arb":
       return (arb);
       break;
-    case 5:
+    case 5:case "bsc":
       return (bsc);
       break;
     case 6:
@@ -349,9 +349,7 @@ async function tonspack_pay_invoices_evm_check_chain_router(type)
       break;
   }
 
-  var accounts = await ethereum.request({ method: "eth_requestAccounts" });
-  account = accounts[0];
-  return account
+  return false
 }
 
 /**

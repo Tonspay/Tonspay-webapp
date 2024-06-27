@@ -228,12 +228,15 @@ async function bridge_evm_ton_tonspack()
     // await evm_check_chain(bridge_invoice.f.chain);
     // window.alert("🐞 , evm_check_chain")
     console.log(bridge_invoice)
-    var chain = await tonspack_pay_invoices_evm_check_chain_router(bridge_invoice.f.chain)
+    
+    var chain = await tonspack_pay_invoices_evm_check_chain_router(bridge_invoice.f.c)
     const chainId = parseInt(chain.chainId)
+
     if(!bridge_invoice.f.tokenType)
     {
         //Approve
         const allowance = await evm_allowance_erc20(bridge_invoice.f.t,inchRouter)
+        window.alert(allowance)
         console.log(allowance)
         if(Number(allowance)<Number(bridge_invoice.f.a))
         {
@@ -241,10 +244,11 @@ async function bridge_evm_ton_tonspack()
             console.log(approve)
         }
     }
-
+    
     // window.alert("🐞 , allowance")
     console.log(bridge_invoice)
     //Get swap bytes data;
+
     var account = await (new Tonspack()).connect({t:0,i:chainId})
     const swapData = await api_1inch_swap(
         bridge_invoice.f.chain.chainIdRaw,
@@ -255,6 +259,7 @@ async function bridge_evm_ton_tonspack()
         1
         )
     console.log(swapData);
+
     if(swapData.code==200 && swapData.data.tx)
     {
         if(Number(swapData.data.dstAmount)<=miniAmount)
